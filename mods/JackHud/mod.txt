@@ -145,9 +145,6 @@
 			"script_path": "Lua/HUDSuspicion_ext.lua"
 		}
 	],
-	"persist_scripts" : [
-		{ "global" : "SkipRestart", "script_path" : "Lua/SkipRestart_ext.lua" }
-	],
 	"keybinds": [
 		{
 			"keybind_id": "save_pre",

@@ -10,7 +10,6 @@ Whenever i fix or improve something of the original code i will try to create pr
 * DynamicHud
 * Percentage HudSuspicion
 * Kill-Counter
-* Skip Restart Counter (Not tested with other players in the lobby)
 * Flashlight Extender
 * Bullet Decapitations
 * Preplanned
