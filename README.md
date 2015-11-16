@@ -1,5 +1,8 @@
-# GageHud
-GageHud is now on GitHub. As I am busy with real work, it may not be updated as often as I wish I could. It has been tested with Update 70 and until now it works. Fixed some bugs caused by new enemies (And myself).
+# JackHud
+JackHud is a fork of GageHud.
+I was actually up to do pretty much the same as cjur3, which was combining Seven's codes into one nice package with settings and all that... but then i found this, so why start a complete new core, when there already is a nice start available?
+However.. i am not down with some originally included features of GageHud, so instead of pushing some "remove bla feature" pull requests it's probably making more sense to make a fork.
+Whenever i fix or improve something of the original code i will try to create proper pull requests to push it upstream.
 
 ###Features are:
 * Hud-StatsScreen
@@ -15,9 +18,10 @@ GageHud is now on GitHub. As I am busy with real work, it may not be updated as 
 * And many more...
 
 ###Suggestions
-Currently I have not planned to do anything new and I don't have the time for it. I am totally happy if I am able to fix bugs in time.
+* writing this list
+* alot ...
 
 ###Contribution and BugFixes
 Create a pull request and I will look into it.
 
-####Big Credit to Seven, thatguyfrombreakingbad, UndeadSewer, YandereSnake and the entire modding community. If I forgot to credit somebody, please let me know
+####Big Credit to Seven, cjur3, thatguyfrombreakingbad, UndeadSewer, YandereSnake and the entire modding community. If I forgot to credit somebody, please let me know

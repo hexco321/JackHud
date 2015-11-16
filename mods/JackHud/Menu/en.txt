@@ -1,5 +1,5 @@
 {
-	"mod_collection_options" : "GageHUD Options",
+	"mod_collection_options" : "JackHUD Options",
 	"mod_collection_options_desc" : "Configure the Mod Collection created by Seven.",
 	"dynamic_hud_options" : "Dynamic HUD",
 	"dynamic_hud_options_desc" : "Configure Dynamic HUD",

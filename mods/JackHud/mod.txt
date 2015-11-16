@@ -1,23 +1,10 @@
 {
-    "name": "GageHud",
+    "name": "JackHud",
     "description": "Gage got you some modified Google Glasses and you know. Google knows everything",
     "authors": "Seven, Kail, cjure, undeadsewer, thatguyfrombreakingbad",
     "contact": "",
     "version": "1.0",
     "priority": 200,
-	"updates" : [
-		{
-			"revision" : 13,
-			"identifier" : "gagehud",
-		},
-		{
-			"revision" : 2,
-			"identifier" : "gagehudtextures",
-			"install_dir" : "assets/mod_overrides/",
-			"install_folder" : "Extended Icons",
-			"display_name" : "GageHud Extended Icons"
-		}
-	],
     "pre_hooks": [
         {
             "hook_id": "lib/managers/menumanager",
