@@ -175,11 +175,11 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_dynamic_hud", functio
 		mod_collection:Save()
 	end	
 	
-    MenuCallbackHandler.callback_do_decapitations = function(self, item)
+	MenuCallbackHandler.callback_do_decapitations = function(self, item)
 		mod_collection._data.do_decapitations = (item:value() =="on")
 		mod_collection:Save()
 	end
-    
+	
 	MenuCallbackHandler.callback_enable_flashlight_extender = function(self, item)
 		mod_collection._data.enable_flashlight_extender = (item:value() =="on")
 		mod_collection:Save()

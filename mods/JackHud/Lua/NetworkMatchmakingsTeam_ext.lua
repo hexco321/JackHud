@@ -13,7 +13,7 @@ if mod_collection and mod_collection._data.enable_filtersettings then
 			io.stderr:write(err .. "\n")
 			return
 		end
-		
+
 		file:write("#Generated file for persistent CrimeNet filter settings, don't mess with it unless you know what you're doing\n")
 		file:write("friends_only " .. tostring(self._search_friends_only) .. "\n")
 		file:write("max_lobbies " .. tostring(self._lobby_return_count) .. "\n")
@@ -21,7 +21,7 @@ if mod_collection and mod_collection._data.enable_filtersettings then
 		for k, v in pairs(self._lobby_filters) do
 			file:write(tostring(k) .. " " .. tostring(self._lobby_filters[k].value) .. "\n")
 		end
-		
+
 		file:close()
 	end
 
@@ -31,12 +31,12 @@ if mod_collection and mod_collection._data.enable_filtersettings then
 			io.stderr:write(err .. "\n")
 			return
 		end
-		
+
 		local line = file:read()
 		while line do
 			if not string.match(line, "^#.+") then
 				local key, val = string.match(line, "^(.+) (.+)$")
-				
+
 				if key and val then
 					if key == "friends_only" then
 						local friends_only = val  == "true" and true or false

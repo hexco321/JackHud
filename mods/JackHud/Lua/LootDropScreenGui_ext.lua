@@ -10,7 +10,7 @@ if mod_collection and mod_collection._data.enable_speed_up then
 			self:_set_selected_and_sync(math.random(3))
 			self:confirm_pressed()
 		end
-		
+
 		if not self._button_not_clickable and SKIP_LOOT_SCREEN_DELAY >= 0 then
 			self._auto_continue_t = self._auto_continue_t or (t + SKIP_LOOT_SCREEN_DELAY)
 			if t >= self._auto_continue_t then

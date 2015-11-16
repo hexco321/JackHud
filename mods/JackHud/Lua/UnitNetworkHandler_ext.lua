@@ -6,7 +6,7 @@ local alarm_pager_interaction_original = UnitNetworkHandler.alarm_pager_interact
 
 function UnitNetworkHandler:mark_minion(unit, owner_id, health_multiplier, passive_health_multiplier, ...)
 	mark_minion_original(self, unit, owner_id, health_multiplier, passive_health_multiplier, ...)
-	
+
 	if self._verify_character(unit) then
 		local has_upgrade = health_multiplier and health_multiplier > 0
 		managers.enemy:add_minion_unit(unit, owner_id, has_upgrade)
@@ -17,7 +17,7 @@ function UnitNetworkHandler:hostage_trade(unit, ...)
 	if self._verify_gamestate(self._gamestate_filter.any_ingame) and self._verify_character(unit) then
 		managers.enemy:remove_minion_unit(unit)
 	end
-	
+
 	return hostage_trade_original(self, unit, ...)
 end
 
@@ -25,7 +25,7 @@ function UnitNetworkHandler:unit_traded(unit, trader, ...)
 	if self._verify_gamestate(self._gamestate_filter.any_ingame) and self._verify_character(unit) then
 		managers.enemy:remove_minion_unit(unit)
 	end
-	
+
 	return unit_traded_original(self, unit, trader, ...)
 end
 
@@ -37,7 +37,7 @@ function UnitNetworkHandler:interaction_set_active(unit, u_id, active, tweak_dat
 				if not u_data then return end
 				unit = u_data and u_data.unit
 			end
-			
+
 			if not active then
 				managers.interaction:pager_ended(unit)
 			elseif not flash then

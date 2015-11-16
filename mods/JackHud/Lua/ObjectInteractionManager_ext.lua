@@ -78,7 +78,7 @@ ObjectInteractionManager.SPECIAL_PICKUP_IGNORE_EDITOR_ID = {
 
 function ObjectInteractionManager:init(...)
 	init_original(self, ...)
-	
+
 	self._queued_units = {}
 	self._pager_count = 0
 	self._total_loot_count = { bagged = 0, unbagged = 0 }
@@ -86,19 +86,19 @@ function ObjectInteractionManager:init(...)
 	self._loot_units_added = {}
 	self._special_pickup_count = {}
 	self._active_pagers = {}
-	
+
 	for carry_id, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID) do
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
 	end
 	for interaction_id, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID) do
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
 	end
-	
-	
+
+
 	for interaction_id, type_id in pairs(ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID) do
 		self._special_pickup_count[type_id] = 0
 	end
-	
+
 	self._interactive_unit_listeners = {}
 end
 
@@ -121,7 +121,7 @@ function ObjectInteractionManager:interact(...)
 	if alive(self._active_unit) and self._active_unit:interaction().tweak_data == "corpse_alarm_pager" then
 		self:pager_answered(self._active_unit)
 	end
-	
+
 	return interact_original(self, ...)
 end
 
@@ -129,7 +129,7 @@ function ObjectInteractionManager:interupt_action_interact(...)
 	if alive(self._active_unit) and self._active_unit:interaction() and self._active_unit:interaction().tweak_data == "corpse_alarm_pager" then
 		self:pager_ended(self._active_unit)
 	end
-	
+
 	return interupt_action_interact_original(self, ...)
 end
 
@@ -142,7 +142,7 @@ function ObjectInteractionManager:_check_queued_units(t)
 			local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
 			local special_pickup_type_id = ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID[interaction_id]
 			local editor_id = tostring(unit:editor_id())
-			
+
 			if loot_type_id then
 				if not ObjectInteractionManager.LOOT_IGNORE_EDITOR_ID[editor_id] then
 					self._loot_units_added[unit:key()] = loot_type_id
@@ -155,13 +155,13 @@ function ObjectInteractionManager:_check_queued_units(t)
 			elseif interaction_id == "corpse_alarm_pager" then
 				self:_pager_started(unit)
 			end
-			
+
 			for name, clbk in pairs(self._interactive_unit_listeners) do
 				clbk(unit, true)
 			end
 		end
 	end
-	
+
 	self._queued_units = {}
 end
 
@@ -172,7 +172,7 @@ function ObjectInteractionManager:_check_remove_unit(unit)
 			return
 		end
 	end
-	
+
 	local carry_id = unit:carry_data() and unit:carry_data():carry_id()
 	local interaction_id = unit:interaction().tweak_data
 	local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
@@ -192,7 +192,7 @@ function ObjectInteractionManager:_check_remove_unit(unit)
 	elseif interaction_id == "corpse_alarm_pager" then
 		self:pager_ended(unit)
 	end
-	
+
 	for name, clbk in pairs(self._interactive_unit_listeners) do
 		clbk(unit, false)
 	end
@@ -203,7 +203,7 @@ function ObjectInteractionManager:_change_loot_count(unit, loot_type, change, ba
 	self._loot_count[loot_type].bagged = self._loot_count[loot_type].bagged + (bagged and change or 0)
 	self._total_loot_count.unbagged = self._total_loot_count.unbagged + (bagged and 0 or change)
 	self._loot_count[loot_type].unbagged = self._loot_count[loot_type].unbagged + (bagged and 0 or change)
-	
+
 	if HUDManager.ListOptions.show_loot and managers.hud and managers.hud:list_initialized() then
 		local item_name = HUDManager.ListOptions.aggregate_loot and "all" or loot_type
 		local count_loot_type = not HUDManager.ListOptions.aggregate_loot and loot_type or nil
@@ -220,7 +220,7 @@ function ObjectInteractionManager:_get_loot_level_compensation(loot_type)
 			count = count + amount
 		end
 	end
-	
+
 	return count
 end
 
@@ -232,7 +232,7 @@ end
 
 function ObjectInteractionManager:_change_special_pickup_count(unit, pickup_type, change)
 	self._special_pickup_count[pickup_type] = self._special_pickup_count[pickup_type] + change
-	
+
 	if HUDManager.ListOptions.show_special_pickups and managers.hud and managers.hud:list_initialized() then
 		managers.hud:hud_list("right_side_list")
 			:item("special_pickup_list")
@@ -249,12 +249,12 @@ function ObjectInteractionManager:_pager_started(unit)
 	if not self._active_pagers[unit:key()] then
 		self._pager_count = self._pager_count + 1
 		self._active_pagers[unit:key()] = true
-		
+
 		if managers.hud and managers.hud:list_initialized() then
 			if HUDManager.ListOptions.show_pagers then
 				managers.hud:hud_list("left_side_list"):item("pagers"):register_item("pager_" .. tostring(unit:key()), HUDList.PagerItem, unit):activate()
 			end
-			
+
 			if HUDManager.ListOptions.show_pager_count and managers.groupai:state():whisper_mode() then
 				managers.hud:hud_list("right_side_list"):item("hostage_count_list"):item("PagerCount"):set_count(self._pager_count)
 			end
@@ -265,7 +265,7 @@ end
 function ObjectInteractionManager:pager_ended(unit)
 	if self._active_pagers[unit:key()] then
 		self._active_pagers[unit:key()] = nil
-		
+
 		if HUDManager.ListOptions.show_pagers and managers.hud and managers.hud:list_initialized() then
 			managers.hud:hud_list("left_side_list"):item("pagers"):unregister_item("pager_" .. tostring(unit:key()))
 		end
@@ -280,7 +280,7 @@ function ObjectInteractionManager:pager_answered(unit)
 				item:set_answered()
 			end
 		end
-		
+
 		if HUDManager.ListOptions.remove_answered_pager_contour and self._active_pagers[unit:key()] then
 			managers.enemy:add_delayed_clbk("contour_remove_" .. tostring(unit:key()), callback(self, self, "_remove_pager_contour", unit), Application:time() + 0.01)
 		end
@@ -296,12 +296,12 @@ end
 function ObjectInteractionManager:remove_all_pagers()
 	if managers.hud and managers.hud:list_initialized() then
 		managers.hud:hud_list("right_side_list"):item("hostage_count_list"):unregister_item("PagerCount")
-		
+
 		for key, unit in pairs(self._active_pagers) do
 			managers.hud:hud_list("left_side_list"):item("pagers"):unregister_item("pager_" .. tostring(key))
 		end
 	end
-	
+
 	self._active_pagers = {}
 end
 

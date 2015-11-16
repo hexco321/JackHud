@@ -24,7 +24,7 @@ if SHOW_TIMERS then
 				list_item:set_can_upgrade(can_upgrade)
 			end
 		end
-		
+
 		return MissionDoorDeviceInteractionExt_check_for_upgrade_original(self, ...)
 	end
 end

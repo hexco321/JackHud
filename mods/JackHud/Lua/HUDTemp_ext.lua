@@ -9,16 +9,16 @@ function HUDTemp:init(hud)
 	if self._hud_panel:child("bag_panel") then
 		self._hud_panel:remove(self._hud_panel:child("bag_panel"))
 	end
-	
+
 	self._destination_size_ratio = 0.5
-	
+
 	self._panel = self._hud_panel:panel({
 		visible = false,
 		name = "bag_panel",
 	})
-	
+
 	self._bg_box = HUDBGBox_create(self._panel, { }, {})
-	
+
 	self._bag_icon = self._panel:bitmap({
 		name = "bag_icon",
 		texture = "guis/textures/pd2/hud_tabs",
@@ -27,7 +27,7 @@ function HUDTemp:init(hud)
 		layer = 0,
 		color = Color.white,
 	})
-	
+
 	self._carry_text = self._panel:text({
 		name = "carry_text",
 		visible = true,
@@ -44,13 +44,13 @@ function HUDTemp:show_carry_bag(carry_id, value)
 	self._value = value
 	local carry_data = tweak_data.carry[carry_id]
 	local type_text = carry_data.name_id and managers.localization:text(carry_data.name_id)
-	
+
 	self._carry_text:set_text(utf8.to_upper(type_text))
 	local width = self:_get_text_width(self._carry_text) + HUDTemp._MARGIN * 2 + self._bag_icon:w()
 	self._bg_box:set_w(width)
 	self._bag_icon:set_left(self._bg_box:left() + HUDTemp._MARGIN)
 	self._carry_text:set_left(self._bag_icon:right())
-	
+
 	self._panel:stop()
 	local w, h, x, y = managers.hud:get_teammate_carry_panel_info(HUDManager.PLAYER_PANEL)
 	self._panel:animate(callback(self, self, "_animate_pickup"), w, h, x, y, h)
@@ -75,7 +75,7 @@ function HUDTemp:_animate_pickup(o, ew, eh, ex, ey)
 		local text_w = self:_get_text_width(self._carry_text)
 		self._bag_icon:set_size(h, h)
 		self._carry_text:set_size(text_w, h)
-		
+
 		self._bg_box:set_size(1.3 * (self._carry_text:w() + self._bag_icon:w() * 1.3), h * 1.75)
 		self._bg_box:set_center(self._panel:w() / 2 - self._bg_box:w() * 0.05, self._panel:h() / 2)
 		self._carry_text:set_center(0, self._panel:h() / 2)
@@ -83,10 +83,10 @@ function HUDTemp:_animate_pickup(o, ew, eh, ex, ey)
 		self._bag_icon:set_center(0, self._panel:h() / 2)
 		self._bag_icon:set_right(self._carry_text:left() - self._bag_icon:w() / 4)
 	end
-	
+
 	local FLASH_T = 1
 	local MOVE_T = 0.2
-	
+
 	self._panel:set_visible(true)
 	local sw = ew / self._destination_size_ratio
 	local sh = eh / self._destination_size_ratio
@@ -95,7 +95,7 @@ function HUDTemp:_animate_pickup(o, ew, eh, ex, ey)
 	self._panel:set_y(self._hud_panel:h() * 0.6)
 	local sx = self._panel:x()
 	local sy = self._panel:y()
-	
+
 	local t = FLASH_T
 	while t > 0 do
 		local dt = coroutine.yield()
@@ -104,7 +104,7 @@ function HUDTemp:_animate_pickup(o, ew, eh, ex, ey)
 		self._panel:set_visible(val > 0)
 	end
 	self._panel:set_visible(true)
-	
+
 	t = MOVE_T
 	while t > 0 do
 		local dt = coroutine.yield()
@@ -113,12 +113,12 @@ function HUDTemp:_animate_pickup(o, ew, eh, ex, ey)
 		local x = math.lerp(sx, ex, ratio)
 		local y = math.lerp(sy, ey, ratio)
 		self._panel:set_position(x, y)
-		
+
 		local w = math.lerp(sw, ew, ratio)
 		local h = math.lerp(sh, eh, ratio)
 		update_size(w, h)
 	end
-	
+
 	self._panel:set_visible(false)
 	managers.hud:set_teammate_carry_info(HUDManager.PLAYER_PANEL, self._carry_id, self._value, true)
 end

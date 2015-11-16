@@ -112,112 +112,112 @@ if mod_collection and mod_collection._data.enable_kill_counter then
 end
 
 if mod_collection and mod_collection._data.do_decapitations then
-    if not _G.BulletDecapitations then
-        BulletDecapitations = {}
-    end
+	if not _G.BulletDecapitations then
+		BulletDecapitations = {}
+	end
 
-    BulletDecapitations.cop_decapitation = {
-        t = {},
-        interval = {},
-        attack_data = {},
-        ragdoll = {}
-    }
+	BulletDecapitations.cop_decapitation = {
+		t = {},
+		interval = {},
+		attack_data = {},
+		ragdoll = {}
+	}
 
-    Hooks:Add("CopDamagePostDamageBullet", "BulletDecapitations", function(self, attack_data)
+	Hooks:Add("CopDamagePostDamageBullet", "BulletDecapitations", function(self, attack_data)
 
-        local head = attack_data.col_ray.body and attack_data.col_ray.body:name() == self._ids_head_body_name
+		local head = attack_data.col_ray.body and attack_data.col_ray.body:name() == self._ids_head_body_name
 
-        if head and self._dead and attack_data.attacker_unit == managers.player:player_unit() then
-            self._unit:movement():enable_update()
-            if self._unit:movement()._active_actions[1] then
-                self._unit:movement()._active_actions[1]:force_ragdoll()
-            end
-            
-            local bone_head = self._unit:get_object(Idstring("Head"))
-            local bone_body = self._unit:get_object(Idstring("Spine1"))
-            
-            BulletDecapitations.cop_decapitation.attack_data[self._unit] = attack_data
-            BulletDecapitations.cop_decapitation.ragdoll[self._unit] = self._unit
-            
-            self:_spawn_head_gadget({
-                position = bone_head:position(),
-                rotation = bone_head:rotation(),
-                dir = attack_data.attacker_unit:movement():m_head_rot():y()
-            })
-                
-            bone_head:set_position(bone_body:position())
-            bone_head:set_rotation(bone_body:rotation())
-            
-            BulletDecapitations.cop_decapitation.t[self._unit] = Application:time() + 10
-            BulletDecapitations.cop_decapitation.interval[self._unit] = Application:time() + 0.5
-        end
-        
-    end )
+		if head and self._dead and attack_data.attacker_unit == managers.player:player_unit() then
+			self._unit:movement():enable_update()
+			if self._unit:movement()._active_actions[1] then
+				self._unit:movement()._active_actions[1]:force_ragdoll()
+			end
+			
+			local bone_head = self._unit:get_object(Idstring("Head"))
+			local bone_body = self._unit:get_object(Idstring("Spine1"))
+			
+			BulletDecapitations.cop_decapitation.attack_data[self._unit] = attack_data
+			BulletDecapitations.cop_decapitation.ragdoll[self._unit] = self._unit
+			
+			self:_spawn_head_gadget({
+				position = bone_head:position(),
+				rotation = bone_head:rotation(),
+				dir = attack_data.attacker_unit:movement():m_head_rot():y()
+			})
+				
+			bone_head:set_position(bone_body:position())
+			bone_head:set_rotation(bone_body:rotation())
+			
+			BulletDecapitations.cop_decapitation.t[self._unit] = Application:time() + 10
+			BulletDecapitations.cop_decapitation.interval[self._unit] = Application:time() + 0.5
+		end
+		
+	end )
 
-    Hooks:PostHook( PlayerManager, "update", "BD_CopDecapitationUpdate", function(self, t, dt)
-        
-        if Utils and Utils:IsInGameState() and Utils:IsInHeist() and not Utils:IsInCustody() then
-        
-            if BulletDecapitations.cop_decapitation then
-                for unit, val in pairs(BulletDecapitations.cop_decapitation.ragdoll) do
-                    if alive(unit) then
-                        unit:get_object(Idstring("Head")):set_position(unit:get_object(Idstring("Spine1")):position())
-                        unit:get_object(Idstring("Head")):set_rotation(unit:get_object(Idstring("Spine1")):rotation())
-                    else
-                        BulletDecapitations.cop_decapitation.ragdoll[unit] = nil
-                    end
-                end
-                for unit, val in pairs(BulletDecapitations.cop_decapitation.t) do
-                    if alive(unit) then
-                        if Application:time() < val then
-                            if Application:time() >= BulletDecapitations.cop_decapitation.interval[unit] then
-                                BulletDecapitations.cop_decapitation.interval[unit] = Application:time() + 0.5
-                                
-                                World:effect_manager():spawn({
-                                    effect = Idstring("effects/payday2/particles/impacts/blood/blood_impact_a"),
-                                    position = unit:get_object(Idstring("Neck")):position(),
-                                    rotation = unit:get_object(Idstring("Neck")):rotation():y()
-                                })
-                                
-                                local splatter_from = unit:get_object(Idstring("Neck")):position()
-                                local splatter_to = splatter_from + unit:get_object(Idstring("Neck")):rotation():y() * 100
-                                local splatter_ray = unit:raycast("ray", splatter_from, splatter_to, "slot_mask", managers.slot:get_mask("world_geometry"))
-                                if splatter_ray then
-                                    World:project_decal(Idstring("blood_spatter"), splatter_ray.position, splatter_ray.ray, splatter_ray.unit, nil, splatter_ray.normal)
-                                end
-                                
-                                if unit:movement()._active_actions[1] then
-                                    unit:movement()._active_actions[1]:force_ragdoll()
-                                end
-                                local scale = 0.075
-                                local height = 1
-                                local twist_dir = math.random(2) == 1 and 1 or -1
-                                local rot_acc = (math.UP * (0.5 * twist_dir)) * -0.5
-                                local rot_time = 1 + math.rand(2)
-                                local nr_u_bodies = unit:num_bodies()
-                                local i_u_body = 0
-                                while nr_u_bodies > i_u_body do
-                                    local u_body = unit:body(i_u_body)
-                                    if u_body:enabled() and u_body:dynamic() then
-                                        local body_mass = u_body:mass()
-                                        World:play_physic_effect(Idstring("physic_effects/shotgun_hit"), u_body, math.UP * 600 * scale, 4 * body_mass / math.random(2), rot_acc, rot_time)
-                                    end
-                                    i_u_body = i_u_body + 1
-                                end
-                            end
-                        else
-                            BulletDecapitations.cop_decapitation.t[unit] = nil
-                            BulletDecapitations.cop_decapitation.interval[unit] = nil
-                            BulletDecapitations.cop_decapitation.attack_data[unit] = nil
-                        end
-                    else
-                        BulletDecapitations.cop_decapitation.t[unit] = nil
-                        BulletDecapitations.cop_decapitation.interval[unit] = nil
-                        BulletDecapitations.cop_decapitation.attack_data[unit] = nil
-                    end
-                end
-            end
-        end
-        
-    end )
+	Hooks:PostHook( PlayerManager, "update", "BD_CopDecapitationUpdate", function(self, t, dt)
+		
+		if Utils and Utils:IsInGameState() and Utils:IsInHeist() and not Utils:IsInCustody() then
+		
+			if BulletDecapitations.cop_decapitation then
+				for unit, val in pairs(BulletDecapitations.cop_decapitation.ragdoll) do
+					if alive(unit) then
+						unit:get_object(Idstring("Head")):set_position(unit:get_object(Idstring("Spine1")):position())
+						unit:get_object(Idstring("Head")):set_rotation(unit:get_object(Idstring("Spine1")):rotation())
+					else
+						BulletDecapitations.cop_decapitation.ragdoll[unit] = nil
+					end
+				end
+				for unit, val in pairs(BulletDecapitations.cop_decapitation.t) do
+					if alive(unit) then
+						if Application:time() < val then
+							if Application:time() >= BulletDecapitations.cop_decapitation.interval[unit] then
+								BulletDecapitations.cop_decapitation.interval[unit] = Application:time() + 0.5
+								
+								World:effect_manager():spawn({
+									effect = Idstring("effects/payday2/particles/impacts/blood/blood_impact_a"),
+									position = unit:get_object(Idstring("Neck")):position(),
+									rotation = unit:get_object(Idstring("Neck")):rotation():y()
+								})
+								
+								local splatter_from = unit:get_object(Idstring("Neck")):position()
+								local splatter_to = splatter_from + unit:get_object(Idstring("Neck")):rotation():y() * 100
+								local splatter_ray = unit:raycast("ray", splatter_from, splatter_to, "slot_mask", managers.slot:get_mask("world_geometry"))
+								if splatter_ray then
+									World:project_decal(Idstring("blood_spatter"), splatter_ray.position, splatter_ray.ray, splatter_ray.unit, nil, splatter_ray.normal)
+								end
+								
+								if unit:movement()._active_actions[1] then
+									unit:movement()._active_actions[1]:force_ragdoll()
+								end
+								local scale = 0.075
+								local height = 1
+								local twist_dir = math.random(2) == 1 and 1 or -1
+								local rot_acc = (math.UP * (0.5 * twist_dir)) * -0.5
+								local rot_time = 1 + math.rand(2)
+								local nr_u_bodies = unit:num_bodies()
+								local i_u_body = 0
+								while nr_u_bodies > i_u_body do
+									local u_body = unit:body(i_u_body)
+									if u_body:enabled() and u_body:dynamic() then
+										local body_mass = u_body:mass()
+										World:play_physic_effect(Idstring("physic_effects/shotgun_hit"), u_body, math.UP * 600 * scale, 4 * body_mass / math.random(2), rot_acc, rot_time)
+									end
+									i_u_body = i_u_body + 1
+								end
+							end
+						else
+							BulletDecapitations.cop_decapitation.t[unit] = nil
+							BulletDecapitations.cop_decapitation.interval[unit] = nil
+							BulletDecapitations.cop_decapitation.attack_data[unit] = nil
+						end
+					else
+						BulletDecapitations.cop_decapitation.t[unit] = nil
+						BulletDecapitations.cop_decapitation.interval[unit] = nil
+						BulletDecapitations.cop_decapitation.attack_data[unit] = nil
+					end
+				end
+			end
+		end
+		
+	end )
 end
