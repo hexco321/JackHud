@@ -48,14 +48,14 @@ end
 	Load our localization keys for our menu, and menu items.
 ]]
 Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_jackhud", function( loc )
-	for _, filename in pairs(file.GetFiles(JackHud._path .. "Loc/")) do
+	for _, filename in pairs(file.GetFiles(JackHUD._path .. "Loc/")) do
 		local str = filename:match('^(.*).txt$')
 		if str and Idstring(str) and Idstring(str):key() == SystemInfo:language():key() then
-			loc:load_localization_file(JackHud._path .. "Loc/" .. filename)
+			loc:load_localization_file(JackHUD._path .. "Loc/" .. filename)
 			break
 		end
 	end
-	loc:load_localization_file(JackHud._path .. "Loc/english.txt", false)
+	loc:load_localization_file(JackHUD._path .. "Loc/english.txt", false)
 end)
 
 --[[
