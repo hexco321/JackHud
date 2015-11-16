@@ -1,5 +1,5 @@
 {
-	"name": "JackHud",
+	"name": "JackHUD",
 	"description": "A GageHUD fork",
 	"authors": "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad",
 	"contact": "",

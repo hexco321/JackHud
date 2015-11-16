@@ -4,7 +4,7 @@
 	We cache the ModPath directory, so that when our hooks are called, we aren't using the ModPath from a
 		different mod.
 ]]
-JackHud = JackHUD or {}
+JackHUD = JackHUD or {}
 JackHUD._path = ModPath
 JackHUD._data_path = SavePath .. "JackHUD.txt"
 JackHUD._data = {} 
@@ -181,7 +181,7 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_dynamic_hud", functio
 	end
 	
 	MenuCallbackHandler.callback_enable_flashlight_extender = function(self, item)
-		mod_colJackHUDenable_flashlight_extender = (item:value() =="on")
+		JackHUD._data.enable_flashlight_extender = (item:value() =="on")
 		JackHUD:Save()
 	end
 
