@@ -115,7 +115,7 @@ function GroupAIStateBase:_update_hostage_count()
 		end
 	end
 end
-if mod_collection and mod_collection._data.enable_pacified then
+if JackHUD and JackHUD._data.enable_pacified then
 	local _upd_criminal_suspicion_progress_original = GroupAIStateBase._upd_criminal_suspicion_progress
 	function GroupAIStateBase:_upd_criminal_suspicion_progress(...)
 		if self._ai_enabled then

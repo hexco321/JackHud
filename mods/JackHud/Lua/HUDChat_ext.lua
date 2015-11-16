@@ -1,4 +1,4 @@
-if not mod_collection then
+if not JackHUD then
 	return
 end
 
@@ -574,10 +574,10 @@ function HUDChat:_move_scroll_bar_position_center(y)
 end
 
 function HUDChat:_animate_fade_output()
-	if mod_collection._data.hide_chat_after == 0 then
+	if JackHUD._data.hide_chat_after == 0 then
 		self:set_output_alpha(1)
 	else
-	local wait_t = mod_collection._data.hide_chat_after
+	local wait_t = JackHUD._data.hide_chat_after
 	local fade_t = 1
 	local t = 0
 	while wait_t > t do

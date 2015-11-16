@@ -1,4 +1,4 @@
-if not mod_collection then
+if not JackHUD then
 	return
 end
 
@@ -1812,10 +1812,10 @@ function HUDTeammate:_animate_name_label(panel, width)
 	end
 end
 
-if mod_collection and mod_collection._data.enable_kill_counter then
-	HUDTeammate.SHOW_SPECIAL_KILLS = mod_collection._data.show_special_kills
-	HUDTeammate.SHOW_HEADSHOT_KILLS = mod_collection._data.show_headshot_kills
-	HUDTeammate.SHOW_AI_KILLS = mod_collection._data.show_ai_kills
+if JackHUD and JackHUD._data.enable_kill_counter then
+	HUDTeammate.SHOW_SPECIAL_KILLS = JackHUD._data.show_special_kills
+	HUDTeammate.SHOW_HEADSHOT_KILLS = JackHUD._data.show_headshot_kills
+	HUDTeammate.SHOW_AI_KILLS = JackHUD._data.show_ai_kills
 
 	if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL then	--Custom HUD compatibility
 		local init_original = HUDTeammate.init

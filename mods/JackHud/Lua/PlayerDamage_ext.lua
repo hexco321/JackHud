@@ -1,8 +1,8 @@
-if not mod_collection then
+if not JackHUD then
 	return
 end
 
-local SHOW_BUFFS = mod_collection._data.show_buffs
+local SHOW_BUFFS = JackHUD._data.show_buffs
 
 if SHOW_BUFFS then
 	local PlayerDamage_set_health_original = PlayerDamage.set_health

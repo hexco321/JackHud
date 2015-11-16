@@ -1,4 +1,4 @@
-if mod_collection and mod_collection._data.enable_filtersettings then
+if JackHUD and JackHUD._data.enable_filtersettings then
 	local settings_file = SavePath .. "CrimeNetFilter.ini"
 
 	local filter_close_cbk = CrimeNetFiltersGui.close

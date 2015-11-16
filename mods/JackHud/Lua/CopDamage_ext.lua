@@ -16,7 +16,7 @@ function CopDamage:_process_damage(aggressor, damage)
 	end
 end
 
-if mod_collection and mod_collection._data.enable_kill_counter then
+if JackHUD and JackHUD._data.enable_kill_counter then
 	local bullet_original = CopDamage.damage_bullet
 	local explosion_original = CopDamage.damage_explosion
 	local melee_original = CopDamage.damage_melee
@@ -111,7 +111,7 @@ if mod_collection and mod_collection._data.enable_kill_counter then
 	end
 end
 
-if mod_collection and mod_collection._data.do_decapitations then
+if JackHUD and JackHUD._data.do_decapitations then
 	if not _G.BulletDecapitations then
 		BulletDecapitations = {}
 	end

@@ -1,8 +1,8 @@
-if not mod_collection then
+if not JackHUD then
 	return
 end
 
-local SHOW_TIMERS = mod_collection._data.show_timers
+local SHOW_TIMERS = JackHUD._data.show_timers
 
 if SHOW_TIMERS then
 	local MissionDoorDeviceInteractionExt_check_for_upgrade_original = MissionDoorDeviceInteractionExt.check_for_upgrade

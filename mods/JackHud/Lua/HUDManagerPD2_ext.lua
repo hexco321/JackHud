@@ -1,4 +1,4 @@
-if not mod_collection then
+if not JackHUD then
 	return
 end
 
@@ -6,8 +6,8 @@ HUDManager.CUSTOM_TEAMMATE_PANEL = true	--External flag
 HUDManager._USE_BURST_MODE = HUDManager._USE_BURST_MODE or false	--Updated on burst fire plugin load
 HUDManager._USE_KILL_COUNTER = HUDManager._USE_KILL_COUNTER or false	--Updated on kill counter plugin load
 
-local SHOW_BUFFS = mod_collection._data.show_buffs
-local SHOW_TIMERS = mod_collection._data.show_timers
+local SHOW_BUFFS = JackHUD._data.show_buffs
+local SHOW_TIMERS = JackHUD._data.show_timers
 local update_original = HUDManager.update
 local set_stamina_value_original = HUDManager.set_stamina_value
 local set_max_stamina_original = HUDManager.set_max_stamina
@@ -166,26 +166,26 @@ HUDManager.ListOptions = HUDManager.ListOptions or {
 	buff_list_scale = 1,       --size scale of buff list
 
 	--left side list
-	show_timers = mod_collection._data.show_timers,       --drills, timelocks, hacking etc.
-	show_equipment = mod_collection._data.show_equipment,     --deployables (ammo, doc bags, body bags)
-	show_minions = mod_collection._data.show_minions,       --converted enemies, type and health
-	show_pagers = mod_collection._data.show_pagers,       --active pagers
-	remove_answered_pager_contour = mod_collection._data.remove_answered_pager_contour,      --removes the interaction contour on answered pagers
-	show_ecms = mod_collection._data.show_ecms, --active ecms
+	show_timers = JackHUD._data.show_timers,       --drills, timelocks, hacking etc.
+	show_equipment = JackHUD._data.show_equipment,     --deployables (ammo, doc bags, body bags)
+	show_minions = JackHUD._data.show_minions,       --converted enemies, type and health
+	show_pagers = JackHUD._data.show_pagers,       --active pagers
+	remove_answered_pager_contour = JackHUD._data.remove_answered_pager_contour,      --removes the interaction contour on answered pagers
+	show_ecms = JackHUD._data.show_ecms, --active ecms
 	 
 	--right side list
-	show_enemies = mod_collection._data.show_enemies,       --currently spawned enemies
-	aggregate_enemies = mod_collection._data.aggregate_enemies, --don't split enemies on type; use a single entry for all
-	show_civilians = mod_collection._data.show_civilians,     --currently spawned, untied civs
-	show_hostages = mod_collection._data.show_hostages,      --currently tied civilian and dominated cops
-	show_pager_count = mod_collection._data.show_pager_count,   --show number of triggered pagers (only counts pagers triggered while you were present)
-	show_loot = mod_collection._data.show_loot,  --show spawned and active loot bags/piles (may not be shown if certain mission parameters has not been met)
-	aggregate_loot = mod_collection._data.aggregate_loot,    --don't split loot on type; use a single entry for all
-	separate_bagged_loot = mod_collection._data.separate_bagged_loot, --show bagged loot as a separate value
-	show_special_pickups = mod_collection._data.show_special_pickups,       --show number of special equipment/items
+	show_enemies = JackHUD._data.show_enemies,       --currently spawned enemies
+	aggregate_enemies = JackHUD._data.aggregate_enemies, --don't split enemies on type; use a single entry for all
+	show_civilians = JackHUD._data.show_civilians,     --currently spawned, untied civs
+	show_hostages = JackHUD._data.show_hostages,      --currently tied civilian and dominated cops
+	show_pager_count = JackHUD._data.show_pager_count,   --show number of triggered pagers (only counts pagers triggered while you were present)
+	show_loot = JackHUD._data.show_loot,  --show spawned and active loot bags/piles (may not be shown if certain mission parameters has not been met)
+	aggregate_loot = JackHUD._data.aggregate_loot,    --don't split loot on type; use a single entry for all
+	separate_bagged_loot = JackHUD._data.separate_bagged_loot, --show bagged loot as a separate value
+	show_special_pickups = JackHUD._data.show_special_pickups,       --show number of special equipment/items
 	 
 	--buff list
-	show_buffs = mod_collection._data.show_buffs --active effects (buffs/debuffs). also see the hudlist.buffitembase.buffs table definitions, where you can set the ignore flag to not show specific things (or screw around with other things at your own risk)
+	show_buffs = JackHUD._data.show_buffs --active effects (buffs/debuffs). also see the hudlist.buffitembase.buffs table definitions, where you can set the ignore flag to not show specific things (or screw around with other things at your own risk)
 	
 }
 
@@ -2659,7 +2659,7 @@ do
 	end
 end
 
-if mod_collection and mod_collection._data.enable_minimap then
+if JackHUD and JackHUD._data.enable_minimap then
 	local HUDManager_setup_player_info_hud_pd2_original = HUDManager._setup_player_info_hud_pd2
 	local HUDManager_update_original = HUDManager.update
 
@@ -3562,7 +3562,7 @@ if mod_collection and mod_collection._data.enable_minimap then
 	end
 end
 
-if mod_collection and mod_collection._data.enable_kill_counter then
+if JackHUD and JackHUD._data.enable_kill_counter then
 	HUDManager._USE_KILL_COUNTER = true	--Custom HUD compatibility
 
 	function HUDManager:increment_kill_count(teammate_panel_id, is_special, headshot)

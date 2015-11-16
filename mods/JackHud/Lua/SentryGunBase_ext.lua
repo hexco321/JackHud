@@ -1,4 +1,4 @@
-if mod_collection and mod_collection._data.enable_kill_counter then
+if JackHUD and JackHUD._data.enable_kill_counter then
 	local sync_setup_original = SentryGunBase.sync_setup
 
 	function SentryGunBase:sync_setup(upgrade_lvl, peer_id, ...)

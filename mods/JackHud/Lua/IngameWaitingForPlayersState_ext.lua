@@ -1,5 +1,5 @@
-if mod_collection and mod_collection._data.enable_speed_up then
-	local SKIP_BLACKSCREEN = mod_collection._data.black_screen_skip
+if JackHUD and JackHUD._data.enable_speed_up then
+	local SKIP_BLACKSCREEN = JackHUD._data.black_screen_skip
 
 	local update_original = IngameWaitingForPlayersState.update
 

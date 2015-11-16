@@ -1,5 +1,5 @@
-if mod_collection and mod_collection._data.enable_speed_up then
-	local SKIP_LOOT_SCREEN_DELAY = mod_collection._data.loot_screen_skip
+if JackHUD and JackHUD._data.enable_speed_up then
+	local SKIP_LOOT_SCREEN_DELAY = JackHUD._data.loot_screen_skip
 
 	local update_original = LootDropScreenGui.update
 

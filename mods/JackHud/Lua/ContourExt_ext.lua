@@ -1,4 +1,4 @@
-if mod_collection and mod_collection._data.enable_minimap then
+if JackHUD and JackHUD._data.enable_minimap then
 	local add_original = ContourExt.add
 	local _clear_original = ContourExt._clear
 

@@ -1,8 +1,8 @@
-if not mod_collection then
+if not JackHUD then
 	return
 end
 
-local SHOW_BUFFS = mod_collection._data.show_buffs
+local SHOW_BUFFS = JackHUD._data.show_buffs
 
 if SHOW_BUFFS then
 	local PlayerStandard__start_action_charging_weapon_original = PlayerStandard._start_action_charging_weapon

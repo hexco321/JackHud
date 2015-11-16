@@ -8,7 +8,7 @@
 	"pre_hooks": [
 		{
 			"hook_id": "lib/managers/menumanager",
-			"script_path": "Menu/mod_collection.lua",
+			"script_path": "Menu/JackHUD.lua",
 		}
 	],
 	"hooks": [

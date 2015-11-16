@@ -1,6 +1,6 @@
 {
 	"menu_id": "dynamic_hud_options",
-	"parent_menu_id": "mod_collection_options",
+	"parent_menu_id": "jackhud_options",
 	"title": "dynamic_hud_options",
 	"description": "dynamic_hud_options_desc",
 	"items": [

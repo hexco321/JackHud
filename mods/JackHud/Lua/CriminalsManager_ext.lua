@@ -1,6 +1,6 @@
 CriminalsManager.MAX_NR_TEAM_AI = 2
 
-if mod_collection and mod_collection._data.enable_minimap then
+if JackHUD and JackHUD._data.enable_minimap then
 	local set_unit_original = CriminalsManager.set_unit
 	local add_character_original = CriminalsManager.add_character
 

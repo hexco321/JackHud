@@ -1,4 +1,4 @@
-if not mod_collection then
+if not JackHUD then
 	return
 end
 local assault_texts = {
