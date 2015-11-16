@@ -7,7 +7,7 @@
 JackHUD = JackHUD or {}
 JackHUD._path = ModPath
 JackHUD._data_path = SavePath .. "JackHUD.txt"
-JackHUD._data = {} 
+JackHUD._data = {}
 
 --[[
 	A simple save function that json encodes our _data table and saves it to a file.
@@ -47,14 +47,21 @@ end
 --[[
 	Load our localization keys for our menu, and menu items.
 ]]
-Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_dynamic_hud", function( loc )
-	loc:load_localization_file( JackHUD._path .. "Menu/en.txt")
+Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_jackhud", function( loc )
+	for _, filename in pairs(file.GetFiles(JackHud._path .. "Loc/")) do
+		local str = filename:match('^(.*).txt$')
+		if str and Idstring(str) and Idstring(str):key() == SystemInfo:language():key() then
+			loc:load_localization_file(JackHud._path .. "Loc/" .. filename)
+			break
+		end
+	end
+	loc:load_localization_file(JackHud._path .. "Loc/english.txt", false)
 end)
 
 --[[
 	Setup our menu callbacks, load our saved data, and build the menu from our json file.
 ]]
-Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_dynamic_hud", function( menu_manager )
+Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( menu_manager )
 
 	--[[
 		Setup our callbacks as defined in our item callback keys, and perform our logic on the data retrieved.
