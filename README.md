@@ -8,7 +8,6 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Hud-StatsScreen
 * CustomHud
 * DynamicHud
-* MiniMap(The Casino Map is not that accurate)
 * Percentage HudSuspicion
 * Kill-Counter
 * Skip Restart Counter (Not tested with other players in the lobby)

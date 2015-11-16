@@ -18,7 +18,6 @@
 	"enable_kill_counter": true,
 	"separate_bagged_loot": true,
 	"black_screen_skip": true,
-	"enable_minimap": true,
 	"show_pagers": true,
 	"enable_speed_up": true,
 	"aggregate_loot": false,

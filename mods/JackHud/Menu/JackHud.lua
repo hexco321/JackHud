@@ -192,11 +192,6 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
-	MenuCallbackHandler.callback_enable_minimap = function(self, item)
-		JackHUD._data.enable_minimap = (item:value() =="on")
-		JackHUD:Save()
-	end
-
 	MenuCallbackHandler.callback_enable_pacified = function(self, item)
 		JackHUD._data.enable_pacified = (item:value() =="on")
 		JackHUD:Save()
@@ -244,7 +239,6 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/flashlight_extender.txt", JackHUD, JackHUD._data )
 	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/pacified_civilians.txt", JackHUD, JackHUD._data )
 	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/filtersettings.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/minimap.txt", JackHUD, JackHUD._data )
 	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/speed_up.txt", JackHUD, JackHUD._data )
 
 end )
