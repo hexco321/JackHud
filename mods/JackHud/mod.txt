@@ -1,7 +1,7 @@
 {
     "name": "JackHud",
-    "description": "Gage got you some modified Google Glasses and you know. Google knows everything",
-    "authors": "Seven, Kail, cjure, undeadsewer, thatguyfrombreakingbad",
+    "description": "A GageHUD fork",
+    "authors": "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad",
     "contact": "",
     "version": "1.0",
     "priority": 200,
