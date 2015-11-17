@@ -233,12 +233,11 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		We also pass our data table as the third argument so that our saved values can be loaded from it.
 	]]
 	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/JackHUD.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/dynamic_hud.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/kill_counter.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/custom_hud.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/flashlight_extender.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/pacified_civilians.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/filtersettings.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/speed_up.txt", JackHUD, JackHUD._data )
+	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/ingame_options.txt", JackHUD, JackHUD._data )
+		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/hud_lists.txt", JackHUD, JackHUD._data )
+		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/kill_counter.txt", JackHUD, JackHUD._data )
+		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/flashlight_extender.txt", JackHUD, JackHUD._data )
+	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/menu_options.txt", JackHUD, JackHUD._data )
+		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/speed_up.txt", JackHUD, JackHUD._data )
 
 end )

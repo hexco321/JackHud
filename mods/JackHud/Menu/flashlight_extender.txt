@@ -1,6 +1,6 @@
 {
 	"menu_id": "flashlight_extender",
-	"parent_menu_id": "jackhud_options",
+	"parent_menu_id": "ingame_options",
 	"title": "flashlight_extender",
 	"description": "flashlight_extender_desc",
 	"items": [
@@ -15,7 +15,7 @@
 		},
 		{
 			"type" : "divider",
-			"size" : 32,
+			"size" : 16,
 		},
 		{
 			"type": "slider",

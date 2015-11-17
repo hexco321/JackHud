@@ -1,0 +1,51 @@
+{
+	"menu_id": "ingame_options",
+	"parent_menu_id": "jackhud_options",
+	"title": "ingame_options",
+	"description": "ingame_options_desc",
+	"items": [
+		{
+			"type": "slider",
+			"id": "hide_chat_after",
+			"title": "hide_chat_after",
+			"description": "hide_chat_after_desc",
+			"callback": "callback_hide_chat_after",
+			"value": "hide_chat_after",
+			"max": 100,
+			"min": 0,
+			"step": 1,
+			"default_value": 10
+		},
+		{
+			"type": "toggle",
+			"id": "remove_answered_pager_contour",
+			"title": "remove_answered_pager_contour",
+			"description": "remove_answered_pager_contour_desc",
+			"callback": "callback_remove_answered_pager_contour",
+			"value": "remove_answered_pager_contour",
+			"default_value": true
+		},
+		{
+		    "type": "toggle",
+			"id": "enable_pacified",
+			"title": "enable_pacified",
+			"description": "enable_pacified_desc",
+			"callback": "callback_enable_pacified",
+			"value": "enable_pacified",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "do_decapitations",
+			"title": "do_decapitations",
+			"description": "do_decapitations_desc",
+			"callback": "callback_do_decapitations",
+			"value": "do_decapitations",
+			"default_value": true
+		},
+		{
+			"type" : "divider",
+			"size" : 16,
+		}
+	]
+}

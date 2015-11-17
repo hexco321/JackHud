@@ -1,8 +1,8 @@
 {
-	"menu_id": "filtersettings_options",
+	"menu_id": "menu_lobby_options",
 	"parent_menu_id": "jackhud_options",
-	"title": "filtersettings_options",
-	"description": "filtersettings_options_desc",
+	"title": "menu_lobby_options",
+	"description": "menu_lobby_options_desc",
 	"items": [
 		{
 		    "type": "toggle",
@@ -12,6 +12,10 @@
 			"callback": "callback_enable_filtersettings",
 			"value": "enable_filtersettings",
 			"default_value": true
+		},
+		{
+			"type" : "divider",
+			"size" : 16,
 		}
 	]
 }

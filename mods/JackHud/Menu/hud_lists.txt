@@ -1,8 +1,8 @@
 {
-	"menu_id": "dynamic_hud_options",
-	"parent_menu_id": "jackhud_options",
-	"title": "dynamic_hud_options",
-	"description": "dynamic_hud_options_desc",
+	"menu_id": "hud_lists_options",
+	"parent_menu_id": "ingame_options",
+	"title": "hud_lists_options",
+	"description": "hud_lists_options_desc",
 	"items": [
 		{
 			"type": "toggle",
@@ -41,13 +41,8 @@
 			"default_value": true
 		},
 		{
-			"type": "toggle",
-			"id": "remove_answered_pager_contour",
-			"title": "remove_answered_pager_contour",
-			"description": "remove_answered_pager_contour_desc",
-			"callback": "callback_remove_answered_pager_contour",
-			"value": "remove_answered_pager_contour",
-			"default_value": true
+			"type" : "divider",
+			"size" : 16,
 		},
 		{
 			"type": "toggle",
@@ -138,6 +133,10 @@
 			"callback": "callback_show_special_pickups",
 			"value": "show_special_pickups",
 			"default_value": true
+		},
+		{
+			"type" : "divider",
+			"size" : 16,
 		},
 		{
 			"type": "toggle",
