@@ -6,7 +6,6 @@ Whenever i fix or improve something of the original code i will try to create pr
 
 ###Features are:
 * Hud-StatsScreen
-* CustomHud
 * DynamicHud
 * Percentage HudSuspicion
 * Kill-Counter
