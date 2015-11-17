@@ -12,6 +12,7 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Flashlight Extender
 * Bullet Decapitations
 * Preplanned
+* Screen Skipping
 * And many more...
 
 ###Suggestions

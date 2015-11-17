@@ -132,12 +132,8 @@ if JackHUD and JackHUD._data.enable_pacified then
 							if not obs_susp_data._subdued_civ then
 								obs_susp_data._alerted_civ = nil
 								obs_susp_data._subdued_civ = true
-								color = Color(0, 0.71, 1)
-								arrow_color = Color(0, 0.35, 0.5)
-								waypoint.bitmap:set_texture_rect(2, 644, 128, 128, color)
-								--waypoint.bitmap:set_w(30)
-								--waypoint.bitmap:set_h(40)
-								--waypoint.bitmap:set_texture_rect(882, 432, 60, 80, color)
+								color = Color(0.0, 1.0, 0.0)
+								arrow_color = Color(0.0, 0.3, 0.0)
 							end
 						elseif obs_susp_data.alerted then
 							if not obs_susp_data._alerted_civ then
@@ -145,8 +141,6 @@ if JackHUD and JackHUD._data.enable_pacified then
 								obs_susp_data._alerted_civ = true
 								color = Color.white
 								arrow_color = tweak_data.hud.detected_color
-								--waypoint.bitmap:set_image("guis/textures/hud_icons")
-								waypoint.bitmap:set_texture_rect(479, 433, 32, 32, color)
 							end
 						end
 						

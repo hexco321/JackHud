@@ -40,14 +40,14 @@ if JackHUD and JackHUD._data.enable_kill_counter then
 				alpha = 1,
 				blend_mode = "add",
 				layer = 0,
-				color = Color.yellow
+				color = Color(1, 1, 0.65882355, 0)
 			})
 			
 			self._kills_text = self._kills_panel:text({
 				name = "kills_text",
 				text = "-",
 				layer = 1,
-				color = Color.yellow,
+				color = Color(1, 1, 0.65882355, 0),
 				w = self._kills_panel:w() - self._kill_icon:w(),
 				h = self._kills_panel:h(),
 				vertical = "center",
@@ -68,17 +68,17 @@ if JackHUD and JackHUD._data.enable_kill_counter then
 		end
 
 	function HUDTeammate:_update_kill_count_text()
-		local text = tostring(self._kill_count)
+		local kill_string = tostring(self._kill_count)
 		if HUDTeammate.SHOW_SPECIAL_KILLS then
-			text = text .. "/" .. tostring(self._kill_count_special)
+			kill_string = kill_string .. "/" .. tostring(self._kill_count_special)
 		end
 		if HUDTeammate.SHOW_HEADSHOT_KILLS then
-			text = text .. " (" .. tostring(self._headshot_kills) .. ")"
+			kill_string = kill_string .. " (" .. tostring(self._headshot_kills) .. ")"
 		end
-		local field = self._kills_panel:child("kills_text")
-		field:set_text(text)
+		self._kills_text:set_text(kill_string)
+		local _, _, w, _ = self._kills_text:text_rect()
+		self._kill_icon:set_right(self._kills_panel:w() - w - self._kill_icon:w() * 0.15)
 	end
-
 		function HUDTeammate:reset_kill_count()
 			self._kill_count = 0
 			self._kill_count_special = 0
