@@ -1,5 +1,4 @@
 {
-	"hide_chat_after": 10,
 	"show_civilians": false,
 	"flashlight_range": 10000,
 	"stat_screen_skip": 0,

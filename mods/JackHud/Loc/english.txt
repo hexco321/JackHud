@@ -3,8 +3,6 @@
 	"jackhud_options_desc" : "JackHUD Options",
 		"ingame_options" : "Ingame Tweaks",
 		"ingame_options_desc" : "Configure Ingame Tweaks",
-			"hide_chat_after" : "Hide chat after X seconds",
-			"hide_chat_after_desc" : "Makes the Chat never disappear after X seconds. 0 = never",
 			"remove_answered_pager_contour" : "Remove answered pager contour",
 			"remove_answered_pager_contour_desc" : "Removes the interaction contour on answered pagers",
 			"enable_pacified" : "Pacified Civilian Marker",

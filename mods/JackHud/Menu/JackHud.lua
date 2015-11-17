@@ -147,11 +147,6 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end	
 
-	MenuCallbackHandler.callback_hide_chat_after = function(self, item)
-		JackHUD._data.hide_chat_after = item:value()
-		JackHUD:Save()
-	end
-
 	MenuCallbackHandler.callback_show_special_kills = function(self, item)
 		JackHUD._data.show_special_kills = (item:value() =="on")
 		JackHUD:Save()
