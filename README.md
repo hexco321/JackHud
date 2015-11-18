@@ -15,6 +15,7 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Screen Skipping
 * Anti accidentally throwing grenades in stealth
 * Enhanced Assault Banner
+* and more ...
 
 ###Planned/Suggestions
 * writing this list
@@ -23,4 +24,4 @@ Whenever i fix or improve something of the original code i will try to create pr
 ###Contribution and BugFixes
 Create a pull request and I will look into it.
 
-####Big Credit to Seven, cjur3, thatguyfrombreakingbad, UndeadSewer, YandereSnake and the entire modding community. If I forgot to credit somebody, please let me know
+####Big Credit to Seven, cjur3, thatguyfrombreakingbad, UndeadSewer, YandereSnake, Martini, The whole crew of RestorationMod and the entire modding community. If I forgot to credit somebody, please let me know
