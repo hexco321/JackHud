@@ -5,17 +5,18 @@ However.. i am not down with some originally included features of GageHud, so in
 Whenever i fix or improve something of the original code i will try to create proper pull requests to push it upstream.
 
 ###Features are:
-* Hud-StatsScreen
-* DynamicHud
-* Percentage HudSuspicion
-* Kill-Counter
+* HUD Tab Stats
+* HUD Panel Lists
+* Numerical Suspicion
+* Kill-Counters
 * Flashlight Extender
 * Bullet Decapitations
-* Preplanned
+* Save/Load Preplanning
 * Screen Skipping
-* And many more...
+* Anti accidentally throwing grenades in stealth
+* Enhanced Assault Banner
 
-###Suggestions
+###Planned/Suggestions
 * writing this list
 * alot ...
 

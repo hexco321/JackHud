@@ -143,6 +143,10 @@
 		{
 			"hook_id": "lib/units/props/securitycamera",
 			"script_path": "Lua/SecurityCamera_ext.lua"
+		},
+		{
+			"hook_id": "lib/managers/localizationmanager",
+			"script_path": "Lua/LocalizationManager_ext.lua"
 		}
 	],
 	"keybinds": [
