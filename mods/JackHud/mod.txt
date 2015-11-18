@@ -1,7 +1,7 @@
 {
 	"name": "JackHUD",
 	"description": "A GageHUD fork",
-	"authors": "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad, Martini and the RestorationMod-Crew",
+	"authors": "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad, Martini and the RestorationMod-Crew, TimeR",
 	"contact": "",
 	"version": "1.0",
 	"priority": 200,
