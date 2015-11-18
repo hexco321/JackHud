@@ -36,9 +36,9 @@ HUDListManager.ListOptions = {
 	--General settings
 	right_list_height_offset = 50,   --Margin from top for the right list
 	right_list_scale = 1,   --Size scale of right list
-	left_list_height_offset = 40,   --Margin from top for the left list
+	left_list_height_offset = 50,   --Margin from top for the left list
 	left_list_scale = 1,    --Size scale of left list
-	buff_list_height_offset = 125,   --Margin from bottom for the buff list
+	buff_list_height_offset = 80,   --Margin from bottom for the buff list
 	buff_list_scale = 1,    --Size scale of buff list
 
 	--Left side list
