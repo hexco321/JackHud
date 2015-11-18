@@ -24,6 +24,42 @@
 		},
 		{
 			"type": "toggle",
+			"id": "show_sentries",
+			"title": "show_sentries",
+			"description": "show_sentries_desc",
+			"callback": "callback_show_sentries",
+			"value": "show_sentries",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "hide_empty_sentries",
+			"title": "hide_empty_sentries",
+			"description": "hide_empty_sentries_desc",
+			"callback": "callback_hide_empty_sentries",
+			"value": "hide_empty_sentries",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "show_ecms",
+			"title": "show_ecms",
+			"description": "show_ecms_desc",
+			"callback": "callback_show_ecms",
+			"value": "show_ecms",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "show_ecm_retrigger",
+			"title": "show_ecm_retrigger",
+			"description": "show_ecm_retrigger_desc",
+			"callback": "callback_show_ecm_retrigger",
+			"value": "show_ecm_retrigger",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
 			"id": "show_minions",
 			"title": "show_minions",
 			"description": "show_minions_desc",
@@ -41,17 +77,17 @@
 			"default_value": true
 		},
 		{
-			"type" : "divider",
-			"size" : 16,
+			"type": "toggle",
+			"id": "show_tape_loop",
+			"title": "show_tape_loop",
+			"description": "show_tape_loop_desc",
+			"callback": "callback_show_tape_loop",
+			"value": "show_tape_loop",
+			"default_value": true
 		},
 		{
-			"type": "toggle",
-			"id": "show_ecms",
-			"title": "show_ecms",
-			"description": "show_ecms_desc",
-			"callback": "callback_show_ecms",
-			"value": "show_ecms",
-			"default_value": true
+			"type" : "divider",
+			"size" : 16,
 		},
 		{
 			"type": "toggle",
@@ -73,6 +109,15 @@
 		},
 		{
 			"type": "toggle",
+			"id": "show_turrets",
+			"title": "show_turrets",
+			"description": "show_turrets_desc",
+			"callback": "callback_show_turrets",
+			"value": "show_turrets",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
 			"id": "show_civilians",
 			"title": "show_civilians",
 			"description": "show_civilians_desc",
@@ -87,6 +132,15 @@
 			"description": "show_hostages_desc",
 			"callback": "callback_show_hostages",
 			"value": "show_hostages",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "show_minion_count",
+			"title": "show_minion_count",
+			"description": "show_minion_count_desc",
+			"callback": "callback_show_minion_count",
+			"value": "show_minion_count",
 			"default_value": true
 		},
 		{

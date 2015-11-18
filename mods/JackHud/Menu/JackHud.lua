@@ -67,6 +67,36 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		Setup our callbacks as defined in our item callback keys, and perform our logic on the data retrieved.
 	]]
 
+	MenuCallbackHandler.callback_show_sentries = function(self, item)
+		JackHUD._data.show_sentries = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_hide_empty_sentries = function(self, item)
+		JackHUD._data.hide_empty_sentries = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_show_ecm_retrigger = function(self, item)
+		JackHUD._data.show_ecm_retrigger = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_show_tape_loop = function(self, item)
+		JackHUD._data.show_tape_loop = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_show_turrets = function(self, item)
+		JackHUD._data.show_turrets = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_show_minion_count = function(self, item)
+		JackHUD._data.show_minion_count = (item:value() =="on")
+		JackHUD:Save()
+	end
+
 	MenuCallbackHandler.callback_show_timers = function(self, item)
 		JackHUD._data.show_timers = (item:value() =="on")
 		JackHUD:Save()
@@ -202,6 +232,11 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
+	MenuCallbackHandler.callback_enable_filtersettings = function(self, item)
+		JackHUD._data.enable_filtersettings = (item:value() =="on")
+		JackHUD:Save()
+	end
+
 	MenuCallbackHandler.callback_loot_screen_skip = function(self, item)
 		JackHUD._data.loot_screen_skip = item:value()
 		JackHUD:Save()
@@ -212,10 +247,6 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
-	MenuCallbackHandler.callback_enable_filtersettings = function(self, item)
-		JackHUD._data.enable_filtersettings = item:value()
-		JackHUD:Save()
-	end
 	--[[
 		Load our previously saved data from our save file.
 	]]

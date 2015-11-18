@@ -34,7 +34,7 @@ end
 HUDListManager = HUDListManager or class()
 HUDListManager.ListOptions = {
 	--General settings
-	right_list_height_offset = 0,   --Margin from top for the right list
+	right_list_height_offset = 50,   --Margin from top for the right list
 	right_list_scale = 1,   --Size scale of right list
 	left_list_height_offset = 40,   --Margin from top for the left list
 	left_list_scale = 1,    --Size scale of left list
@@ -44,22 +44,22 @@ HUDListManager.ListOptions = {
 	--Left side list
 	show_timers = JackHUD._data.show_timers,     --Drills, time locks, hacking etc.
 	show_equipment = JackHUD._data.show_equipment,  --Deployables (ammo, doc bags, body bags)
-	show_sentries = true,   --Deployable sentries
-	hide_empty_sentries = true,     --Hide sentries with no ammo if player lacks the skill to refill them
+	show_sentries = JackHUD._data.show_sentries,   --Deployable sentries
+	hide_empty_sentries = JackHUD._data.hide_empty_sentries,     --Hide sentries with no ammo if player lacks the skill to refill them
 	show_ecms = JackHUD._data.show_ecms,       --Active ECMs
-	show_ecm_retrigger = true,      --Countdown for players own ECM feedback retrigger delay
+	show_ecm_retrigger = JackHUD._data.show_ecm_retrigger,      --Countdown for players own ECM feedback retrigger delay
 	show_minions = JackHUD._data.show_minions,    --Converted enemies, type and health
 	show_pagers = JackHUD._data.show_pagers,     --Show currently active pagers
-	show_tape_loop = true,  --Show active tape loop duration
+	show_tape_loop = JackHUD._data.show_tape_loop,  --Show active tape loop duration
 	remove_answered_pager_contour = JackHUD._data.remove_answered_pager_contour,   --Removes the interaction contour on answered pagers
 
 	--Right side list
 	show_enemies = JackHUD._data.show_enemies,            --Currently spawned enemies
 	aggregate_enemies = JackHUD._data.aggregate_enemies,      --Don't split enemies on type; use a single entry for all
-	show_turrets = true,    --Show active SWAT turrets
+	show_turrets = JackHUD._data.show_turrets,    --Show active SWAT turrets
 	show_civilians = JackHUD._data.show_civilians,  --Currently spawned, untied civs
 	show_hostages = JackHUD._data.show_hostages,   --Currently tied civilian and dominated cops
-	show_minion_count = true,       --Current number of jokered enemies
+	show_minion_count = JackHUD._data.show_minion_count,       --Current number of jokered enemies
 	show_pager_count = JackHUD._data.show_pager_count,        --Show number of triggered pagers (only counts pagers triggered while you were present)
 	show_loot = JackHUD._data.show_loot,       --Show spawned and active loot bags/piles (may not be shown if certain mission parameters has not been met)
 	aggregate_loot = JackHUD._data.aggregate_loot, --Don't split loot on type; use a single entry for all
@@ -2549,46 +2549,46 @@ do
 	}
 
 	HUDList.BuffItemBase.IGNORED_BUFFS = {
-	hostage_situation = false,
-	partner_in_crime = false,
-	hostage_taker = false,
-	underdog = false,
-	underdog_aced = false,
-	overdog = false,
-	close_combat = false,
-	combat_medic = false,
-	overkill = false,
-	bullet_storm = false,
-	pain_killer = false,
-	swan_song = false,
-	quick_fix = false,
-	trigger_happy = false,
-	inspire = false,
-	melee_stack_damage = false,
-	damage_to_hot = false,
-	sixth_sense = false,
-	bow_charge = false,
-	melee_charge = false,
-	berserker = false,
-	crew_chief = false,
-	crew_chief_3 = false,
-	crew_chief_5 = false,
-	crew_chief_7 = false,
-	crew_chief_9 = false,
-	leadership = false,
-	leadership_aced = false,
-	bulletproof = false,
-	armorer = false,
-	endurance = false,
-	life_drain = false,
-	medical_supplies = false,
-	ammo_give_out = false,
-	inspire_debuff = false,
-	bullseye_debuff = false,
-	tension_debuff = false,
-	damage_to_hot_debuff = false,
-	armor_regen_debuff = false,
-	suppression_debuff = true,
+		hostage_situation = false,
+		partner_in_crime = false,
+		hostage_taker = false,
+		underdog = false,
+		underdog_aced = false,
+		overdog = false,
+		close_combat = false,
+		combat_medic = false,
+		overkill = false,
+		bullet_storm = false,
+		pain_killer = false,
+		swan_song = false,
+		quick_fix = false,
+		trigger_happy = false,
+		inspire = false,
+		melee_stack_damage = false,
+		damage_to_hot = false,
+		sixth_sense = false,
+		bow_charge = false,
+		melee_charge = false,
+		berserker = false,
+		crew_chief = false,
+		crew_chief_3 = false,
+		crew_chief_5 = false,
+		crew_chief_7 = false,
+		crew_chief_9 = false,
+		leadership = false,
+		leadership_aced = false,
+		bulletproof = false,
+		armorer = false,
+		endurance = false,
+		life_drain = false,
+		medical_supplies = false,
+		ammo_give_out = false,
+		inspire_debuff = false,
+		bullseye_debuff = false,
+		tension_debuff = false,
+		damage_to_hot_debuff = false,
+		armor_regen_debuff = false,
+		suppression_debuff = true,
 	}
 
 	HUDList.BuffItemBase.COMPOSITE_ITEMS = {
@@ -2633,33 +2633,33 @@ do
 		local texture_rect = (icon.atlas or icon.spec) and { x * 64, y * 64, 64, 64 } or icon.rect
 
 		self._icon = self._panel:bitmap({
-				name = "icon",
-				texture = texture,
-				texture_rect = texture_rect,
-				valign = "center",
-				align = "center",
-				h = self:panel():w() * 0.7 * (icon.icon_scale or 1) * (icon.icon_h_ratio or 1),
-				w = self:panel():w() * 0.7 * (icon.icon_scale or 1) * (icon.icon_w_ratio or 1),
-				blend_mode = "normal",
-				layer = 0,
-				color = icon.icon_color or HUDList.BuffItemBase.ICON_COLORS[icon.type].icon or Color.white,
-				rotation = icon.icon_rotation or 0,
+			name = "icon",
+			texture = texture,
+			texture_rect = texture_rect,
+			valign = "center",
+			align = "center",
+			h = self:panel():w() * 0.7 * (icon.icon_scale or 1) * (icon.icon_h_ratio or 1),
+			w = self:panel():w() * 0.7 * (icon.icon_scale or 1) * (icon.icon_w_ratio or 1),
+			blend_mode = "normal",
+			layer = 0,
+			color = icon.icon_color or HUDList.BuffItemBase.ICON_COLORS[icon.type].icon or Color.white,
+			rotation = icon.icon_rotation or 0,
 		})
 		self._icon:set_center(self:panel():center())
 
 		self._flash_icon = self._panel:bitmap({
-				name = "flash_icon",
-				texture = texture,
-				texture_rect = texture_rect,
-				valign = "center",
-				align = "center",
-				layer = 0,
-				h = self._icon:h(),
-				w = self._icon:w(),
-				blend_mode = "normal",
-				color = icon.flash_color or HUDList.BuffItemBase.ICON_COLORS[icon.type].flash or Color.blue,
-				alpha = 0,
-				rotation = icon.icon_rotation or 0,
+			name = "flash_icon",
+			texture = texture,
+			texture_rect = texture_rect,
+			valign = "center",
+			align = "center",
+			layer = 0,
+			h = self._icon:h(),
+			w = self._icon:w(),
+			blend_mode = "normal",
+			color = icon.flash_color or HUDList.BuffItemBase.ICON_COLORS[icon.type].flash or Color.blue,
+			alpha = 0,
+			rotation = icon.icon_rotation or 0,
 		})
 		self._flash_icon:set_center(self._icon:center())
 

@@ -27,5 +27,11 @@
 	"enable_filtersettings": "on",
 	"show_hostages": true,
 	"show_special_pickups": true,
-	"show_headshot_kills": true
+	"show_headshot_kills": true,
+	"show_sentries": true,
+	"hide_empty_sentries": true,
+	"show_ecm_retrigger": true,
+	"show_tape_loop": true,
+	"show_turrets": true,
+	"show_minion_count": true
 }
