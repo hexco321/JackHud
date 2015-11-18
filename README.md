@@ -15,7 +15,8 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Screen Skipping
 * Anti accidentally throwing grenades in stealth
 * Enhanced Assault Banner
-* and more ...
+* Some graphical tweaks
+* and more...
 
 ###Planned/Suggestions
 * writing this list
