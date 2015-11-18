@@ -7,6 +7,31 @@ local SHOW_TIMERS = JackHUD._data.show_timers
 
 local _setup_player_info_hud_pd2_original = HUDManager._setup_player_info_hud_pd2
 local update_original = HUDManager.update
+local set_stamina_value_original = HUDManager.set_stamina_value
+local set_max_stamina_original = HUDManager.set_max_stamina
+
+function HUDManager:set_mugshot_voice(id, active)
+	local panel_id
+	for _, data in pairs(managers.criminals:characters()) do
+		if data.data.mugshot_id == id then
+			panel_id = data.data.panel_id
+			break
+		end
+	end
+	if panel_id and panel_id ~= HUDManager.PLAYER_PANEL then
+		self._teammate_panels[panel_id]:set_voice_com(active)
+	end
+end
+
+function HUDManager:set_stamina_value(value, ...)
+	self._teammate_panels[HUDManager.PLAYER_PANEL]:set_current_stamina(value)
+	return set_stamina_value_original(self, value, ...)
+end
+
+function HUDManager:set_max_stamina(value, ...)
+	self._teammate_panels[HUDManager.PLAYER_PANEL]:set_max_stamina(value)
+	return set_max_stamina_original(self, value, ...)
+end
 
 function HUDManager:_setup_player_info_hud_pd2(...)
 	_setup_player_info_hud_pd2_original(self, ...)

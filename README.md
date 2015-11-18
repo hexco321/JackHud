@@ -16,6 +16,8 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Anti accidentally throwing grenades in stealth
 * Enhanced Assault Banner
 * Some graphical tweaks
+* Ingame-voice indicators
+* Stamina Meter
 * and more...
 
 ###Planned/Suggestions
