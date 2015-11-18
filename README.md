@@ -18,6 +18,7 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Some graphical tweaks
 * Ingame-voice indicators
 * Stamina Meter
+* Push to Interact
 * and more...
 
 ###Planned/Suggestions

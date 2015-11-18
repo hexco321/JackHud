@@ -33,5 +33,7 @@
 	"show_ecm_retrigger": true,
 	"show_tape_loop": true,
 	"show_turrets": true,
-	"show_minion_count": true
+	"show_minion_count": true,
+	"push_to_interact": true,
+	"equipment_interrupt": true
 }

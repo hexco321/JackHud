@@ -67,6 +67,16 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		Setup our callbacks as defined in our item callback keys, and perform our logic on the data retrieved.
 	]]
 
+	MenuCallbackHandler.callback_push_to_interact = function(self, item)
+		JackHUD._data.push_to_interact = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_equipment_interrupt = function(self, item)
+		JackHUD._data.equipment_interrupt = (item:value() =="on")
+		JackHUD:Save()
+	end
+
 	MenuCallbackHandler.callback_show_sentries = function(self, item)
 		JackHUD._data.show_sentries = (item:value() =="on")
 		JackHUD:Save()

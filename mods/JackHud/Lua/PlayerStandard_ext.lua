@@ -147,3 +147,23 @@ function PlayerStandard:_check_action_throw_grenade(t, input, ...)
 
 	return _check_action_throw_grenade_original(self, t, input, ...)
 end
+
+local _check_action_interact_original = PlayerStandard._check_action_interact
+function PlayerStandard:_check_action_interact(t, input, ...)
+	if not (self:_check_interact_toggle(t, input) and JackHUD._data.push_to_interact) then
+		return _check_action_interact_original(self, t, input, ...)
+	end
+end
+
+function PlayerStandard:_check_interact_toggle(t, input)
+	local interrupt_key_press = input.btn_interact_press
+	if JackHUD._data.equipment_interrupt then
+		interrupt_key_press = input.btn_use_item_press
+	end
+	if interrupt_key_press and self:_interacting() then
+		self:_interupt_action_interact()
+		return true
+	elseif input.btn_interact_release and self._interact_params then
+		return true
+	end
+end
