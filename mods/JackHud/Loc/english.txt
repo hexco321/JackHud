@@ -79,6 +79,12 @@
 		"menu_lobby_options_desc" : "Configure Menu/Lobby Tweaks",
 			"enable_filtersettings" : "Persistent CrimeNET Filter Settings",
 			"enable_filtersettings_desc" : "Saves the CrimeNET Filter Settings",
+			"lobby_skins_mode" : "Lobby weapon skins",
+			"lobby_skins_mode_desc" : "Force enable or disable weapon skins in game lobbies (only visible for you)",
+				,"lobby_skins_vanilla" : "Normal"
+				,"lobby_skins_none" : "No Skins"
+				,"lobby_skins_primary" : "Always primary"
+				,"lobby_skins_secondary" : "Always secondary"
 			"speed_up_options" : "Skip Screens",
 			"speed_up_options_desc" : "Allows to skip the Experience, Loot and Black Screen and picks a random card at the end of the heist.",
 				"enable_speed_up" : "Enable Skipping",

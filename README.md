@@ -19,6 +19,7 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Ingame-voice indicators
 * Stamina Meter
 * Push to Interact
+* Force enable/disable showing of weapon skins in lobby
 * and more...
 
 ###Planned/Suggestions

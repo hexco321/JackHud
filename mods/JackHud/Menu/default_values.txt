@@ -24,7 +24,7 @@
 	"show_enemies": true,
 	"show_ai_kills": true,
 	"show_buffs": false,
-	"enable_filtersettings": "on",
+	"enable_filtersettings": true,
 	"show_hostages": true,
 	"show_special_pickups": true,
 	"show_headshot_kills": true,
@@ -35,5 +35,6 @@
 	"show_turrets": true,
 	"show_minion_count": true,
 	"push_to_interact": true,
-	"equipment_interrupt": true
+	"equipment_interrupt": true,
+	"lobby_skins_mode": 1
 }

@@ -257,6 +257,11 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
+	MenuCallbackHandler.callback_lobby_skins_mode = function(self, item)
+		JackHUD._data.lobby_skins_mode = item:value()
+		JackHUD:Save()
+	end
+
 	--[[
 		Load our previously saved data from our save file.
 	]]

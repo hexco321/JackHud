@@ -14,6 +14,21 @@
 			"default_value": true
 		},
 		{
+			"type" : "multiple_choice",
+			"id" : "lobby_skins_mode",
+			"title" : "lobby_skins_mode",
+			"description" : "lobby_skins_mode_desc",
+			"callback" : "callback_lobby_skins_mode",
+			"items" : [
+				"lobby_skins_vanilla",
+				"lobby_skins_none",
+				"lobby_skins_primary",
+				"lobby_skins_secondary"
+			],
+			"value" : "lobby_skins_mode",
+			"default_value" : 1
+		},
+		{
 			"type" : "divider",
 			"size" : 16,
 		}

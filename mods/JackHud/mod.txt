@@ -13,6 +13,10 @@
 	],
 	"hooks": [
 		{
+			"hook_id" : "lib/managers/menu/menuscenemanager",
+			"script_path" : "Lua/MenuSceneManager_ext.lua"
+		},
+		{
 			"hook_id" : "lib/managers/hud/hudpresenter",
 			"script_path": "Lua/HUDPresenter_ext.lua"
 		},
