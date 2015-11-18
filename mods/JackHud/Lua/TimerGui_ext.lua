@@ -6,82 +6,118 @@ local SHOW_TIMERS = JackHUD._data.show_timers
 
 
 if SHOW_TIMERS then
-	local TimerGui__start_original = TimerGui._start
-	local TimerGui__set_done_original = TimerGui._set_done
-	local TimerGui__set_jammed_original = TimerGui._set_jammed
-	local TimerGui__set_powered = TimerGui._set_powered
-	local TimerGui_destroy_original = TimerGui.destroy
-	local TimerGui_update_original = TimerGui.update
 
-	function TimerGui:_start(...)
-		if self:_create_list_item() then
-			self._list_item:activate()
+	TimerGui.SPAWNED_ITEMS = {}
+	TimerGui._LISTENER_CALLBACKS = {}
+
+	local init_original = TimerGui.init
+	local set_background_icons_original = TimerGui.set_background_icons
+	local set_visible_original = TimerGui.set_visible
+	local update_original = TimerGui.update
+	local _start_original = TimerGui._start
+	local _set_done_original = TimerGui._set_done
+	local _set_jammed_original = TimerGui._set_jammed
+	local _set_powered = TimerGui._set_powered
+	local destroy_original = TimerGui.destroy
+
+	function TimerGui:init(unit, ...)
+		TimerGui.SPAWNED_ITEMS[unit:key()] = { unit = unit, powered = true }
+		self._do_listener_callback("on_create", unit)
+		init_original(self, unit, ...)
+		self._device_type = unit:base().is_drill and "Drill" or unit:base().is_hacking_device and "Hack" or unit:base().is_saw and "Saw"
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].type = self._device_type
+		self._do_listener_callback("on_type_set", unit, self._device_type)
+	end
+
+	function TimerGui:set_background_icons(...)
+		local skills = self._unit:base().get_skill_upgrades and self._unit:base():get_skill_upgrades()
+		local interact_ext = self._unit:interaction()
+		local can_upgrade = false
+		local pinfo = interact_ext and interact_ext.get_player_info_id and interact_ext:get_player_info_id()
+		if skills and interact_ext and pinfo then
+			for i, _ in pairs(interact_ext:split_info_id(pinfo)) do
+				if not skills[i] then
+					can_upgrade = true
+					break
+				end
+			end
 		end
 
-		return TimerGui__start_original(self, ...)
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].can_upgrade = can_upgrade or nil
+		self._do_listener_callback("on_can_upgrade", self._unit, can_upgrade)
+
+		return set_background_icons_original(self, ...)
 	end
 
-	function TimerGui:_set_done(...)
-		self:_delete_list_item()
-
-		return TimerGui__set_done_original(self, ...)
-	end
-
-	function TimerGui:_set_jammed(jammed, ...)
-		if self._list_item then
-			self._list_item:set_jammed(jammed)
+	function TimerGui:set_visible(visible, ...)
+		if not visible and self._unit:base().is_drill then
+			TimerGui.SPAWNED_ITEMS[self._unit:key()].active = nil
+			self._do_listener_callback("on_set_active", self._unit, visible)
 		end
-
-		return TimerGui__set_jammed_original(self, jammed, ...)
-	end
-
-	function TimerGui:_set_powered(powered, ...)
-		if self._list_item then
-			self._list_item:set_powered(powered)
-		end
-
-		return TimerGui__set_powered(self, powered, ...)
-	end
-
-	function TimerGui:destroy(...)
-		self:_delete_list_item()
-
-		return TimerGui_destroy_original(self, ...)
+		return set_visible_original(self, visible, ...)
 	end
 
 	function TimerGui:update(unit, t, ...)
-		if self._list_item then
-			self._list_item:update_timer(t, self._time_left)
-			if self._time_left < 0.25 and not self._delete_scheduled then
-				--Failsafe to remove expired timers since some are not destroyed properly by the game
-				self._delete_scheduled = true
-				managers.enemy:add_delayed_clbk("delete_timer_" .. tostring(self._unit:key()), callback(self, self, "_delete_list_item"), t + 0.25)
+		update_original(self, unit, t, ...)
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].t = t
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].time_left = self._time_left
+		self._do_listener_callback("on_update", self._unit, t, self._time_left)
+	end
+
+	function TimerGui:_start(...)
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].active = true
+		self._do_listener_callback("on_set_active", self._unit, true)
+		return _start_original(self, ...)
+	end
+
+	function TimerGui:_set_done(...)
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].active = nil
+		self._do_listener_callback("on_set_active", self._unit, false)
+		return _set_done_original(self, ...)
+	end
+
+	function TimerGui:_set_jammed(jammed, ...)
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].jammed = jammed and true or nil
+		self._do_listener_callback("on_set_jammed", self._unit, jammed and true or false)
+		return _set_jammed_original(self, jammed, ...)
+	end
+
+	function TimerGui:_set_powered(powered, ...)
+		TimerGui.SPAWNED_ITEMS[self._unit:key()].powered = powered and true or nil
+		self._do_listener_callback("on_set_powered", self._unit, powered and true or false)
+		return _set_powered(self, powered, ...)
+	end
+
+	function TimerGui:destroy(...)
+		TimerGui.SPAWNED_ITEMS[self._unit:key()] = nil
+		self._do_listener_callback("on_destroy", self._unit)
+		return destroy_original(self, ...)
+	end
+
+	function TimerGui.register_listener_clbk(name, event, clbk)
+		TimerGui._LISTENER_CALLBACKS[event] = TimerGui._LISTENER_CALLBACKS[event] or {}
+		TimerGui._LISTENER_CALLBACKS[event][name] = clbk
+	end
+
+	function TimerGui.unregister_listener_clbk(name, event)
+		for event_id, listeners in pairs(TimerGui._LISTENER_CALLBACKS) do
+			if not event or event_id == event then
+				for id, clbk in pairs(listeners) do
+					if id == name then
+						TimerGui._LISTENER_CALLBACKS[event_id][id] = nil
+						break
+					end
+				end
 			end
 		end
-
-		return TimerGui_update_original(self, unit, t, ...)
 	end
 
-	function TimerGui:_create_list_item()
-		if not self._list_item then
-			local id = "timer_" .. tostring(self._unit:key())
-			local timer_type = self._unit:base().is_drill and HUDList.DrillItem or
-				self._unit:base().is_hacking_device and HUDList.HackItem or
-				self._unit:base().is_saw and HUDList.SawItem
-
-			self._list_item =	timer_type and managers.hud:hud_list("left_side_list"):item("timers"):register_item(id, timer_type, self._unit) or
-				managers.hud:hud_list("left_side_list"):item("timers"):register_item(id, HUDList.TimerItem, self._unit, "?")
-		end
-		return self._list_item
-	end
-
-	function TimerGui:_delete_list_item()
-		if self._list_item then
-			if self._delete_scheduled then
-				managers.enemy:remove_delayed_clbk("delete_timer_" .. tostring(self._unit:key()))
+	function TimerGui._do_listener_callback(event, ...)
+		if TimerGui._LISTENER_CALLBACKS[event] then
+			for id, clbk in pairs(TimerGui._LISTENER_CALLBACKS[event]) do
+				clbk(...)
 			end
-			self._list_item:delete()
-			self._list_item = nil
 		end
 	end
+
 end

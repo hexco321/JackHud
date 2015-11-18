@@ -1,3 +1,4 @@
+
 local init_original = ObjectInteractionManager.init
 local update_original = ObjectInteractionManager.update
 local add_unit_original = ObjectInteractionManager.add_unit
@@ -5,75 +6,168 @@ local remove_unit_original = ObjectInteractionManager.remove_unit
 local interact_original = ObjectInteractionManager.interact
 local interupt_action_interact_original = ObjectInteractionManager.interupt_action_interact
 
+ObjectInteractionManager._LISTENER_CALLBACKS = {}
+ObjectInteractionManager.ACTIVE_PAGERS = {}
+
+ObjectInteractionManager.COMPOSITE_LOOT_UNITS = {
+	[103428] = 4, [103429] = 3, [103430] = 2, [103431] = 1, --Shadow Raid armor
+	gen_pku_warhead_box = 2,        --[132925] = 2, [132926] = 2, [132927] = 2,     --Meltdown warhead cases
+	--hold_open_bomb_case = 4,      --The Bomb heists cases, extra cases on docks screws with counter...
+	--[102913] = 1, [102915] = 1, [102916] = 1,     --Train Heist turret (unit fixed, need workaround)
+}
+
 ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID = {
 	--If you add stuff here, make sure you add it to HUDList.LootItem.LOOT_ICON_MAP as well
-	weapon_case =			"weapon",
-	samurai_armor =		"armor",
-	--crate_loot_crowbar =	"container",
-	--crate_loot =				"container",
-	--crate_loot_close =		"container",
+	weapon_case =                                   "weapon",
+	samurai_armor =                         "armor",
+	gen_pku_warhead_box =   "warhead",
+	--hold_open_bomb_case = "bomb"
+	--crate_loot_crowbar =                  "container",
+	--crate_loot =                                          "container",
+	--crate_loot_close =                            "container",
 	--Crates and suitcases etc interaction ID's here -> type "container"
 }
 
 ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID = {
 	--If you add stuff here, make sure you add it to HUDList.LootItem.LOOT_ICON_MAP as well
-	gold =						"gold",
-	money =					"money",
-	diamonds =				"jewelry",
-	painting =					"painting",
-	mus_artifact_paint =	"painting",
-	coke =						"coke",
-	coke_pure =				"coke",
-	meth =						"meth",
-	weapon =					"weapon",
-	circuit =					"server",
-	turret =						"turret",
-	ammo =					"shell",
-	artifact_statue =		"artifact",
-	mus_artifact =			"artifact",
-	samurai_suit =			"armor",
-	sandwich =				"toast",
-	hope_diamond =		"diamond",
-	cro_loot1 =				"bomb",
-	cro_loot2 =				"bomb",
-	evidence_bag =			"evidence",
-	warhead =					"warhead",
+	gold =									"gold",
+	money =									"money",
+	diamonds =								"jewelry",
+	painting =								"painting",
+	mus_artifact_paint =					"painting",
+	coke =									"coke",
+	coke_pure =								"coke",
+	meth =									"meth",
+	weapon =								"weapon",
+	circuit =								"server",
+	turret =								"turret",
+	ammo =									"shell",
+	artifact_statue =						"artifact",
+	mus_artifact =							"artifact",
+	samurai_suit =							"armor",
+	sandwich =								"toast",
+	hope_diamond =							"diamond",
+	cro_loot1 =								"bomb",
+	cro_loot2 =								"bomb",
+	evidence_bag =							"evidence",
+	warhead =								"warhead",
+	din_pig =								"pig",
+	safe_wpn =								"safe",
+	safe_ovk =								"safe",
+	unknown =								"dentist",
 }
 
 ObjectInteractionManager.LOOT_TYPE_LEVEL_COMPENSATION = {
-	framing_frame_3 = 						{ gold = 16, },
+	framing_frame_3 =                                               { gold = 16, },
 }
 
 ObjectInteractionManager.LOOT_BAG_INTERACTION_ID = {
-	painting_carry_drop = true,	--Painting
-	carry_drop = true,					--Generic bag
+	painting_carry_drop = true,     --Painting
+	carry_drop = true,                                      --Generic bag
 }
 
-ObjectInteractionManager.LOOT_IGNORE_EDITOR_ID = {
-	["100054"] = true, ["100058"] = true, ["100426"] = true, ["100427"] = true, ["100428"] = true, ["100429"] = true, ["100491"] = true, ["100492"] = true, ["100494"] = true, ["100495"] = true,	--Watchdogs day 2 (8x coke)
-	["100899"] = true,	--Diamond store (1x money)
-	["104526"] = true,	--Hotline Miami day 1 (1x money)
-	["100886"] = true, ["100872"] = true,	--Big Oil day 1 (1x money, 1x gold)
-	["300047"] = true, ["300686"] = true, ["300457"] = true, ["300458"] = true, ["301343"] = true, ["301346"] = true,	--The Diamond (RNG)
-	["101237"] = true, ["101238"] = true, ["101239"] = true, ["103835"] = true, ["103836"] = true, ["103837"] = true, ["103838"] = true, ["101240"] = true,	--Transport: Underpass (8x money)
-	["101514"] = true,	--Ukrainian Job (1x money)
+ObjectInteractionManager.IGNORE_EDITOR_ID = {
+	watchdogs_2 = { --Watchdogs day 2 (8x coke)
+		[100054] = true,
+		[100058] = true,
+		[100426] = true,
+		[100427] = true,
+		[100428] = true,
+		[100429] = true,
+		[100491] = true,
+		[100492] = true,
+		[100494] = true,
+		[100495] = true,
+	},
+	family = {      --Diamond store (1x money)
+		[100899] = true,
+	},      --Hotline Miami day 1 (1x money)
+	mia_1 = {       --Hotline Miami day 1 (1x money)
+		[104526] = true,
+	},
+	welcome_to_the_jungle_1 = {     --Big Oil day 1 (1x money, 1x gold)
+		[100886] = true,
+		[100872] = true,
+	},
+	mus = { --The Diamond (RNG)
+		[300047] = true,
+		[300686] = true,
+		[300457] = true,
+		[300458] = true,
+		[301343] = true,
+		[301346] = true,
+	},
+	arm_und = {     --Transport: Underpass (8x money)
+		[101237] = true,
+		[101238] = true,
+		[101239] = true,
+		[103835] = true,
+		[103836] = true,
+		[103837] = true,
+		[103838] = true,
+		[101240] = true,
+	},
+	ukrainian_job = {       --Ukrainian Job (1x money)
+		[101514] = true,
+	},
+	firestarter_2 = {       --Firestarter day 2 (1x keycard)
+		[107208] = true,
+	},
+	big = { --Big Bank (1x keycard)
+		[101499] = true,
+	},
+	roberts = {     --GO Bank (1x keycard)
+		[106104] = true,
+	},
 }
+ObjectInteractionManager.IGNORE_EDITOR_ID.watchdogs_2_day = table.deep_map_copy(ObjectInteractionManager.IGNORE_EDITOR_ID.watchdogs_2)
+ObjectInteractionManager.IGNORE_EDITOR_ID.welcome_to_the_jungle_1_night = table.deep_map_copy(ObjectInteractionManager.IGNORE_EDITOR_ID.welcome_to_the_jungle_1)
 
 ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID = {
 	--If you add stuff here, make sure you add it to HUDList.SpecialPickupItem.SPECIAL_PICKUP_ICON_MAP as well
-	gen_pku_crowbar =		"crowbar",
-	pickup_keycard =			"keycard",
-	gage_assignment =		"courier",
-	pickup_boards =			"planks",
-	stash_planks_pickup =	"planks",
-	muriatic_acid =				"meth_ingredients",
-	hydrogen_chloride = 		"meth_ingredients",
-	caustic_soda =				"meth_ingredients",
+	gen_pku_crowbar =					"crowbar",
+	pickup_keycard =					"keycard",
+	pickup_hotel_room_keycard =			"keycard",
+	gage_assignment =					"courier",
+	pickup_boards =						"planks",
+	stash_planks_pickup =				"planks",
+	muriatic_acid =						"meth_ingredients",
+	hydrogen_chloride =					"meth_ingredients",
+	caustic_soda =						"meth_ingredients",
 }
 
-ObjectInteractionManager.SPECIAL_PICKUP_IGNORE_EDITOR_ID = {
-	["101499"] = true,	--Big Bank keycard
-	["107208"] = true,	--Firestarter day 2 keycard
+ObjectInteractionManager.EQUIPMENT_INTERACTION_ID = {
+	firstaid_box = { class = "DoctorBagBase", offset = -1 },
+	ammo_bag = { class = "AmmoBagBase" },
+	doctor_bag = { class = "DoctorBagBase" },
+	bodybags_bag = { class = "BodyBagsBagBase" },
+	grenade_crate = { class = "GrenadeCrateBase" },
+}
+
+ObjectInteractionManager.TRIGGERS = {
+	[136843] = {
+		136844, 136845, 136846, 136847, --HB armory ammo shelves
+		136859, 136860, 136864, 136865, 136866, 136867, 136868, 136869, 136870, --HB armory grenades
+	},
+	[151868] = { 151611 }, --GGC armory ammo shelf 1
+	[151869] = {
+		151612, --GGC armory ammo shelf 2
+		151596, 151597, 151598, --GGC armory grenades
+	},
+	--[101835] = { 101470, 101472, 101473 },        --HB infirmary med boxes (not needed, triggers on interaction activation)
+}
+
+ObjectInteractionManager.INTERACTION_TRIGGERS = {
+	requires_ecm_jammer_double = {
+		[Vector3(-2217.05, 2415.52, -354.502)] = 136843,        --HB armory door 1
+		[Vector3(1817.05, 3659.48, 45.4985)] = 136843,  --HB armory door 2
+	},
+	drill = {
+		[Vector3(142, 3098, -197)] = 151868,    --GGC armory cage 1 alt 1
+		[Vector3(-166, 3413, -197)] = 151869,   --GGC armory cage 2 alt 1
+		[Vector3(3130, 1239, -195.5)] = 151868, --GGC armory cage X alt 2       (may be reversed)
+		[Vector3(3445, 1547, -195.5)] = 151869, --GGC armory cage Y alt 2       (may be reversed)
+	},
 }
 
 function ObjectInteractionManager:init(...)
@@ -85,7 +179,6 @@ function ObjectInteractionManager:init(...)
 	self._loot_count = {}
 	self._loot_units_added = {}
 	self._special_pickup_count = {}
-	self._active_pagers = {}
 
 	for carry_id, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID) do
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
@@ -94,12 +187,14 @@ function ObjectInteractionManager:init(...)
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
 	end
 
-
 	for interaction_id, type_id in pairs(ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID) do
 		self._special_pickup_count[type_id] = 0
 	end
 
-	self._interactive_unit_listeners = {}
+	self._unit_triggers = {}
+	self._trigger_blocks = {}
+
+	GroupAIStateBase.register_listener_clbk("ObjectInteractionManager_cancel_pager_listener", "on_whisper_mode_change", callback(self, self, "_whisper_mode_change"))
 end
 
 function ObjectInteractionManager:update(t, ...)
@@ -108,11 +203,25 @@ function ObjectInteractionManager:update(t, ...)
 end
 
 function ObjectInteractionManager:add_unit(unit, ...)
+	for pos, trigger_id in pairs(ObjectInteractionManager.INTERACTION_TRIGGERS[unit:interaction().tweak_data] or {}) do
+		if mvector3.distance(unit:position(), pos) <= 10 then
+			self:block_trigger(trigger_id, true)
+			break
+		end
+	end
+
 	table.insert(self._queued_units, unit)
 	return add_unit_original(self, unit, ...)
 end
 
 function ObjectInteractionManager:remove_unit(unit, ...)
+	for pos, trigger_id in pairs(ObjectInteractionManager.INTERACTION_TRIGGERS[unit:interaction().tweak_data] or {}) do
+		if mvector3.distance(unit:position(), pos) <= 10 then
+			self._trigger_blocks[trigger_id] = false
+			break
+		end
+	end
+
 	self:_check_remove_unit(unit)
 	return remove_unit_original(self, unit, ...)
 end
@@ -135,29 +244,45 @@ end
 
 
 function ObjectInteractionManager:_check_queued_units(t)
+	local level_id = managers.job:current_level_id()
+	local ignore_ids = level_id and ObjectInteractionManager.IGNORE_EDITOR_ID[level_id]
+
 	for i, unit in ipairs(self._queued_units) do
 		if alive(unit) then
-			local carry_id = unit:carry_data() and unit:carry_data():carry_id()
-			local interaction_id = unit:interaction().tweak_data
-			local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
-			local special_pickup_type_id = ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID[interaction_id]
-			local editor_id = tostring(unit:editor_id())
+			local editor_id = unit:editor_id()
 
-			if loot_type_id then
-				if not ObjectInteractionManager.LOOT_IGNORE_EDITOR_ID[editor_id] then
+			if not (ignore_ids and ignore_ids[editor_id]) then
+				local carry_id = unit:carry_data() and unit:carry_data():carry_id()
+				local interaction_id = unit:interaction().tweak_data
+				local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
+				local special_pickup_type_id = ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID[interaction_id]
+
+				if ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id] then
+					local data = ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id]
+					local blocked
+
+					for trigger_id, editor_ids in pairs(ObjectInteractionManager.TRIGGERS) do
+						if table.contains(editor_ids, editor_id) then
+							blocked = self._trigger_blocks[trigger_id]
+							self._unit_triggers[trigger_id] = self._unit_triggers[trigger_id] or {}
+							table.insert(self._unit_triggers[trigger_id], { unit = unit, class = data.class, offset = data.offset })
+							break
+						end
+					end
+
+					--io.write("Equipment unit " .. tostring(editor_id) .. " (" .. tostring(data.class) .. ") made interactive, blocked: " .. tostring(blocked) .. "\n")
+					unit:base():set_equipment_active(data.class, not blocked, data.offset)
+				elseif loot_type_id then
+					local count = ObjectInteractionManager.COMPOSITE_LOOT_UNITS[editor_id] or ObjectInteractionManager.COMPOSITE_LOOT_UNITS[interaction_id] or 1
 					self._loot_units_added[unit:key()] = loot_type_id
-					self:_change_loot_count(unit, loot_type_id, 1, ObjectInteractionManager.LOOT_BAG_INTERACTION_ID[interaction_id] or false)
-				end
-			elseif special_pickup_type_id then
-				if not ObjectInteractionManager.SPECIAL_PICKUP_IGNORE_EDITOR_ID[editor_id] then
+					self:_change_loot_count(unit, loot_type_id, count, ObjectInteractionManager.LOOT_BAG_INTERACTION_ID[interaction_id] or false)
+				elseif special_pickup_type_id then
 					self:_change_special_pickup_count(unit, special_pickup_type_id, 1)
+				elseif interaction_id == "corpse_alarm_pager" then
+					self:_pager_started(unit)
 				end
-			elseif interaction_id == "corpse_alarm_pager" then
-				self:_pager_started(unit)
-			end
 
-			for name, clbk in pairs(self._interactive_unit_listeners) do
-				clbk(unit, true)
+				self._do_listener_callback("on_unit_added", unit)
 			end
 		end
 	end
@@ -167,34 +292,36 @@ end
 
 function ObjectInteractionManager:_check_remove_unit(unit)
 	for i, queued_unit in ipairs(self._queued_units) do
-		if queued_unit == unit then
+		if queued_unit:key() == unit:key() then
 			table.remove(self._queued_units, i)
 			return
 		end
 	end
 
-	local carry_id = unit:carry_data() and unit:carry_data():carry_id()
-	local interaction_id = unit:interaction().tweak_data
-	local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
-	local special_pickup_type_id = ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID[interaction_id]
-	local editor_id = tostring(unit:editor_id())
+	local level_id = managers.job:current_level_id()
+	local ignore_ids = level_id and ObjectInteractionManager.IGNORE_EDITOR_ID[level_id]
+	local editor_id = unit:editor_id()
 
-	if loot_type_id or self._loot_units_added[unit:key()] then
-		if not ObjectInteractionManager.LOOT_IGNORE_EDITOR_ID[editor_id] then
+	if not (ignore_ids and ignore_ids[editor_id]) then
+		local carry_id = unit:carry_data() and unit:carry_data():carry_id()
+		local interaction_id = unit:interaction().tweak_data
+		local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
+		local special_pickup_type_id = ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID[interaction_id]
+
+		if ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id] then
+			unit:base():set_equipment_active(ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id].class, false)
+		elseif loot_type_id or self._loot_units_added[unit:key()] then
+			local count = -(ObjectInteractionManager.COMPOSITE_LOOT_UNITS[editor_id] or ObjectInteractionManager.COMPOSITE_LOOT_UNITS[interaction_id] or 1)
 			loot_type_id = loot_type_id or self._loot_units_added[unit:key()]
-			self:_change_loot_count(unit, loot_type_id, -1, ObjectInteractionManager.LOOT_BAG_INTERACTION_ID[interaction_id] or false)
+			self:_change_loot_count(unit, loot_type_id, count, ObjectInteractionManager.LOOT_BAG_INTERACTION_ID[interaction_id] or false)
 			self._loot_units_added[unit:key()] = nil
-		end
-	elseif special_pickup_type_id then
-		if not ObjectInteractionManager.SPECIAL_PICKUP_IGNORE_EDITOR_ID[editor_id] then
+		elseif special_pickup_type_id then
 			self:_change_special_pickup_count(unit, special_pickup_type_id, -1)
+		elseif interaction_id == "corpse_alarm_pager" then
+			self:pager_ended(unit)
 		end
-	elseif interaction_id == "corpse_alarm_pager" then
-		self:pager_ended(unit)
-	end
 
-	for name, clbk in pairs(self._interactive_unit_listeners) do
-		clbk(unit, false)
+		self._do_listener_callback("on_unit_removed", unit)
 	end
 end
 
@@ -204,11 +331,10 @@ function ObjectInteractionManager:_change_loot_count(unit, loot_type, change, ba
 	self._total_loot_count.unbagged = self._total_loot_count.unbagged + (bagged and 0 or change)
 	self._loot_count[loot_type].unbagged = self._loot_count[loot_type].unbagged + (bagged and 0 or change)
 
-	if HUDManager.ListOptions.show_loot and managers.hud and managers.hud:list_initialized() then
-		local item_name = HUDManager.ListOptions.aggregate_loot and "all" or loot_type
-		local count_loot_type = not HUDManager.ListOptions.aggregate_loot and loot_type or nil
-		managers.hud:hud_list("right_side_list"):item("loot_list"):item(item_name):set_count(self:loot_count(count_loot_type))
-	end
+	local total_compensation = self:_get_loot_level_compensation()
+	local type_compensation = self:_get_loot_level_compensation(loot_type)
+	self._do_listener_callback("on_total_loot_count_change", self._total_loot_count.unbagged - total_compensation, self._total_loot_count.bagged)
+	self._do_listener_callback("on_" .. loot_type .. "_count_change", self._loot_count[loot_type].unbagged - type_compensation, self._loot_count[loot_type].bagged)
 end
 
 function ObjectInteractionManager:_get_loot_level_compensation(loot_type)
@@ -232,13 +358,7 @@ end
 
 function ObjectInteractionManager:_change_special_pickup_count(unit, pickup_type, change)
 	self._special_pickup_count[pickup_type] = self._special_pickup_count[pickup_type] + change
-
-	if HUDManager.ListOptions.show_special_pickups and managers.hud and managers.hud:list_initialized() then
-		managers.hud:hud_list("right_side_list")
-			:item("special_pickup_list")
-			:item(pickup_type)
-			:set_count(self:special_pickup_count(pickup_type))
-	end
+	self._do_listener_callback("on_" .. pickup_type .. "_count_change", self._special_pickup_count[pickup_type])
 end
 
 function ObjectInteractionManager:special_pickup_count(pickup_type)
@@ -246,75 +366,78 @@ function ObjectInteractionManager:special_pickup_count(pickup_type)
 end
 
 function ObjectInteractionManager:_pager_started(unit)
-	if not self._active_pagers[unit:key()] then
+	if not ObjectInteractionManager.ACTIVE_PAGERS[unit:key()] then
 		self._pager_count = self._pager_count + 1
-		self._active_pagers[unit:key()] = true
-
-		if managers.hud and managers.hud:list_initialized() then
-			if HUDManager.ListOptions.show_pagers then
-				managers.hud:hud_list("left_side_list"):item("pagers"):register_item("pager_" .. tostring(unit:key()), HUDList.PagerItem, unit):activate()
-			end
-
-			if HUDManager.ListOptions.show_pager_count and managers.groupai:state():whisper_mode() then
-				managers.hud:hud_list("right_side_list"):item("hostage_count_list"):item("PagerCount"):set_count(self._pager_count)
-			end
-		end
+		ObjectInteractionManager.ACTIVE_PAGERS[unit:key()] = { unit = unit }
+		self._do_listener_callback("on_pager_count_change", self._pager_count)
+		self._do_listener_callback("on_pager_started", unit)
 	end
 end
 
 function ObjectInteractionManager:pager_ended(unit)
-	if self._active_pagers[unit:key()] then
-		self._active_pagers[unit:key()] = nil
-
-		if HUDManager.ListOptions.show_pagers and managers.hud and managers.hud:list_initialized() then
-			managers.hud:hud_list("left_side_list"):item("pagers"):unregister_item("pager_" .. tostring(unit:key()))
-		end
+	if ObjectInteractionManager.ACTIVE_PAGERS[unit:key()] then
+		ObjectInteractionManager.ACTIVE_PAGERS[unit:key()] = nil
+		self._do_listener_callback("on_pager_ended", unit)
 	end
 end
 
 function ObjectInteractionManager:pager_answered(unit)
-	if self._active_pagers[unit:key()] then
-		if HUDManager.ListOptions.show_pagers and managers.hud and managers.hud:list_initialized() then
-			local item = managers.hud:hud_list("left_side_list"):item("pagers"):item("pager_" .. tostring(unit:key()))
-			if item then
-				item:set_answered()
-			end
-		end
-
-		if HUDManager.ListOptions.remove_answered_pager_contour and self._active_pagers[unit:key()] then
-			managers.enemy:add_delayed_clbk("contour_remove_" .. tostring(unit:key()), callback(self, self, "_remove_pager_contour", unit), Application:time() + 0.01)
-		end
+	if ObjectInteractionManager.ACTIVE_PAGERS[unit:key()] and not ObjectInteractionManager.ACTIVE_PAGERS[unit:key()].answered then
+		ObjectInteractionManager.ACTIVE_PAGERS[unit:key()].answered = true
+		self._do_listener_callback("on_pager_answered", unit)
 	end
 end
 
-function ObjectInteractionManager:_remove_pager_contour(unit)
-	if alive(unit) then
-		unit:contour():remove(tweak_data.interaction.corpse_alarm_pager.contour_preset)
-	end
-end
-
-function ObjectInteractionManager:remove_all_pagers()
-	if managers.hud and managers.hud:list_initialized() then
-		managers.hud:hud_list("right_side_list"):item("hostage_count_list"):unregister_item("PagerCount")
-
-		for key, unit in pairs(self._active_pagers) do
-			managers.hud:hud_list("left_side_list"):item("pagers"):unregister_item("pager_" .. tostring(key))
+function ObjectInteractionManager:_whisper_mode_change(status)
+	if not status then
+		for key, data in pairs(ObjectInteractionManager.ACTIVE_PAGERS) do
+			self:pager_ended(data.unit)
 		end
+		self._do_listener_callback("on_remove_all_pagers")
 	end
-
-	self._active_pagers = {}
 end
 
 function ObjectInteractionManager:used_pager_count()
 	return self._pager_count
 end
 
-function ObjectInteractionManager:register_interactive_unit_listener(name, clbk)
-	if not self._interactive_unit_listeners[name] then
-		self._interactive_unit_listeners[name] = clbk
+function ObjectInteractionManager:block_trigger(trigger_id, status)
+	if ObjectInteractionManager.TRIGGERS[trigger_id] then
+		--io.write("ObjectInteractionManager:block_trigger(" .. tostring(trigger_id) .. ", " .. tostring(status) .. ")\n")
+		self._trigger_blocks[trigger_id] = status
+
+		for id, data in ipairs(self._unit_triggers[trigger_id] or {}) do
+			if alive(data.unit) then
+				--io.write("Set active " .. tostring(data.unit:editor_id()) .. ": " .. tostring(not status) .. "\n")
+				data.unit:base():set_equipment_active(data.class, not status, data.offset)
+			end
+		end
 	end
 end
 
-function ObjectInteractionManager:unregister_interactive_unit_listener(name)
-	self._interactive_unit_listeners[name] = nil
+
+function ObjectInteractionManager.register_listener_clbk(name, event, clbk)
+	ObjectInteractionManager._LISTENER_CALLBACKS[event] = ObjectInteractionManager._LISTENER_CALLBACKS[event] or {}
+	ObjectInteractionManager._LISTENER_CALLBACKS[event][name] = clbk
+end
+
+function ObjectInteractionManager.unregister_listener_clbk(name, event)
+	for event_id, listeners in pairs(ObjectInteractionManager._LISTENER_CALLBACKS) do
+		if not event or event_id == event then
+			for id, clbk in pairs(listeners) do
+				if id == name then
+					ObjectInteractionManager._LISTENER_CALLBACKS[event_id][id] = nil
+					break
+				end
+			end
+		end
+	end
+end
+
+function ObjectInteractionManager._do_listener_callback(event, ...)
+	if ObjectInteractionManager._LISTENER_CALLBACKS[event] then
+		for id, clbk in pairs(ObjectInteractionManager._LISTENER_CALLBACKS[event]) do
+			clbk(...)
+		end
+	end
 end

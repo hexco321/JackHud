@@ -1,15 +1,25 @@
+
 local mark_minion_original = UnitNetworkHandler.mark_minion
 local hostage_trade_original = UnitNetworkHandler.hostage_trade
 local unit_traded_original = UnitNetworkHandler.unit_traded
 local interaction_set_active_original = UnitNetworkHandler.interaction_set_active
 local alarm_pager_interaction_original = UnitNetworkHandler.alarm_pager_interaction
 
-function UnitNetworkHandler:mark_minion(unit, owner_id, health_multiplier, passive_health_multiplier, ...)
-	mark_minion_original(self, unit, owner_id, health_multiplier, passive_health_multiplier, ...)
+function UnitNetworkHandler:mark_minion(unit, owner_id, joker_level, partner_in_crime_level, ...)
+	mark_minion_original(self, unit, owner_id, joker_level, partner_in_crime_level, ...)
 
 	if self._verify_character(unit) then
-		local has_upgrade = health_multiplier and health_multiplier > 0
-		managers.enemy:add_minion_unit(unit, owner_id, has_upgrade)
+		local health_mult = 1
+		local damage_mult = 1
+		if joker_level > 0 then
+			health_mult = health_mult * tweak_data.upgrades.values.player.convert_enemies_health_multiplier[joker_level]
+			damage_mult = damage_mult * tweak_data.upgrades.values.player.convert_enemies_damage_multiplier[joker_level]
+		end
+		if partner_in_crime_level > 0 then
+			health_mult = health_mult * tweak_data.upgrades.values.player.passive_convert_enemies_health_multiplier[partner_in_crime_level]
+		end
+
+		managers.enemy:add_minion_unit(unit, owner_id, health_mult, damage_mult)
 	end
 end
 

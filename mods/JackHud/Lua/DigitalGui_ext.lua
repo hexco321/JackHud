@@ -5,169 +5,239 @@ end
 local SHOW_TIMERS = JackHUD._data.show_timers
 
 if SHOW_TIMERS then
-	local DigitalGui_init_original = DigitalGui.init
-	local DigitalGui_update_original = DigitalGui.update
-	local DigitalGui_timer_set_original = DigitalGui.timer_set
-	local DigitalGui_timer_start_count_up_original = DigitalGui.timer_start_count_up
-	local DigitalGui_timer_start_count_down_original = DigitalGui.timer_start_count_down
-	local DigitalGui_timer_pause_original = DigitalGui.timer_pause
-	local DigitalGui_timer_resume_original = DigitalGui.timer_resume
-	local DigitalGui__timer_stop_original = DigitalGui._timer_stop
-	local DigitalGui_destroy_original = DigitalGui.destroy
-	
+
+	DigitalGui.SPAWNED_ITEMS = {}
+	DigitalGui._LISTENER_CALLBACKS = {}
+
 	DigitalGui._DEFAULT_CALLBACKS = {
-		on_update = function(timer_object, t, dt)
-			timer_object._list_item:update_timer(t, timer_object._timer)
+		update = function(unit, t, timer)
+			DigitalGui.SPAWNED_ITEMS[unit:key()].t = t
+			DigitalGui.SPAWNED_ITEMS[unit:key()].timer = timer
+			DigitalGui._do_listener_callback("on_timer_update", unit, t, timer)
 		end,
-		on_timer_set = function(timer_object, timer)
-			if timer_object._inital_set_done then
-				timer_object._list_item:activate()
-				timer_object._list_item:update_timer(Application:time(), timer)
-			else
-				timer_object._inital_set_done = true
+		timer_set = function(unit, timer)
+			DigitalGui._DEFAULT_CALLBACKS.update(unit, Application:time(), timer)
+		end,
+		timer_start_count = function(unit, up)
+			if unit:digital_gui()._visible then
+				DigitalGui.SPAWNED_ITEMS[unit:key()].active = true
+				DigitalGui._do_listener_callback("on_set_active", unit, true)
+				DigitalGui._DEFAULT_CALLBACKS.timer_pause(unit, false)
 			end
 		end,
-		on_timer_start_count = function(timer_object, up)
-			timer_object._list_item:activate()
-			timer_object._list_item:set_jammed(false)
+		timer_pause = function(unit, paused)
+			DigitalGui.SPAWNED_ITEMS[unit:key()].jammed = paused and true or nil
+			DigitalGui._do_listener_callback("on_set_jammed", unit, paused and true or false)
 		end,
-		on_timer_pause = function(timer_object, paused)
-			timer_object._list_item:set_jammed(paused)
-		end,
-		on_timer_stop = function(timer_object)
-			timer_object._list_item:deactivate()
+		timer_stop = function(unit)
+			DigitalGui.SPAWNED_ITEMS[unit:key()].active = nil
+			DigitalGui._do_listener_callback("on_set_active", unit, false)
 		end
 	}
-	
-	--TODO: Add unique names?
-	DigitalGui._TIMER_DATA = {
-		["132864"] = {	--Meltdown vault temperature
-			on_timer_start_count = false,
-			on_timer_pause = function(o) 
-				o._list_item:deactivate() 
-				o._listeners["on_timer_set"] = false
-			end,
-			class = "TemperatureGaugeItem",
-			params = { start = 0, goal = 50 },
-		},
-		["132675"] = {	--Hoxton Revenge panic room timelock
-			on_timer_pause = function(timer_object, paused) 
-				if not managers.groupai:state():whisper_mode() then 
-					timer_object._list_item:deactivate()
-				else
-					DigitalGui._DEFAULT_CALLBACKS.on_timer_pause(timer_object, paused)
-				end
-			end,
-			on_timer_set = false,
-		},
-		["139706"] = { 	--Hoxton Revenge alarm
-			on_timer_pause = function(o) 
-				o._list_item:deactivate()
-			end
-		},
-		--["130320"] = { },	--The Diamond timelock #1
-		--["130395"] = { },	--The Diamond timelock #2
-		--["104671"] = { },	--Big Bank timelock door
-		["101457"] = { ignore = true },	--Extra Big Bank timer, ignore
-	}
-	DigitalGui._TIMER_DATA["130022"] = table.map_copy(DigitalGui._TIMER_DATA["132675"])	--Train Heist door 1 (dockyard)
-	DigitalGui._TIMER_DATA["130122"] = table.map_copy(DigitalGui._TIMER_DATA["130022"])	--Train Heist door 2
-	DigitalGui._TIMER_DATA["130222"] = table.map_copy(DigitalGui._TIMER_DATA["130022"])	--Train Heist door 3
-	DigitalGui._TIMER_DATA["130322"] = table.map_copy(DigitalGui._TIMER_DATA["130022"])	--Train Heist door 4
-	DigitalGui._TIMER_DATA["130422"] = table.map_copy(DigitalGui._TIMER_DATA["130022"])	--Train Heist door 5
-	DigitalGui._TIMER_DATA["130522"] = table.map_copy(DigitalGui._TIMER_DATA["130022"])	--Train Heist door 6 (tunnel)
-	DigitalGui._TIMER_DATA["133922"] = table.map_copy(DigitalGui._TIMER_DATA["132675"])	--The Diamond pressure plates timer
-	
-	DigitalGui.TIMER_CACHE = {}
-	
-	function DigitalGui:init(...)
-		DigitalGui_init_original(self, ...)
-		
-		if managers.hud and managers.hud:list_initialized() then
-			self:create_list_item()
+
+	local function stop_on_pause(unit, paused)
+		if paused then
+			DigitalGui._DEFAULT_CALLBACKS.timer_stop(unit)
 		else
-			table.insert(DigitalGui.TIMER_CACHE, self)
+			DigitalGui._DEFAULT_CALLBACKS.timer_pause(unit, paused)
 		end
 	end
 
-	function DigitalGui:update(unit, t, dt, ...)
-		DigitalGui_update_original(self, unit, t, dt, ...)
-		self:_listener_callback("on_update", t, dt)
+	local function stop_on_loud_pause(unit, paused)
+		if not managers.groupai:state():whisper_mode() and paused then
+			DigitalGui._DEFAULT_CALLBACKS.timer_stop(unit)
+		else
+			DigitalGui._DEFAULT_CALLBACKS.timer_pause(unit, paused)
+		end
 	end
-	
+
+	DigitalGui._TIMER_DATA = {
+		[132864] = {    --Meltdown vault temperature
+			class = "TemperatureGaugeItem",
+			params = { start = 0, goal = 50 },
+
+			timer_set = function(unit, timer, ...)
+				if timer > 0 then
+					DigitalGui._DEFAULT_CALLBACKS.timer_start_count(unit, true)
+				end
+				DigitalGui._DEFAULT_CALLBACKS.timer_set(unit, timer, ...)
+			end,
+			timer_start_count = function(unit, ...)
+				unit:digital_gui()._ignore = true
+				DigitalGui._DEFAULT_CALLBACKS.timer_stop(unit)
+			end,
+			timer_pause = false,
+		},
+		[139706] = { timer_pause = stop_on_pause },     --Hoxton Revenge alarm  (UNTESTED)
+		[132675] = { timer_pause = stop_on_loud_pause },        --Hoxton Revenge panic room time lock   (UNTESTED)
+		[101936] = { timer_pause = stop_on_pause },     --GO Bank time lock
+		[133922] = { timer_pause = stop_on_loud_pause },        --The Diamond pressure plates timer
+		[130320] = { }, --The Diamond outer time lock
+		[130395] = { }, --The Diamond inner time lock
+		[101457] = { }, --Big Bank time lock door #1
+		[104671] = { }, --Big Bank time lock door #2
+		[167575] = { }, --Golden Grin BFD timer
+	}
+	for i, editor_id in ipairs({ 130022, 130122, 130222, 130322, 130422, 130522 }) do               --Train heist vaults (1-6)
+		DigitalGui._TIMER_DATA[editor_id] = { timer_pause = stop_on_loud_pause }
+	end
+
+	local init_original = DigitalGui.init
+	local update_original = DigitalGui.update
+	local timer_set_original = DigitalGui.timer_set
+	local timer_start_count_up_original = DigitalGui.timer_start_count_up
+	local timer_start_count_down_original = DigitalGui.timer_start_count_down
+	local timer_pause_original = DigitalGui.timer_pause
+	local timer_resume_original = DigitalGui.timer_resume
+	local _timer_stop_original = DigitalGui._timer_stop
+	local load_original = DigitalGui.load
+	local destroy_original = DigitalGui.destroy
+
+	function DigitalGui:init(unit, ...)
+		init_original(self, unit, ...)
+
+		if self.TYPE == "number" then
+			self._ignore = true
+		else
+			DigitalGui.SPAWNED_ITEMS[unit:key()] = { unit = unit, jammed = false, powered = true }
+		end
+	end
+
+	function DigitalGui:update(unit, t, ...)
+		update_original(self, unit, t, ...)
+		self:_do_timer_callback("update", t, self._timer)
+	end
+
 	function DigitalGui:timer_set(timer, ...)
-		self:_listener_callback("on_timer_set", timer)
-		return DigitalGui_timer_set_original(self, timer, ...)
+		if not self._timer_callbacks and not self._ignore and Network:is_server() then
+			self:_setup_timer_data()
+		end
+
+		self:_do_timer_callback("timer_set", timer)
+		return timer_set_original(self, timer, ...)
 	end
-	
+
 	function DigitalGui:timer_start_count_up(...)
-		self:_listener_callback("on_timer_start_count", true)
-		return DigitalGui_timer_start_count_up_original(self, ...)
+		self:_do_timer_callback("timer_start_count", true)
+		return timer_start_count_up_original(self, ...)
 	end
 
 	function DigitalGui:timer_start_count_down(...)
-		self:_listener_callback("on_timer_start_count", false)
-		return DigitalGui_timer_start_count_down_original(self, ...)
+		self:_do_timer_callback("timer_start_count", false)
+		return timer_start_count_down_original(self, ...)
 	end
 
 	function DigitalGui:timer_pause(...)
-		self:_listener_callback("on_timer_pause", true)
-		return DigitalGui_timer_pause_original(self, ...)
+		self:_do_timer_callback("timer_pause", true)
+		return timer_pause_original(self, ...)
 	end
-	
+
 	function DigitalGui:timer_resume(...)
-		self:_listener_callback("on_timer_pause", false)
-		return DigitalGui_timer_resume_original(self, ...)
+		self:_do_timer_callback("timer_pause", false)
+		return timer_resume_original(self, ...)
 	end
 
 	function DigitalGui:_timer_stop(...)
-		self:_listener_callback("on_timer_stop")
-		return DigitalGui__timer_stop_original(self, ...)
+		self:_do_timer_callback("timer_stop")
+		return _timer_stop_original(self, ...)
+	end
+
+	function DigitalGui:load(data, ...)
+		if not self._ignore then
+			self:_setup_timer_data()
+			--DEBUG_PRINT("timer", "TIMER EVENT: load (" ..tostring(self._name_id or self._unit:editor_id()) .. ")\n", true)
+		end
+
+		load_original(self, data, ...)
+
+		local state = data.DigitalGui
+		if state.timer then
+			self:_do_timer_callback("timer_set", state.timer)
+		end
+		if state.timer_count_up then
+			self:_do_timer_callback("timer_start_count", true)
+		end
+		if state.timer_count_down then
+			self:_do_timer_callback("timer_start_count", false)
+		end
+		if state.timer_paused then
+			self:_do_timer_callback("timer_pause", true)
+		end
 	end
 
 	function DigitalGui:destroy(...)
-		self:delete_list_item()
-		return DigitalGui_destroy_original(self, ...)
+		DigitalGui.SPAWNED_ITEMS[self._unit:key()] = nil
+		DigitalGui._do_listener_callback("on_destroy", self._unit)
+		return destroy_original(self, ...)
 	end
-	
-	function DigitalGui:_listener_callback(event, ...)
-		if not self._editor_id and managers.hud and managers.hud:list_initialized() then
-			self:create_list_item()
-		end
-	
-		if self._list_item and self._listeners[event] then
-			self._listeners[event](self, ...)
+
+
+	function DigitalGui:_do_timer_callback(event, ...)
+		if not self._ignore then
+		--[[
+			if event ~= "update" then
+				local str = "TIMER EVENT: " .. tostring(event) .. " (" .. tostring(self._name_id or self._unit:editor_id()) .. ")\n"
+				for i, v in ipairs({ ... }) do
+					str = str .. "\t" .. tostring(v) .. "\n"
+				end
+				DEBUG_PRINT("timer", str, event ~= "update")
+			end
+		]]
+
+			if self._timer_callbacks[event] == false then
+				return
+			elseif self._timer_callbacks[event] then
+				self._timer_callbacks[event](self._unit, ...)
+			elseif DigitalGui._DEFAULT_CALLBACKS[event] then
+				DigitalGui._DEFAULT_CALLBACKS[event](self._unit, ...)
+			end
 		end
 	end
-	
-	function DigitalGui:create_list_item()
-		local editor_id = tostring(self._unit:editor_id())
-		
-		if editor_id ~= "-1" then
-			self._editor_id = editor_id
-			local timer_data = DigitalGui._TIMER_DATA[editor_id] or {}
-			
-			if not timer_data.ignore then
-				self._list_item = managers.hud:hud_list("left_side_list"):item("timers"):register_item("timer_" .. tostring(self._unit:key()), timer_data.class or "DigitalTimerItem", self._unit, timer_data.params)
-				self._listeners = table.map_copy(DigitalGui._DEFAULT_CALLBACKS)
-				
-				if timer_data.on_update ~= nil then self._listeners.on_update = timer_data.on_update end
-				if timer_data.on_timer_set ~= nil then self._listeners.on_timer_set = timer_data.on_timer_set end
-				if timer_data.on_timer_start_count ~= nil then self._listeners.on_timer_start_count = timer_data.on_timer_start_count end
-				if timer_data.on_timer_pause ~= nil then self._listeners.on_timer_pause = timer_data.on_timer_pause end
-				if timer_data.on_timer_stop ~= nil then self._listeners.on_timer_stop = timer_data.on_timer_stop end
-				
-				if timer_data.on_create then
-					timer_data.on_create(self)
+
+	function DigitalGui:_setup_timer_data()
+		local timer_data = DigitalGui._TIMER_DATA[self._unit:editor_id()] or {}
+		DigitalGui.SPAWNED_ITEMS[self._unit:key()].class = timer_data.class
+		DigitalGui.SPAWNED_ITEMS[self._unit:key()].params = timer_data.params
+		DigitalGui.SPAWNED_ITEMS[self._unit:key()].ignore = timer_data.ignore
+		self._name_id = timer_data.name_id
+		self._ignore = timer_data.ignore
+		self._timer_callbacks = {
+			update = timer_data.update,
+			timer_set = timer_data.timer_set,
+			timer_start_count = timer_data.timer_start_count,
+			timer_start_count = timer_data.timer_start_count,
+			timer_pause = timer_data.timer_pause,
+			timer_stop = timer_data.timer_stop,
+		}
+
+		DigitalGui._do_listener_callback("on_create", self._unit, timer_data.class, timer_data.params)
+	end
+
+
+	function DigitalGui.register_listener_clbk(name, event, clbk)
+		DigitalGui._LISTENER_CALLBACKS[event] = DigitalGui._LISTENER_CALLBACKS[event] or {}
+		DigitalGui._LISTENER_CALLBACKS[event][name] = clbk
+	end
+
+	function DigitalGui.unregister_listener_clbk(name, event)
+		for event_id, listeners in pairs(DigitalGui._LISTENER_CALLBACKS) do
+			if not event or event_id == event then
+				for id, clbk in pairs(listeners) do
+					if id == name then
+						DigitalGui._LISTENER_CALLBACKS[event_id][id] = nil
+						break
+					end
 				end
 			end
 		end
 	end
 
-	function DigitalGui:delete_list_item()
-		if self._list_item then
-			self._list_item:delete()
-			self._list_item = nil
+	function DigitalGui._do_listener_callback(event, ...)
+		if DigitalGui._LISTENER_CALLBACKS[event] then
+			for id, clbk in pairs(DigitalGui._LISTENER_CALLBACKS[event]) do
+				clbk(...)
+			end
 		end
 	end
+
 end

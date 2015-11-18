@@ -5,10 +5,9 @@ end
 local SHOW_BUFFS = JackHUD._data.show_buffs
 
 if SHOW_BUFFS then
-	local PlayerMovement_on_morale_boost_original = PlayerMovement.on_morale_boost
-
+	local on_morale_boost_original = PlayerMovement.on_morale_boost
 	function PlayerMovement:on_morale_boost(...)
-		PlayerMovement_on_morale_boost_original(self, ...)
-		managers.hud:update_buff_item(HUDList.BuffItemBase.BUFFS.special.inspire, { set_duration = tweak_data.upgrades.morale_boost_time })
+		managers.player:activate_timed_buff("inspire", tweak_data.upgrades.morale_boost_time)
+		return on_morale_boost_original(self, ...)
 	end
 end

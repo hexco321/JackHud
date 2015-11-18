@@ -1,19 +1,11 @@
+
 local _on_damage_received_original = CopDamage._on_damage_received
 
 function CopDamage:_on_damage_received(damage_info, ...)
-	if HUDManager.ListOptions.show_minions and self._unit:in_slot(16) then
+	if self._unit:in_slot(16) then
 		managers.enemy:update_minion_health(self._unit, self._health)
 	end
-	self:_process_damage(damage_info.attacker_unit, damage_info.damage)
 	return _on_damage_received_original(self, damage_info, ...)
-end
-
-function CopDamage:_process_damage(aggressor, damage)
-	if alive(aggressor) and aggressor:base() then
-		if aggressor == managers.player:player_unit() or aggressor:base()._thrower_unit == managers.player:player_unit() then
-			HUDStatsScreen:add_damage(damage)
-		end
-	end
 end
 
 if JackHUD and JackHUD._data.enable_kill_counter then

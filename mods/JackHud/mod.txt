@@ -25,10 +25,6 @@
 			"script_path": "Lua/DigitalGui_ext.lua"
 		},
 		{
-			"hook_id": "lib/units/interactions/interactionext",
-			"script_path": "Lua/InteractionExt_ext.lua"
-		},
-		{
 			"hook_id": "lib/managers/group_ai_states/groupaistatebase",
 			"script_path": "Lua/GroupAIStateBase_ext.lua"
 		},
@@ -89,6 +85,14 @@
 			"script_path": "Lua/SentryGunBase_ext.lua"
 		},
 		{
+			"hook_id": "lib/units/equipment/sentry_gun/sentrygundamage",
+			"script_path": "Lua/SentryGunDamage_ext.lua"
+		},
+		{
+			"hook_id": "lib/units/weapons/sentrygunweapon",
+			"script_path": "Lua/SentryGunWeapon_ext.lua"
+		},
+		{
 			"hook_id": "lib/units/weapons/weaponflashlight",
 			"script_path": "Lua/WeaponFlashlight_ext.lua"
 		},
@@ -117,16 +121,28 @@
 			"script_path": "Lua/DoctorBagBase_ext.lua"
 		},
 		{
-			"hook_id": "lib/units/beings/player/states/playerbleedout",
-			"script_path": "Lua/PlayerBleedOut_ext.lua"
-		},
-		{
 			"hook_id": "lib/managers/hud/hudstatsscreen",
 			"script_path": "Lua/HUDStatsScreen_ext.lua"
 		},
 		{
 			"hook_id": "lib/managers/hud/hudsuspicion",
 			"script_path": "Lua/HUDSuspicion_ext.lua"
+		},
+		{
+			"hook_id": "lib/units/unitbase",
+			"script_path": "Lua/UnitBase_ext.lua"
+		},
+		{
+			"hook_id": "lib/units/equipment/grenade_crate/grenadecratebase",
+			"script_path": "Lua/GrenadeCrateBase_ext.lua"
+		},
+		{
+			"hook_id": "lib/units/props/missiondoor",
+			"script_path": "Lua/MissionDoor_ext.lua"
+		},
+		{
+			"hook_id": "lib/units/props/securitycamera",
+			"script_path": "Lua/SecurityCamera_ext.lua"
 		}
 	],
 	"keybinds": [
