@@ -9,7 +9,7 @@ function MissionAssetsManager:mission_has_preplanning()
 end
 
 function MissionAssetsManager:asset_is_buyable(asset)
-	return asset.id ~= "buy_all_assets" and asset.show and not asset.unlocked and (Network:is_server() and asset.can_unlock or self:get_asset_can_unlock_by_id(asset.id))
+	return asset.id ~= "buy_all_assets" and asset.show and not asset.unlocked and ((Network:is_server() and asset.can_unlock) or (Network:is_client() and self:get_asset_can_unlock_by_id(asset.id)))
 end
 
 function MissionAssetsManager:_setup_mission_assets()
@@ -20,9 +20,10 @@ function MissionAssetsManager:_setup_mission_assets()
 end
 
 function MissionAssetsManager:update_buy_all_assets_asset_cost()
+	self._tweak_data.buy_all_assets.money_lock = 0
 	for _, asset in ipairs(self._global.assets) do
 		if self:asset_is_buyable(asset) then
-			self._tweak_data.buy_all_assets.money_lock = (self._tweak_data.buy_all_assets.money_lock or 0) + (self._tweak_data[asset.id].money_lock or 0)
+			self._tweak_data.buy_all_assets.money_lock = self._tweak_data.buy_all_assets.money_lock + (self._tweak_data[asset.id].money_lock or 0)
 		end
 	end
 end
