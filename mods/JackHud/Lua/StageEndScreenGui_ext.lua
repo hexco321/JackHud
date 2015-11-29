@@ -1,4 +1,4 @@
-if JackHUD and JackHUD._data.enable_speed_up then
+if JackHUD and JackHUD._data and JackHUD._data.enable_speed_up then
 	local SKIP_STAT_SCREEN_DELAY = JackHUD._data.stat_screen_skip
 
 	local update_original = StageEndScreenGui.update

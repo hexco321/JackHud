@@ -1,4 +1,4 @@
-if JackHUD and JackHUD._data.enable_speed_up then
+if JackHUD and JackHUD._data and JackHUD._data.enable_speed_up then
 	local SKIP_BLACKSCREEN = JackHUD._data.black_screen_skip
 
 	local update_original = IngameWaitingForPlayersState.update
