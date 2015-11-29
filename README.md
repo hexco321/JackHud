@@ -2,7 +2,6 @@
 JackHud is a fork of GageHud.
 I was actually up to do pretty much the same as cjur3, which was combining Seven's codes into one nice package with settings and all that... but then i found this, so why start a complete new core, when there already is a nice start available?
 However.. i am not down with some originally included features of GageHud, so instead of pushing some "remove bla feature" pull requests it's probably making more sense to make a fork.
-Whenever i fix or improve something of the original code i will try to create proper pull requests to push it upstream.
 
 ###Features are:
 * HUD Tab Stats
@@ -20,6 +19,7 @@ Whenever i fix or improve something of the original code i will try to create pr
 * Stamina Meter
 * Push to Interact
 * Force enable/disable showing of weapon skins in lobby
+* Buy all assets
 * and more...
 
 ###Planned/Suggestions
