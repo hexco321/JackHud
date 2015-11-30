@@ -7,8 +7,6 @@
 			"remove_answered_pager_contour_desc" : "Removes the interaction contour on answered pagers",
 			"enable_pacified" : "Pacified Civilian Marker",
 			"enable_pacified_desc" : "Enables green Marker for Pacified Civilians",
-			"do_decapitations" : "Enable Decapitations",
-			"do_decapitations_desc" : "Should heads go poof on a lethal headshot.",
 			"push_to_interact" : "Push to interact",
 			"push_to_interact_desc" : "No need to hold the interaction key [F] anymore.",
 			"equipment_interrupt" : "Inventory key interrupt",

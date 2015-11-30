@@ -1,5 +1,5 @@
 {
-	"show_civilians": false,
+	"show_civilians": true,
 	"flashlight_range": 10000,
 	"stat_screen_skip": 0,
 	"enable_pacified": true,
@@ -12,9 +12,9 @@
 	"show_special_kills": true,
 	"flashlight_angle": 100,
 	"show_pager_count": true,
-	"enable_flashlight_extender": true,
+	"enable_flashlight_extender": false,
 	"enable_kill_counter": true,
-	"separate_bagged_loot": false,
+	"separate_bagged_loot": true,
 	"black_screen_skip": true,
 	"show_pagers": true,
 	"enable_speed_up": true,

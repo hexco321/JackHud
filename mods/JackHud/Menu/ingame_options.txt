@@ -23,15 +23,6 @@
 			"default_value": true
 		},
 		{
-			"type": "toggle",
-			"id": "do_decapitations",
-			"title": "do_decapitations",
-			"description": "do_decapitations_desc",
-			"callback": "callback_do_decapitations",
-			"value": "do_decapitations",
-			"default_value": true
-		},
-		{
 			"type" : "divider",
 			"size" : 16,
 		},

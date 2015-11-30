@@ -9,7 +9,6 @@ However.. i am not down with some originally included features of GageHud, so in
 * Numerical Suspicion
 * Kill-Counters
 * Flashlight Extender
-* Bullet Decapitations
 * Save/Load Preplanning
 * Screen Skipping
 * Anti accidentally throwing grenades in stealth
