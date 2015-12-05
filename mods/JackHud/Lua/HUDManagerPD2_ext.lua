@@ -2,9 +2,6 @@ if not JackHUD then
 	return
 end
 
-local SHOW_BUFFS = JackHUD._data.show_buffs
-local SHOW_TIMERS = JackHUD._data.show_timers
-
 local _setup_player_info_hud_pd2_original = HUDManager._setup_player_info_hud_pd2
 local update_original = HUDManager.update
 local set_stamina_value_original = HUDManager.set_stamina_value
@@ -159,9 +156,7 @@ function HUDListManager:init()
 
 	self:_setup_left_list()
 	self:_setup_right_list()
-	if SHOW_BUFFS then
-		self:_setup_buff_list()
-	end
+	self:_setup_buff_list()
 
 	self:_set_remove_answered_pager_contour()
 
@@ -1058,8 +1053,10 @@ function HUDListManager:_set_show_buffs()
 			end
 		end
 
-		for event, clbk in pairs(listeners) do
-			PlayerManager.register_listener_clbk(listener_name, event, clbk)
+		if PlayerManager.register_listener_clbk then
+			for event, clbk in pairs(listeners) do
+				PlayerManager.register_listener_clbk(listener_name, event, clbk)
+			end
 		end
 	else
 		for _, item in pairs(list:items()) do
@@ -1887,6 +1884,14 @@ do
 		dentist =		{ text = "Unknown" },
 		pig =			{ text = "Pig" },
 		safe =			{ text = "Safe" },
+		parachute =		{ text = "Para" },
+		prototype =		{ text = "Prototype" },
+		charges =		{ text = "Charges" },
+		MU =			{ text = "MU" },
+		CS =			{ text = "CS" },
+		HCL =			{ text = "HCL" },
+		euphadrine =	{ text = "Pills" },
+		ladder =		{ text = "Ladder"}
 		--container =   { text = "?" },
 	}
 	function HUDList.LootItem:init(parent, name, loot_data)

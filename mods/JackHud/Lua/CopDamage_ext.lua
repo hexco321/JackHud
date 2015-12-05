@@ -1,4 +1,3 @@
-
 local _on_damage_received_original = CopDamage._on_damage_received
 
 function CopDamage:_on_damage_received(damage_info, ...)

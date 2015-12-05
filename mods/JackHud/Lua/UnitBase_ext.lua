@@ -1,7 +1,3 @@
-if not JackHUD then
-	return
-end
-
 --Propagates down to equipment (and other things we don't care about). Just make sure events are named appropriately to avoid overlap
 UnitBase._LISTENER_CALLBACKS = {}
 

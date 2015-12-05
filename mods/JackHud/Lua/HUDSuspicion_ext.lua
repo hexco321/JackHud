@@ -1,7 +1,3 @@
-if not JackHUD then
-	return
-end
-
 local hudsuspicion_init_original = HUDSuspicion.init
 local hudsuspicions_animate_eye_original = HUDSuspicion.animate_eye
 local hudsuspicion_hide_original = HUDSuspicion.hide

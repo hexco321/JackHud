@@ -1,4 +1,4 @@
-if JackHUD._data.enable_flashlight_extender then
+if JackHUD and JackHUD._data.enable_flashlight_extender then
 	local angle = JackHUD._data.flashlight_angle --Angle/width of beam, 0-160 (default 60)
 	local range = JackHUD._data.flashlight_range --Range of beam, 0+ (default 1000 -> 10m)
 

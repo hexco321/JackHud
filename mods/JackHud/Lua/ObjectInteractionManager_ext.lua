@@ -55,6 +55,18 @@ ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID = {
 	safe_wpn =								"safe",
 	safe_ovk =								"safe",
 	unknown =								"dentist",
+	meth_half =								"meth",
+	parachute =								"parachute",
+	masterpiece_painting =					"painting",
+	master_server =							"server",
+	lost_artifact =							"artifact",
+	prototype =								"prototype",
+	breaching_charges =						"charges",
+	nail_muriatic_acid =					"MU",
+	nail_caustic_soda =						"CS",
+	nail_hydrogen_chloride =				"HCL",
+	nail_euphadrine_pills =					"euphadrine",
+	equipment_bag_global_event =			"ladder"
 }
 
 ObjectInteractionManager.LOOT_TYPE_LEVEL_COMPENSATION = {
@@ -134,6 +146,7 @@ ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID = {
 	muriatic_acid =						"meth_ingredients",
 	hydrogen_chloride =					"meth_ingredients",
 	caustic_soda =						"meth_ingredients",
+	gen_pku_blow_torch =				"Blowtorch"
 }
 
 ObjectInteractionManager.EQUIPMENT_INTERACTION_ID = {

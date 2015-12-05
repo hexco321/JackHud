@@ -25,17 +25,17 @@ end
 ]]
 function JackHUD:Load()
 	local file = io.open( self._data_path, "r" )
-	if file then
-		self._data = json.decode( file:read("*all") )
-		file:close()
-	else
-	log("No previous save found. Creating new using default values")
 	local default_file = io.open(self._path .."Menu/default_values.txt")
-		if default_file then
-			self._data = json.decode( default_file:read("*all") )
-			self:Save()
+	self._data = json.decode( default_file:read("*all") )
+	default_file:close()
+	if file then
+		local configt = json.decode( file:read("*all") )
+		file:close()
+		for k,v in pairs(configt) do
+			self._data[k] = v
 		end
 	end
+	self:Save()
 end
 
 if not JackHUD.setup then

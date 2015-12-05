@@ -1,7 +1,3 @@
-if not JackHUD then
-	return
-end
-
 local init_original = SentryGunDamage.init
 local set_health_original = SentryGunDamage.set_health
 local _apply_damage_original = SentryGunDamage._apply_damage

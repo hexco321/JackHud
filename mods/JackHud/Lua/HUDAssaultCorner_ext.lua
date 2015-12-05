@@ -1,7 +1,3 @@
-if not JackHUD then
-	return
-end
-
 local init_original = HUDAssaultCorner.init
 function HUDAssaultCorner:init(...)
 	init_original(self, ...)

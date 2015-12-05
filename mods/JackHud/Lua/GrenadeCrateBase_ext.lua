@@ -1,7 +1,3 @@
-if not JackHUD then
-	return
-end
-
 GrenadeCrateBase.SPAWNED_BAGS = {}
 GrenadeCrateBase.AGGREGATED_BAGS = {}
 

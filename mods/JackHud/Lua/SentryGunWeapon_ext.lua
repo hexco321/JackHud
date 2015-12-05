@@ -1,7 +1,3 @@
-if not JackHUD then
-	return
-end
-
 local init_original = SentryGunWeapon.init
 local change_ammo_original = SentryGunWeapon.change_ammo
 local sync_ammo_original = SentryGunWeapon.sync_ammo
