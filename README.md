@@ -7,6 +7,9 @@ However.. i am not down with some originally included features of GageHud, so in
 * HUD Tab Stats
 * HUD Panel Lists
 * Numerical Suspicion
+* Numerical interaction countdown
+* Reload interaction circle
+* Down Counter / Detection risk indicator
 * Kill-Counters
 * Flashlight Extender
 * Save/Load Preplanning

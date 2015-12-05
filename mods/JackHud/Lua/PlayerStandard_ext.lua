@@ -4,6 +4,40 @@ end
 
 local SHOW_BUFFS = JackHUD._data.show_buffs
 
+local _start_action_reload_original = PlayerStandard._start_action_reload
+local _update_reload_timers_original = PlayerStandard._update_reload_timers
+local _interupt_action_reload_original = PlayerStandard._interupt_action_reload
+
+function PlayerStandard:_start_action_reload(t)
+	_start_action_reload_original(self, t)
+	if self._equipped_unit:base():can_reload() and managers.player:current_state() ~= "bleed_out" then
+		self._state_data._isReloading = true
+		managers.hud:show_interaction_bar(0, self._state_data.reload_expire_t or 0)
+		self._state_data.reload_offset = t
+	end
+end
+
+function PlayerStandard:_update_reload_timers(t, dt, input)
+	_update_reload_timers_original(self, t, dt, input)
+	if not self._state_data.reload_expire_t and self._state_data._isReloading then
+		managers.hud:hide_interaction_bar(true)
+		self._state_data._isReloading = false
+	elseif self._state_data._isReloading and managers.player:current_state() ~= "bleed_out" then
+		managers.hud:set_interaction_bar_width(
+			t and t - self._state_data.reload_offset or 0,
+			self._state_data.reload_expire_t and self._state_data.reload_expire_t - self._state_data.reload_offset or 0
+		)
+	end
+end
+
+function PlayerStandard:_interupt_action_reload(t)
+	if self._state_data._isReloading and managers.player:current_state() ~= "bleed_out" then
+		managers.hud:hide_interaction_bar(false)
+		self._state_data._isReloading = false
+	end
+	return _interupt_action_reload_original(self, t)
+end
+
 if SHOW_BUFFS then
 
 	local _start_action_charging_weapon_original = PlayerStandard._start_action_charging_weapon

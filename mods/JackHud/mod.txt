@@ -171,6 +171,10 @@
 		{
 			"hook_id": "lib/managers/missionassetsmanager",
 			"script_path": "Lua/MissionAssetsManager_ext.lua"
+		},
+		{
+			"hook_id": "lib/managers/hud/hudinteraction",
+			"script_path": "Lua/HUDInteraction_ext.lua"
 		}
 	],
 	"keybinds": [

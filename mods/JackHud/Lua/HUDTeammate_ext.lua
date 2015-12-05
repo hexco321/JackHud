@@ -40,6 +40,7 @@ if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL
 		if not HUDManager.CUSTOM_TEAMMATE_PANEL and JackHUD._data.enable_kill_counter then
 			self:_init_killcount()
 		end
+		self:_init_revivecount()
 	end
 
 	function HUDTeammate:set_voice_com(status)
@@ -63,6 +64,96 @@ if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL
 
 	function HUDTeammate:set_current_stamina(value)
 		self._stamina_bar:set_color(Color(1, value/self._max_stamina, 0, 0))
+	end
+
+	function HUDTeammate:_init_revivecount()
+		self._detection_counter = self._player_panel:child("radial_health_panel"):text({
+			name = "detection_risk",
+			visible = managers.groupai:state():whisper_mode(),
+			layer = 1,
+			Color = Color.white,
+			w = self._player_panel:child("radial_health_panel"):w(),
+			x = 0,
+			y = 0,
+			h = self._player_panel:child("radial_health_panel"):h(),
+			vertical = "center",
+			align = "center",
+			font_size = 20,
+			font = tweak_data.hud_players.ammo_font
+		})
+		self._revives_counter = self._player_panel:child("radial_health_panel"):text({
+			name = "revives_counter",
+			visible = not managers.groupai:state():whisper_mode(),
+			text = "0",
+			layer = 1,
+			color = Color.white,
+			w = self._player_panel:child("radial_health_panel"):w(),
+			x = 0,
+			y = 0,
+			h = self._player_panel:child("radial_health_panel"):h(),
+			vertical = "center",
+			align = "center",
+			font_size = 20,
+			font = tweak_data.hud_players.ammo_font
+		})
+		self._revives_count = 0
+		if self._main_player then
+			self:set_detection_risk(managers.blackmarket:get_suspicion_offset_of_outfit_string(managers.blackmarket:unpack_outfit_from_string(managers.blackmarket:outfit_string()), tweak_data.player.SUSPICION_OFFSET_LERP or 0.75))
+		end
+	end
+
+	function HUDTeammate:increment_revives()
+		if self._revives_counter then
+			self._revives_count = self._revives_count + 1
+			self._revives_counter:set_text(tostring(self._revives_count))
+		end
+	end
+
+	function HUDTeammate:reset_revives()
+		if self._revives_counter then
+			self._revives_count = 0
+			self._revives_counter:set_text(tostring(self._revives_count))
+		end
+	end
+
+	function HUDTeammate:set_revive_visibility(visible)
+		if self._revives_counter then
+			self._revives_counter:set_visible(not managers.groupai:state():whisper_mode() and visible)
+		end
+	end
+
+	local set_health_original = HUDTeammate.set_health
+	function HUDTeammate:set_health(data)
+		if data.revives then
+			local revive_colors = { Color("FC9797"), Color("FCD997"), Color("C2FF97"), Color("97FC9A") }
+			self._revives_counter:set_color(revive_colors[data.revives - 1] or Color.purple:with_alpha(0.9))
+
+			--[[if self._main_player and PlayerDamage then
+				if managers.player:player_unit() and managers.player:player_unit():character_damage() then
+					local myval = managers.player:upgrade_value("player", "pistol_revive_from_bleed_out", 0)
+				else
+					local myval = PlayerDamage._messiah_charges
+				end
+			end
+			if myval and myval >= 0 then
+				self._revives_counter:set_text(tostring(data.revives - 1 .. "/" .. myval))
+			else]]
+				self._revives_counter:set_text(tostring(data.revives - 1))
+			--end
+
+			self._revives_counter:set_visible(not managers.groupai:state():whisper_mode() and data.revives - 1 >= 0)
+		end
+		return set_health_original(self, data)
+	end
+
+	function HUDTeammate:set_hud_mode(mode)
+		self._revives_counter:set_visible(not (mode == "stealth"))
+		self._detection_counter:set_visible(mode == "stealth")
+	end
+
+	function HUDTeammate:set_detection_risk(risk)
+		self._detection_counter:set_text(string.format("%.0f", risk * 100))
+		self._detection_counter:set_color(Color(1, 0.99, 0.08, 0) * (risk / 0.75) + Color(1, 0, 0.71, 1) * (1 - risk / 0.75))
 	end
 
 	if JackHUD._data.enable_kill_counter then
