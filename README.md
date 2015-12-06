@@ -6,6 +6,7 @@ However.. i am not down with some originally included features of GageHud, so in
 ###Features are:
 * HUD Tab Stats
 * HUD Panel Lists
+* Pacified Civilian Markers
 * Numerical Suspicion
 * Numerical interaction countdown
 * Reload interaction circle

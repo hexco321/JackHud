@@ -1,3 +1,6 @@
+if not JackHUD then
+	return
+end
 
 local init_original = GroupAIStateBase.init
 local update_original = GroupAIStateBase.update
@@ -20,7 +23,6 @@ function GroupAIStateBase:update(t, ...)
 	if self._client_hostage_count_expire_t and t < self._client_hostage_count_expire_t then
 		self:_client_hostage_count_cbk()
 	end
-
 	return update_original(self, t, ...)
 end
 
@@ -30,7 +32,6 @@ function GroupAIStateBase:register_turret(unit, ...)
 		self._turrets_registered[unit:key()] = true
 		managers.enemy:_change_swat_turret_count(1)
 	end
-
 	return register_turret_original(self, unit, ...)
 end
 
@@ -40,7 +41,6 @@ function GroupAIStateBase:unregister_turret(unit, ...)
 		self._turrets_registered[unit:key()] = nil
 		managers.enemy:_change_swat_turret_count(-1)
 	end
-
 	return unregister_turret_original(self, unit, ...)
 end
 
@@ -56,11 +56,9 @@ end
 
 function GroupAIStateBase:convert_hostage_to_criminal(unit, peer_unit, ...)
 	convert_hostage_to_criminal_original(self, unit, peer_unit, ...)
-
 	if unit:brain()._logic_data.is_converted then
 		local peer_id = peer_unit and managers.network:session():peer_by_unit(peer_unit):id() or managers.network:session():local_peer():id()
 		local owner_base = peer_unit and peer_unit:base() or managers.player
-
 		local health_mult = 1
 		local damage_mult = 1
 		local joker_level = (owner_base:upgrade_level("player", "convert_enemies_health_multiplier", 0) or 0)
@@ -72,7 +70,6 @@ function GroupAIStateBase:convert_hostage_to_criminal(unit, peer_unit, ...)
 		if partner_in_crime_level > 0 then
 			health_mult = health_mult * tweak_data.upgrades.values.player.passive_convert_enemies_health_multiplier[partner_in_crime_level]
 		end
-
 		managers.enemy:add_minion_unit(unit, peer_id, health_mult, damage_mult)
 	end
 end
@@ -89,7 +86,6 @@ end
 
 function GroupAIStateBase:sync_hostage_headcount(...)
 	sync_hostage_headcount_original(self, ...)
-
 	if Network:is_server() then
 		self:_update_hostage_count()
 	else
@@ -115,7 +111,6 @@ end
 function GroupAIStateBase:_client_hostage_count_cbk()
 	local old_police_count = self._police_hostage_headcount
 	local old_civ_hostages = self._civilian_hostages
-
 	local police_count = 0
 	for u_key, u_data in pairs(managers.enemy:all_enemies()) do
 		if u_data and u_data.unit and u_data.unit.anim_data and u_data.unit:anim_data() then
@@ -124,7 +119,6 @@ function GroupAIStateBase:_client_hostage_count_cbk()
 			end
 		end
 	end
-
 	self._police_hostage_headcount = police_count
 	self._civilian_hostages = self:hostage_count() - self._police_hostage_headcount
 	if old_police_count ~= self._police_hostage_headcount or old_civ_hostages ~= self._civilian_hostages then
@@ -136,7 +130,6 @@ function GroupAIStateBase:_update_hostage_count()
 	if Network:is_server() then
 		self._civilian_hostages = self._hostage_headcount - self._police_hostage_headcount
 	end
-
 	self._do_listener_callback("on_civilian_count_change", managers.enemy:unit_count("civilian"))
 	self._do_listener_callback("on_civilian_hostage_count_change", self:civilian_hostage_count())
 	self._do_listener_callback("on_cop_hostage_count_change", self:police_hostage_count())
@@ -169,44 +162,37 @@ function GroupAIStateBase._do_listener_callback(event, ...)
 	end
 end
 
-if JackHUD and JackHUD._data.enable_pacified then
-	local _upd_criminal_suspicion_progress_original = GroupAIStateBase._upd_criminal_suspicion_progress
-	function GroupAIStateBase:_upd_criminal_suspicion_progress(...)
-		if self._ai_enabled then
-			for obs_key, obs_susp_data in pairs(self._suspicion_hud_data or {}) do
-				local unit = obs_susp_data.u_observer
-				
-				if managers.enemy:is_civilian(unit) then
-					local waypoint = managers.hud._hud.waypoints["susp1" .. tostring(obs_key)]
-					
-					if waypoint then
-						local color, arrow_color
-						
-						if unit:anim_data().drop then
-							if not obs_susp_data._subdued_civ then
-								obs_susp_data._alerted_civ = nil
-								obs_susp_data._subdued_civ = true
-								color = Color(0.0, 1.0, 0.0)
-								arrow_color = Color(0.0, 0.3, 0.0)
-							end
-						elseif obs_susp_data.alerted then
-							if not obs_susp_data._alerted_civ then
-								obs_susp_data._subdued_civ = nil
-								obs_susp_data._alerted_civ = true
-								color = Color.white
-								arrow_color = tweak_data.hud.detected_color
-							end
+local _upd_criminal_suspicion_progress_original = GroupAIStateBase._upd_criminal_suspicion_progress
+function GroupAIStateBase:_upd_criminal_suspicion_progress(...)
+	if self._ai_enabled then
+		for obs_key, obs_susp_data in pairs(self._suspicion_hud_data or {}) do
+			local unit = obs_susp_data.u_observer
+			if managers.enemy:is_civilian(unit) then
+				local waypoint = managers.hud._hud.waypoints["susp1" .. tostring(obs_key)]
+				if waypoint then
+					local color, arrow_color
+					if JackHUD and JackHUD._data.enable_pacified and unit:anim_data().drop then
+						if not obs_susp_data._subdued_civ then
+							obs_susp_data._alerted_civ = nil
+							obs_susp_data._subdued_civ = true
+							color = Color(0.0, 1.0, 0.0)
+							arrow_color = Color(0.0, 0.3, 0.0)
 						end
-						
-						if color then
-							waypoint.bitmap:set_color(color)
-							waypoint.arrow:set_color(arrow_color:with_alpha(0.75))
+					elseif obs_susp_data.alerted then
+						if not obs_susp_data._alerted_civ then
+							obs_susp_data._subdued_civ = nil
+							obs_susp_data._alerted_civ = true
+							color = Color.white
+							arrow_color = tweak_data.hud.detected_color
 						end
+					end
+					if color then
+						waypoint.bitmap:set_color(color)
+						waypoint.arrow:set_color(arrow_color:with_alpha(0.75))
 					end
 				end
 			end
 		end
-		
-		return _upd_criminal_suspicion_progress_original(self, ...)
 	end
+	return _upd_criminal_suspicion_progress_original(self, ...)
 end

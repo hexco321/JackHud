@@ -1,0 +1,89 @@
+{
+	"menu_id": "jackhud_other_options",
+	"parent_menu_id": "jackhud_options",
+	"title": "jackhud_other_options",
+	"description": "jackhud_other_options_desc",
+	"items": [
+		{
+		    "type": "toggle",
+			"id": "enable_filtersettings",
+			"title": "enable_filtersettings",
+			"description": "enable_filtersettings_desc",
+			"callback": "callback_enable_filtersettings",
+			"value": "enable_filtersettings",
+			"default_value": true
+		},
+		{
+			"type" : "multiple_choice",
+			"id" : "lobby_skins_mode",
+			"title" : "lobby_skins_mode",
+			"description" : "lobby_skins_mode_desc",
+			"callback" : "callback_lobby_skins_mode",
+			"items" : [
+				"lobby_skins_vanilla",
+				"lobby_skins_none",
+				"lobby_skins_primary",
+				"lobby_skins_secondary"
+			],
+			"value" : "lobby_skins_mode",
+			"default_value" : 1
+		},
+		{
+			"type" : "divider",
+			"size" : 16,
+		},
+		{
+			"type": "toggle",
+			"id": "remove_answered_pager_contour",
+			"title": "remove_answered_pager_contour",
+			"description": "remove_answered_pager_contour_desc",
+			"callback": "callback_remove_answered_pager_contour",
+			"value": "remove_answered_pager_contour",
+			"default_value": true
+		},
+		{
+			"type" : "divider",
+			"size" : 16,
+		},
+		{
+		    "type": "toggle",
+			"id": "enable_pacified",
+			"title": "enable_pacified",
+			"description": "enable_pacified_desc",
+			"callback": "callback_enable_pacified",
+			"value": "enable_pacified",
+			"default_value": true
+		},
+		{
+			"type" : "divider",
+			"size" : 16,
+		},
+		{
+			"type": "toggle"
+			"id": "show_suspicion_text",
+			"title": "show_suspicion_text",
+			"description": "show_suspicion_text_desc",
+			"callback": "callback_show_suspicion_text",
+			"value": "show_suspicion_text",
+			"default_value": true
+		},
+		{
+			"type": "toggle"
+			"id": "show_interaction_text",
+			"title": "show_interaction_text",
+			"description": "show_interaction_text_desc",
+			"callback": "callback_show_interaction_text",
+			"value": "show_interaction_text",
+			"default_value": true
+		},
+		{
+			"type": "toggle"
+			"id": "show_text_borders",
+			"title": "show_text_borders",
+			"description": "show_text_borders_desc",
+			"callback": "callback_show_text_borders",
+			"value": "show_text_borders",
+			"default_value": true
+		}
+	]
+}

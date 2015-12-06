@@ -8,6 +8,15 @@ JackHUD = JackHUD or {}
 JackHUD._path = ModPath
 JackHUD._data_path = SavePath .. "JackHUD.txt"
 JackHUD._data = {}
+JackHUD._menus = {
+	"jackhud_options"
+	,"speed_up_options"
+	,"hud_lists_options"
+	,"kill_counter_options"
+	,"menu_push_to_interact"
+	,"flashlight_extender"
+	,"jackhud_other_options"
+}
 
 --[[
 	A simple save function that json encodes our _data table and saves it to a file.
@@ -24,10 +33,8 @@ end
 	A simple load function that decodes the saved json _data table if it exists.
 ]]
 function JackHUD:Load()
+	self:LoadDefaults()
 	local file = io.open( self._data_path, "r" )
-	local default_file = io.open(self._path .."Menu/default_values.txt")
-	self._data = json.decode( default_file:read("*all") )
-	default_file:close()
 	if file then
 		local configt = json.decode( file:read("*all") )
 		file:close()
@@ -38,10 +45,37 @@ function JackHUD:Load()
 	self:Save()
 end
 
+function JackHUD:LoadDefaults()
+	local default_file = io.open(self._path .."Menu/default_values.txt")
+	self._data = json.decode( default_file:read("*all") )
+	default_file:close()
+end
+
+function JackHUD:InitAllMenus()
+	for _,menu in pairs(JackHUD._menus) do
+		MenuHelper:LoadFromJsonFile(JackHUD._path .. "Menu/" .. menu .. ".txt", JackHUD, JackHUD._data)
+	end
+end
+
+function JackHUD:ForceReloadAllMenus()
+	for _,menu in pairs(JackHUD._menus) do
+		_menu = MenuHelper:GetMenu(menu)
+		for _,_item in pairs(_menu._items_list) do
+			if _item._type == "toggle" then
+				_item.selected = JackHUD._data[_item._parameters.name] and 1 or 2
+			elseif _item._type == "multi_choice" then
+				_item._current_index = JackHUD._data[_item._parameters.name]
+			elseif _item._type == "slider" then
+				_item._value = JackHUD._data[_item._parameters.name]
+			end
+		end
+	end
+end
+
 if not JackHUD.setup then
 	JackHUD:Load()
 	JackHUD.setup = true
-	log("Mod Collection loaded")
+	log("JackHud loaded.")
 end
 
 --[[
@@ -56,6 +90,26 @@ Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_jackhud", 
 		end
 	end
 	loc:load_localization_file(JackHUD._path .. "Loc/english.txt", false)
+end)
+
+Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_jackhud", function(menu_manager, menu_nodes)
+	--[[
+		Add "Reset all options" to the jackhud main menu.
+	]]
+	MenuHelper:AddButton({
+		id = "jackhud_reset",
+		title = "jackhud_reset",
+		desc = "jackhud_reset_desc",
+		callback = "callback_jackhud_reset",
+		menu_id = "jackhud_options",
+		priority = 100
+	})
+	MenuHelper:AddDivider({
+		id = "jackhud_reset_divider",
+		size = 16,
+		menu_id = "jackhud_options",
+		priority = 99
+	})
 end)
 
 --[[
@@ -242,6 +296,21 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
+	MenuCallbackHandler.callback_show_suspicion_text = function(self, item)
+		JackHUD._data.show_suspicion_text = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_show_interaction_text = function(self, item)
+		JackHUD._data.show_interaction_text = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_show_text_borders = function(self, item)
+		JackHUD._data.show_text_borders = (item:value() =="on")
+		JackHUD:Save()
+	end
+
 	MenuCallbackHandler.callback_loot_screen_skip = function(self, item)
 		JackHUD._data.loot_screen_skip = item:value()
 		JackHUD:Save()
@@ -257,23 +326,34 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
+	MenuCallbackHandler.callback_lobby_skins_mode = function(self, item)
+		JackHUD._data.lobby_skins_mode = item:value()
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_jackhud_reset = function(self, item)
+		local menu_title = managers.localization:text("jackhud_reset")
+		local menu_message = managers.localization:text("jackhud_reset_message")
+		local menu_options = {
+			[1] = {
+				text = managers.localization:text("jackhud_reset_ok"),
+				callback = function()
+					JackHUD:LoadDefaults()
+					JackHUD:ForceReloadAllMenus()
+					JackHUD:Save()
+				end,
+			},
+			[2] = {
+				text = managers.localization:text("jackhud_reset_cancel"),
+				is_cancel_button = true,
+			},
+		}
+		QuickMenu:new( menu_title, menu_message, menu_options, true )
+	end
+
 	--[[
 		Load our previously saved data from our save file.
 	]]
 	JackHUD:Load()
-
-	--[[
-		Load our menu json file and pass it to our MenuHelper so that it can build our in-game menu for us.
-		We pass our parent mod table as the second argument so that any keybind functions can be found and called
-			as necessary.
-		We also pass our data table as the third argument so that our saved values can be loaded from it.
-	]]
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/JackHUD.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/ingame_options.txt", JackHUD, JackHUD._data )
-		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/hud_lists.txt", JackHUD, JackHUD._data )
-		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/kill_counter.txt", JackHUD, JackHUD._data )
-		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/flashlight_extender.txt", JackHUD, JackHUD._data )
-	MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/menu_options.txt", JackHUD, JackHUD._data )
-		MenuHelper:LoadFromJsonFile( JackHUD._path .. "Menu/speed_up.txt", JackHUD, JackHUD._data )
-
+	JackHUD:InitAllMenus()
 end )

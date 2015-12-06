@@ -8,7 +8,7 @@
 	"pre_hooks": [
 		{
 			"hook_id": "lib/managers/menumanager",
-			"script_path": "Menu/JackHUD.lua",
+			"script_path": "Lua/MenuManager_ext.lua",
 		}
 	],
 	"hooks": [
@@ -86,7 +86,7 @@
 		},
 		{
 			"hook_id": "lib/units/beings/player/states/playercivilian",
-			"script_path": "PlayerCivilian_ext.lua"
+			"script_path": "Lua/PlayerCivilian_ext.lua"
 		},
 		{
 			"hook_id": "lib/managers/objectinteractionmanager",
@@ -130,7 +130,7 @@
 		},
 		{
 			"hook_id": "lib/network/matchmaking/networkmatchmakingsteam",
-			"script_path": "Lua/NetworkMatchmakingsTeam_ext.lua"
+			"script_path": "Lua/NetworkMatchmakingSTEAM_ext.lua"
 		},
 		{
 			"hook_id": "lib/managers/menu/crimenetfiltersgui",

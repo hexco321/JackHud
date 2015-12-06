@@ -29,9 +29,7 @@ function SentryGunBase:sync_setup(upgrade_lvl, peer_id, ...)
 	SentryGunBase.SPAWNED_SENTRIES[self._unit:key()].owner = peer_id
 	UnitBase._do_listener_callback("on_sentry_owner_update", self._unit, peer_id)
 	sync_setup_original(self, upgrade_lvl, peer_id, ...)
-	if JackHUD and JackHUD._data and JackHUD._data.enable_kill_counter then
-		self._owner_id = self._owner_id or peer_id
-	end
+	self._owner_id = self._owner_id or peer_id
 end
 function SentryGunBase:activate_as_module(...)
 	SentryGunBase.SPAWNED_SENTRIES[self._unit:key()] = nil

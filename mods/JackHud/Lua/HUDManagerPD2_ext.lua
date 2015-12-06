@@ -3010,14 +3010,10 @@ do
 
 end
 
-if JackHUD and JackHUD._data.enable_kill_counter then
-	HUDManager._USE_KILL_COUNTER = true	--Custom HUD compatibility
+function HUDManager:increment_kill_count(teammate_panel_id, is_special, headshot)
+	self._teammate_panels[teammate_panel_id]:increment_kill_count(is_special, headshot)
+end
 
-	function HUDManager:increment_kill_count(teammate_panel_id, is_special, headshot)
-		self._teammate_panels[teammate_panel_id]:increment_kill_count(is_special, headshot)
-	end
-
-	function HUDManager:reset_kill_count(teammate_panel_id)
-		self._teammate_panels[teammate_panel_id]:reset_kill_count()
-	end
+function HUDManager:reset_kill_count(teammate_panel_id)
+	self._teammate_panels[teammate_panel_id]:reset_kill_count()
 end

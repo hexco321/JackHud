@@ -1,7 +1,11 @@
+if not JackHUD then
+	return
+end
+
 local hudsuspicion_init_original = HUDSuspicion.init
 local hudsuspicions_animate_eye_original = HUDSuspicion.animate_eye
 local hudsuspicion_hide_original = HUDSuspicion.hide
- 
+
 function HUDSuspicion:init(hud, sound_source, ...)
 	hudsuspicion_init_original(self, hud, sound_source, ...)
 	self._suspicion_text_panel = self._suspicion_panel:panel({
@@ -26,7 +30,6 @@ function HUDSuspicion:init(hud, sound_source, ...)
 		h = 64
 	})
 	self._suspicion_text:set_y((math.round(self._suspicion_text_panel:h() / 4)))
---[[
 	for i = 1, 4 do
 		self["_suspicion_bgtext" .. i] = self._suspicion_text_panel:text({
 			name = "suspicion_bgtext" .. i,
@@ -49,7 +52,21 @@ function HUDSuspicion:init(hud, sound_source, ...)
 	self._suspicion_bgtext3:set_y((math.round(self._suspicion_text_panel:h() / 4)) + 1)
 	self._suspicion_bgtext4:set_x(self._suspicion_bgtext4:x() + 1)
 	self._suspicion_bgtext4:set_y((math.round(self._suspicion_text_panel:h() / 4)) + 1)
-]]
+	self:_set_suspicion_text_visibility(self._suspicion_text_panel)
+end
+
+function HUDSuspicion:_set_suspicion_text_visibility(panel)
+	panel:child("suspicion_text"):set_visible(JackHUD._data.show_suspicion_text)
+	for i = 1, 4 do
+		panel:child("suspicion_bgtext" .. i):set_visible(JackHUD._data.show_text_borders)
+	end
+end
+
+function HUDSuspicion:_set_suspicion_text_text(panel, text)
+	panel:child("suspicion_text"):set_text(text)
+	for i = 1, 4 do
+		panel:child("suspicion_bgtext" .. i):set_text(text)
+	end
 end
 
 function HUDSuspicion:ColorGradient(perc, ...)
@@ -78,14 +95,9 @@ function HUDSuspicion:_animate_detection_text(_suspicion_panel, param_2, ...)
 			t = t + coroutine.yield()
 			if -1 ~= self._suspicion_value then
 				local r,g,b = self:ColorGradient(math.round(self._suspicion_value*100)/100, 0, 0.71, 1, 0.99, 0.08, 0)
-				local text = math.round(self._suspicion_value*100) .. "%"
 				_suspicion_panel:child("suspicion_text"):set_color(Color(1, r, g, b))
-				_suspicion_panel:child("suspicion_text"):set_text(text)
---[[
-				for i = 1, 4 do
-					_suspicion_panel:child("suspicion_bgtext" .. i):set_text(text)
-				end
-]]
+				self:_set_suspicion_text_text(_suspicion_panel, math.round(self._suspicion_value*100) .. "%")
+				self:_set_suspicion_text_visibility(_suspicion_panel)
 			end
 		end
 	end
