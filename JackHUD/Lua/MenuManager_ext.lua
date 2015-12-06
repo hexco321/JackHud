@@ -351,4 +351,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	]]
 	JackHUD:Load()
 	JackHUD:InitAllMenus()
+
+	--[[
+		Set keybind defaults
+	]]
+	LuaModManager:SetPlayerKeybind("load_pre", LuaModManager:GetPlayerKeybind("load_pre") or "f5")
+	LuaModManager:SetPlayerKeybind("save_pre", LuaModManager:GetPlayerKeybind("save_pre") or "f6")
 end )
