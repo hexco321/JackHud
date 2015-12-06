@@ -326,11 +326,6 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
-	MenuCallbackHandler.callback_lobby_skins_mode = function(self, item)
-		JackHUD._data.lobby_skins_mode = item:value()
-		JackHUD:Save()
-	end
-
 	MenuCallbackHandler.callback_jackhud_reset = function(self, item)
 		local menu_title = managers.localization:text("jackhud_reset")
 		local menu_message = managers.localization:text("jackhud_reset_message")
