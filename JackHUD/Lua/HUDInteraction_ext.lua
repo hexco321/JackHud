@@ -41,7 +41,7 @@ function HUDInteraction:init(hud, child_name)
 	self._bgtext3:set_x(self._bgtext3:x() - 1)
 	self._bgtext4:set_y(self._hud_panel:h() / 2 - 1)
 	self._bgtext4:set_x(self._bgtext4:x() + 1)
-	self._start_color = Color(1, 1, 1, 0)
+	self._start_color = Color(1, 1, 0.65882355, 0)
 end
 
 function HUDInteraction:show_interaction_bar(current, total)
@@ -49,7 +49,7 @@ function HUDInteraction:show_interaction_bar(current, total)
 	self._interact_circle:set_visible(true)
 	self._interact_timer_text:set_visible(JackHUD._data.show_interaction_text)
 	for i = 1, 4 do
-		self["_bgtext" .. i]:set_visible(JackHUD._data.show_text_borders)
+		self["_bgtext" .. i]:set_visible(JackHUD._data.show_interaction_text and JackHUD._data.show_text_borders)
 	end
 end
 
