@@ -1,9 +1,0 @@
-{
-	"menu_id": "jackhud_options",
-	"parent_menu_id": "lua_mod_options_menu",
-	"title": "jackhud_options",
-	"description": "jackhud_options_desc",
-	"items": [
-		{}
-	]
-}
