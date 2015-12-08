@@ -7,7 +7,7 @@
 	"priority": 200,
 	"updates" : [
 		{
-			"revision" : 5,
+			"revision" : 6,
 			"identifier" : "jackhud",
 		},
 		{
