@@ -1,0 +1,21 @@
+
+1.7r7:
+- Added some screen skipping options.
+- Added option for handling reload as interaction.
+- Added option to disable the vanilla interaction circle.
+- Push to interact now applies to exiting of vehicles as well.
+
+1.7r6:
+- the stamina meter now hides when in custody.
+- the stamina meter now resizes according to ex-president perk deck presence.
+- the down counter now shows pistol messiah charges like hoxhud does.
+- reduced down counter font size from 20 to 14.
+
+1.7r5:
+- suspicion/interaction texts fixes
+
+1.7r4:
+- added keybinding defaults
+
+earlier:
+- see jackpack changelogs.
