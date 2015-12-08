@@ -121,208 +121,199 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		Setup our callbacks as defined in our item callback keys, and perform our logic on the data retrieved.
 	]]
 
-	MenuCallbackHandler.callback_push_to_interact = function(self, item)
-		JackHUD._data.push_to_interact = (item:value() =="on")
+	-- Screen skipping
+	MenuCallbackHandler.callback_skip_black_screen = function(self, item)
+		JackHUD._data.skip_black_screen = (item:value() =="on")
 		JackHUD:Save()
 	end
-
-	MenuCallbackHandler.callback_equipment_interrupt = function(self, item)
-		JackHUD._data.equipment_interrupt = (item:value() =="on")
+	MenuCallbackHandler.callback_skip_stat_screen = function(self, item)
+		JackHUD._data.skip_stat_screen = (item:value() =="on")
 		JackHUD:Save()
 	end
-
-	MenuCallbackHandler.callback_show_sentries = function(self, item)
-		JackHUD._data.show_sentries = (item:value() =="on")
+	MenuCallbackHandler.callback_stat_screen_skip = function(self, item)
+		JackHUD._data.stat_screen_skip = item:value()
 		JackHUD:Save()
 	end
-
-	MenuCallbackHandler.callback_hide_empty_sentries = function(self, item)
-		JackHUD._data.hide_empty_sentries = (item:value() =="on")
+	MenuCallbackHandler.callback_skip_card_picking = function(self, item)
+		JackHUD._data.skip_card_picking = (item:value() =="on")
 		JackHUD:Save()
 	end
-
-	MenuCallbackHandler.callback_show_ecm_retrigger = function(self, item)
-		JackHUD._data.show_ecm_retrigger = (item:value() =="on")
+	MenuCallbackHandler.callback_skip_loot_screen = function(self, item)
+		JackHUD._data.skip_loot_screen = (item:value() =="on")
 		JackHUD:Save()
 	end
-
-	MenuCallbackHandler.callback_show_tape_loop = function(self, item)
-		JackHUD._data.show_tape_loop = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_turrets = function(self, item)
-		JackHUD._data.show_turrets = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_minion_count = function(self, item)
-		JackHUD._data.show_minion_count = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_timers = function(self, item)
-		JackHUD._data.show_timers = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_equipment = function(self, item)
-		JackHUD._data.show_equipment = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_minions = function(self, item)
-		JackHUD._data.show_minions = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_pagers = function(self, item)
-		JackHUD._data.show_pagers = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_remove_answered_pager_contour = function(self, item)
-		JackHUD._data.remove_answered_pager_contour = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_ecms = function(self, item)
-		JackHUD._data.show_ecms = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_enemies = function(self, item)
-		JackHUD._data.show_enemies = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_aggregate_enemies = function(self, item)
-		JackHUD._data.aggregate_enemies = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_civilians = function(self, item)
-		JackHUD._data.show_civilians = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_hostages = function(self, item)
-		JackHUD._data.show_hostages = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_pager_count = function(self, item)
-		JackHUD._data.show_pager_count = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_loot = function(self, item)
-		JackHUD._data.show_loot = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_aggregate_loot = function(self, item)
-		JackHUD._data.aggregate_loot = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_separate_bagged_loot = function(self, item)
-		JackHUD._data.separate_bagged_loot = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_special_pickups = function(self, item)
-		JackHUD._data.show_special_pickups = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_buffs = function(self, item)
-		JackHUD._data.show_buffs = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_special_kills = function(self, item)
-		JackHUD._data.show_special_kills = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_headshot_kills = function(self, item)
-		JackHUD._data.show_headshot_kills = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_ai_kills = function(self, item)
-		JackHUD._data.show_ai_kills = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_flashlight_range = function(self, item)
-		JackHUD._data.flashlight_range = item:value()
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_flashlight_angle = function(self, item)
-		JackHUD._data.flashlight_angle = item:value()
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_enable_kill_counter = function(self, item)
-		JackHUD._data.enable_kill_counter = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_enable_flashlight_extender = function(self, item)
-		JackHUD._data.enable_flashlight_extender = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_enable_pacified = function(self, item)
-		JackHUD._data.enable_pacified = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_enable_speed_up = function(self, item)
-		JackHUD._data.enable_speed_up = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_black_screen_skip = function(self, item)
-		JackHUD._data.black_screen_skip = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_enable_filtersettings = function(self, item)
-		JackHUD._data.enable_filtersettings = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_suspicion_text = function(self, item)
-		JackHUD._data.show_suspicion_text = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_interaction_text = function(self, item)
-		JackHUD._data.show_interaction_text = (item:value() =="on")
-		JackHUD:Save()
-	end
-
-	MenuCallbackHandler.callback_show_text_borders = function(self, item)
-		JackHUD._data.show_text_borders = (item:value() =="on")
-		JackHUD:Save()
-	end
-
 	MenuCallbackHandler.callback_loot_screen_skip = function(self, item)
 		JackHUD._data.loot_screen_skip = item:value()
 		JackHUD:Save()
 	end
 
-	MenuCallbackHandler.callback_stat_screen_skip = function(self, item)
-		JackHUD._data.stat_screen_skip = item:value()
+	-- HUD Lists (Timers)
+	MenuCallbackHandler.callback_show_timers = function(self, item)
+		JackHUD._data.show_timers = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_equipment = function(self, item)
+		JackHUD._data.show_equipment = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_sentries = function(self, item)
+		JackHUD._data.show_sentries = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_hide_empty_sentries = function(self, item)
+		JackHUD._data.hide_empty_sentries = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_ecms = function(self, item)
+		JackHUD._data.show_ecms = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_ecm_retrigger = function(self, item)
+		JackHUD._data.show_ecm_retrigger = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_minions = function(self, item)
+		JackHUD._data.show_minions = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_pagers = function(self, item)
+		JackHUD._data.show_pagers = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_tape_loop = function(self, item)
+		JackHUD._data.show_tape_loop = (item:value() =="on")
 		JackHUD:Save()
 	end
 
+	-- HUD Lists (Counters)
+	MenuCallbackHandler.callback_show_enemies = function(self, item)
+		JackHUD._data.show_enemies = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_aggregate_enemies = function(self, item)
+		JackHUD._data.aggregate_enemies = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_turrets = function(self, item)
+		JackHUD._data.show_turrets = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_civilians = function(self, item)
+		JackHUD._data.show_civilians = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_hostages = function(self, item)
+		JackHUD._data.show_hostages = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_minion_count = function(self, item)
+		JackHUD._data.show_minion_count = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_pager_count = function(self, item)
+		JackHUD._data.show_pager_count = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_loot = function(self, item)
+		JackHUD._data.show_loot = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_aggregate_loot = function(self, item)
+		JackHUD._data.aggregate_loot = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_separate_bagged_loot = function(self, item)
+		JackHUD._data.separate_bagged_loot = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_special_pickups = function(self, item)
+		JackHUD._data.show_special_pickups = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	-- HUD Lists (Buffs)
+	MenuCallbackHandler.callback_show_buffs = function(self, item)
+		JackHUD._data.show_buffs = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	-- Kill counter
+	MenuCallbackHandler.callback_enable_kill_counter = function(self, item)
+		JackHUD._data.enable_kill_counter = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_special_kills = function(self, item)
+		JackHUD._data.show_special_kills = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_headshot_kills = function(self, item)
+		JackHUD._data.show_headshot_kills = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_ai_kills = function(self, item)
+		JackHUD._data.show_ai_kills = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	-- Flashlight extender
+	MenuCallbackHandler.callback_enable_flashlight_extender = function(self, item)
+		JackHUD._data.enable_flashlight_extender = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_flashlight_range = function(self, item)
+		JackHUD._data.flashlight_range = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_flashlight_angle = function(self, item)
+		JackHUD._data.flashlight_angle = item:value()
+		JackHUD:Save()
+	end
+
+	-- Push to interact
+	MenuCallbackHandler.callback_push_to_interact = function(self, item)
+		JackHUD._data.push_to_interact = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_equipment_interrupt = function(self, item)
+		JackHUD._data.equipment_interrupt = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	-- Other
+	MenuCallbackHandler.callback_enable_filtersettings = function(self, item)
+		JackHUD._data.enable_filtersettings = (item:value() =="on")
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_lobby_skins_mode = function(self, item)
 		JackHUD._data.lobby_skins_mode = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_remove_answered_pager_contour = function(self, item)
+		JackHUD._data.remove_answered_pager_contour = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enable_pacified = function(self, item)
+		JackHUD._data.enable_pacified = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_suspicion_text = function(self, item)
+		JackHUD._data.show_suspicion_text = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_reload_interaction = function(self, item)
+		JackHUD._data.show_reload_interaction = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_interaction_circle = function(self, item)
+		JackHUD._data.show_interaction_circle = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_interaction_text = function(self, item)
+		JackHUD._data.show_interaction_text = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_text_borders = function(self, item)
+		JackHUD._data.show_text_borders = (item:value() =="on")
 		JackHUD:Save()
 	end
 

@@ -6,11 +6,11 @@
 	"items": [
 		{
 		    "type": "toggle",
-			"id": "enable_speed_up",
-			"title": "enable_speed_up",
-			"description": "enable_speed_up_desc",
-			"callback": "callback_enable_speed_up",
-			"value": "enable_speed_up",
+			"id": "skip_black_screen",
+			"title": "skip_black_screen",
+			"description": "skip_black_screen_desc",
+			"callback": "callback_skip_black_screen",
+			"value": "skip_black_screen",
 			"default_value": true
 		},
 		{
@@ -19,11 +19,45 @@
 		},
 		{
 		    "type": "toggle",
-			"id": "black_screen_skip",
-			"title": "black_screen_skip",
-			"description": "black_screen_skip_desc",
-			"callback": "callback_black_screen_skip",
-			"value": "black_screen_skip",
+			"id": "skip_stat_screen",
+			"title": "skip_stat_screen",
+			"description": "skip_stat_screen_desc",
+			"callback": "callback_skip_stat_screen",
+			"value": "skip_stat_screen",
+			"default_value": true
+		},
+		{
+			"type": "slider",
+			"id": "stat_screen_skip",
+			"title": "stat_screen_skip",
+			"description": "stat_screen_skip_desc",
+			"callback": "callback_stat_screen_skip",
+			"value": "stat_screen_skip",
+			"max": 5,
+			"min": 0,
+			"step": 1,
+			"default_value": 0
+		},
+		{
+			"type" : "divider",
+			"size" : 16,
+		},
+		{
+		    "type": "toggle",
+			"id": "skip_card_picking",
+			"title": "skip_card_picking",
+			"description": "skip_card_picking_desc",
+			"callback": "callback_skip_card_picking",
+			"value": "skip_card_picking",
+			"default_value": true
+		},
+		{
+		    "type": "toggle",
+			"id": "skip_loot_screen",
+			"title": "skip_loot_screen",
+			"description": "skip_loot_screen_desc",
+			"callback": "callback_skip_loot_screen",
+			"value": "skip_loot_screen",
 			"default_value": true
 		},
 		{
@@ -37,19 +71,6 @@
 			"min": 0,
 			"step": 1,
 			"default_value": 0
-		},
-		{
-			"type": "slider",
-			"id": "stat_screen_skip",
-			"title": "stat_screen_skip",
-			"description": "stat_screen_skip_desc",
-			"callback": "callback_stat_screen_skip",
-			"value": "stat_screen_skip",
-			"max": 5,
-			"min": 0,
-			"step": 1,
-			"default_value": 0
 		}
-		
 	]
 }
