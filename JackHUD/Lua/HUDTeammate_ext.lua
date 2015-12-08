@@ -2,64 +2,52 @@ if not JackHUD then
 	return
 end
 
-if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL then
+if not HUDTeammate.increment_kill_count then
+
 	local init_original = HUDTeammate.init
+	local set_name_original = HUDTeammate.set_name
+	local set_state_original = HUDTeammate.set_state
+	local set_health_original = HUDTeammate.set_health
+
 	function HUDTeammate:init(i, ...)
 		init_original(self, i, ...)
-
+		self._is_in_custody = false
 		if i == HUDManager.PLAYER_PANEL then
-			local radial_health_panel = self._panel:child("player"):child("radial_health_panel")
-	
-			self._stamina_bar = radial_health_panel:bitmap({
-				name = "radial_stamina",
-				texture = "guis/textures/pd2/hud_radial_rim",
-				texture_rect = { 64, 0, -64, 64 },
-				render_template = "VertexColorTexturedRadial",
-				blend_mode = "add",
-				alpha = 1,
-				w = radial_health_panel:w() * 0.4,
-				h = radial_health_panel:h() * 0.4,
-				layer = 5
-			})
-			self._stamina_bar:set_color(Color(1, 1, 0, 0))
-			self._stamina_bar:set_center(radial_health_panel:child("radial_health"):center())
-	
-			self._stamina_line = radial_health_panel:rect({
-				color = Color.red,
-				w = radial_health_panel:w() * 0.10,
-				h = 1,
-				layer = 10,
-				alpha = 0,
-			})
-			self._stamina_line:set_center(radial_health_panel:child("radial_health"):center())
+			self:_init_stamina_meter()
 		end
-		if not HUDManager.CUSTOM_TEAMMATE_PANEL then
-			self:_init_killcount()
-		end
+		self:_init_killcount()
 		self:_init_revivecount()
 	end
 
-	function HUDTeammate:set_voice_com(status)
-		local texture = status and "guis/textures/pd2/jukebox_playing" or "guis/textures/pd2/hud_tabs"
-		local texture_rect = status and { 0, 0, 16, 16 } or { 84, 34, 19, 19 }
-		local callsign = self._panel:child("callsign")
-		callsign:set_image(texture, unpack(texture_rect))
-	end
+	function HUDTeammate:_init_stamina_meter()
+		local radial_health_panel = self._panel:child("player"):child("radial_health_panel")
+		local stamina_size = 0.4
+		if managers.player:upgrade_value("player", "armor_max_health_store_multiplier", 0) > 0
+				or managers.player:upgrade_value("player", "armor_health_store_amount", 0) > 0 then
+			stamina_size = 0.3
+		end
+		self._stamina_bar = radial_health_panel:bitmap({
+			name = "radial_stamina",
+			texture = "guis/textures/pd2/hud_radial_rim",
+			texture_rect = { 64, 0, -64, 64 },
+			render_template = "VertexColorTexturedRadial",
+			blend_mode = "add",
+			alpha = 1,
+			w = radial_health_panel:w() * stamina_size,
+			h = radial_health_panel:h() * stamina_size,
+			layer = 5
+		})
+		self._stamina_bar:set_color(Color(1, 1, 0, 0))
+		self._stamina_bar:set_center(radial_health_panel:child("radial_health"):center())
 
-	function HUDTeammate:set_max_stamina(value)
-		self._max_stamina = value
-		local w = self._stamina_bar:w()
-		local threshold = tweak_data.player.movement_state.stamina.MIN_STAMINA_THRESHOLD
-		local angle = 360 * (1 - threshold/self._max_stamina) - 90
-		local x = 0.5 * w * math.cos(angle) + w * 0.5 + self._stamina_bar:x()
-		local y = 0.5 * w * math.sin(angle) + w * 0.5 + self._stamina_bar:y()
-		self._stamina_line:set_x(x)
-		self._stamina_line:set_y(y)
-		self._stamina_line:set_rotation(angle)
-	end
-
-	function HUDTeammate:set_current_stamina(value)
-		self._stamina_bar:set_color(Color(1, value/self._max_stamina, 0, 0))
+		self._stamina_line = radial_health_panel:rect({
+			color = Color.red,
+			w = radial_health_panel:w() * 0.10,
+			h = 1,
+			layer = 10,
+			alpha = 0,
+		})
+		self._stamina_line:set_center(radial_health_panel:child("radial_health"):center())
 	end
 
 	function HUDTeammate:_init_revivecount()
@@ -74,7 +62,7 @@ if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL
 			h = self._player_panel:child("radial_health_panel"):h(),
 			vertical = "center",
 			align = "center",
-			font_size = 20,
+			font_size = 14,
 			font = tweak_data.hud_players.ammo_font
 		})
 		self._revives_counter = self._player_panel:child("radial_health_panel"):text({
@@ -89,7 +77,7 @@ if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL
 			h = self._player_panel:child("radial_health_panel"):h(),
 			vertical = "center",
 			align = "center",
-			font_size = 20,
+			font_size = 14,
 			font = tweak_data.hud_players.ammo_font
 		})
 		self._revives_count = 0
@@ -98,62 +86,6 @@ if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL
 		end
 	end
 
-	function HUDTeammate:increment_revives()
-		if self._revives_counter then
-			self._revives_count = self._revives_count + 1
-			self._revives_counter:set_text(tostring(self._revives_count))
-		end
-	end
-
-	function HUDTeammate:reset_revives()
-		if self._revives_counter then
-			self._revives_count = 0
-			self._revives_counter:set_text(tostring(self._revives_count))
-		end
-	end
-
-	function HUDTeammate:set_revive_visibility(visible)
-		if self._revives_counter then
-			self._revives_counter:set_visible(not managers.groupai:state():whisper_mode() and visible)
-		end
-	end
-
-	local set_health_original = HUDTeammate.set_health
-	function HUDTeammate:set_health(data)
-		if data.revives then
-			local revive_colors = { Color("FC9797"), Color("FCD997"), Color("C2FF97"), Color("97FC9A") }
-			self._revives_counter:set_color(revive_colors[data.revives - 1] or Color.purple:with_alpha(0.9))
-
-			--[[if self._main_player and PlayerDamage then
-				if managers.player:player_unit() and managers.player:player_unit():character_damage() then
-					local myval = managers.player:upgrade_value("player", "pistol_revive_from_bleed_out", 0)
-				else
-					local myval = PlayerDamage._messiah_charges
-				end
-			end
-			if myval and myval >= 0 then
-				self._revives_counter:set_text(tostring(data.revives - 1 .. "/" .. myval))
-			else]]
-				self._revives_counter:set_text(tostring(data.revives - 1))
-			--end
-
-			self._revives_counter:set_visible(not managers.groupai:state():whisper_mode() and data.revives - 1 >= 0)
-		end
-		return set_health_original(self, data)
-	end
-
-	function HUDTeammate:set_hud_mode(mode)
-		self._revives_counter:set_visible(not (mode == "stealth"))
-		self._detection_counter:set_visible(mode == "stealth")
-	end
-
-	function HUDTeammate:set_detection_risk(risk)
-		self._detection_counter:set_text(string.format("%.0f", risk * 100))
-		self._detection_counter:set_color(Color(1, 0.99, 0.08, 0) * (risk / 0.75) + Color(1, 0, 0.71, 1) * (1 - risk / 0.75))
-	end
-
-	local set_name_original = HUDTeammate.set_name
-	local set_state_original = HUDTeammate.set_state
 	function HUDTeammate:_init_killcount()
 		self._kills_panel = self._panel:panel({
 			name = "kills_panel",
@@ -191,6 +123,100 @@ if not HUDTeammate.increment_kill_count and not HUDManager.CUSTOM_TEAMMATE_PANEL
 		self._kills_text:set_right(self._kills_panel:w())
 		self:reset_kill_count()
 		self:refresh_kill_count_visibility()
+	end
+
+	function HUDTeammate:set_voice_com(status)
+		local texture = status and "guis/textures/pd2/jukebox_playing" or "guis/textures/pd2/hud_tabs"
+		local texture_rect = status and { 0, 0, 16, 16 } or { 84, 34, 19, 19 }
+		local callsign = self._panel:child("callsign")
+		callsign:set_image(texture, unpack(texture_rect))
+	end
+
+	function HUDTeammate:set_max_stamina(value)
+		self._max_stamina = value
+		local w = self._stamina_bar:w()
+		local threshold = tweak_data.player.movement_state.stamina.MIN_STAMINA_THRESHOLD
+		local angle = 360 * (1 - threshold/self._max_stamina) - 90
+		local x = 0.5 * w * math.cos(angle) + w * 0.5 + self._stamina_bar:x()
+		local y = 0.5 * w * math.sin(angle) + w * 0.5 + self._stamina_bar:y()
+		self._stamina_line:set_x(x)
+		self._stamina_line:set_y(y)
+		self._stamina_line:set_rotation(angle)
+	end
+
+	function HUDTeammate:set_current_stamina(value)
+		self._stamina_bar:set_color(Color(1, value/self._max_stamina, 0, 0))
+	end
+
+	function HUDTeammate:increment_revives()
+		if self._revives_counter then
+			self._revives_count = self._revives_count + 1
+			self._revives_counter:set_text(tostring(self._revives_count))
+		end
+	end
+
+	function HUDTeammate:reset_revives()
+		if self._revives_counter then
+			self._revives_count = 0
+			self._revives_counter:set_text(tostring(self._revives_count))
+		end
+	end
+
+	function HUDTeammate:set_revive_visibility(visible)
+		if self._revives_counter then
+			self._revives_counter:set_visible(not managers.groupai:state():whisper_mode() and visible and not self._is_in_custody)
+		end
+	end
+
+	function HUDTeammate:set_detection_visibility(visible)
+		if self._detection_counter then
+			self._detection_counter:set_visible(managers.groupai:state():whisper_mode() and visible and not self._is_in_custody)
+		end
+	end
+
+	function HUDTeammate:set_stamina_meter_visibility(visible)
+		if self._stamina_bar then
+			self._stamina_bar:set_visible(visible and not self._is_in_custody)
+		end
+	end
+
+	function HUDTeammate:set_player_in_custody(incustody)
+		self._is_in_custody = incustody
+		self:set_revive_visibility(not incustody)
+		self:set_stamina_meter_visibility(not incustody)
+	end
+
+	function HUDTeammate:set_health(data)
+		if data.revives then
+			local revive_colors = { Color("FC9797"), Color("FCD997"), Color("C2FF97"), Color("97FC9A") }
+			self._revives_counter:set_color(revive_colors[data.revives - 1] or Color.black:with_alpha(0.9))
+			local has_messiah = false
+			local messiah_charges = 0
+			if self._main_player then
+				messiah_charges = managers.player:upgrade_value("player", "pistol_revive_from_bleed_out", 0)
+				has_messiah = messiah_charges > 0
+				if has_messiah and managers.player:player_unit() and managers.player:player_unit():character_damage() then
+					messiah_charges = managers.player:player_unit():character_damage()._messiah_charges
+				end
+			end
+			if has_messiah then
+				self._revives_counter:set_text(tostring(data.revives - 1) .. "/" .. tostring(messiah_charges))
+			else
+				self._revives_counter:set_text(tostring(data.revives - 1))
+			end
+			self:set_player_in_custody(data.revives - 1 < 0)
+		end
+		return set_health_original(self, data)
+	end
+
+	function HUDTeammate:set_hud_mode(mode)
+		self:set_revive_visibility(not (mode == "stealth"))
+		self:set_detection_visibility(mode == "stealth")
+	end
+
+	function HUDTeammate:set_detection_risk(risk)
+		self._detection_counter:set_text(string.format("%.0f", risk * 100))
+		self._detection_counter:set_color(Color(1, 0.99, 0.08, 0) * (risk / 0.75) + Color(1, 0, 0.71, 1) * (1 - risk / 0.75))
 	end
 
 	function HUDTeammate:increment_kill_count(is_special, headshot)

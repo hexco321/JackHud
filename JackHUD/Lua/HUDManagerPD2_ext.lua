@@ -39,7 +39,7 @@ function HUDManager:set_mugshot_custody(id)
 	local panel_id = self:_mugshot_id_to_panel_id(id)
 	if panel_id then
 		self._teammate_panels[panel_id]:reset_revives()
-		self._teammate_panels[panel_id]:set_revive_visibility(false)
+		self._teammate_panels[panel_id]:set_player_in_custody(true)
 	end
 	return set_mugshot_custody_original(self, id)
 end
@@ -47,7 +47,7 @@ end
 function HUDManager:set_mugshot_normal(id)
 	local panel_id = self:_mugshot_id_to_panel_id(id)
 	if panel_id then
-		self._teammate_panels[panel_id]:set_revive_visibility(true)
+		self._teammate_panels[panel_id]:set_player_in_custody(false)
 	end
 	return set_mugshot_normal_original(self, id)
 end
@@ -115,9 +115,9 @@ end
 HUDListManager = HUDListManager or class()
 HUDListManager.ListOptions = {
 	--General settings
-	right_list_height_offset = 50,   --Margin from top for the right list
+	right_list_height_offset = 80,   --Margin from top for the right list
 	right_list_scale = 1,   --Size scale of right list
-	left_list_height_offset = 50,   --Margin from top for the left list
+	left_list_height_offset = 80,   --Margin from top for the left list
 	left_list_scale = 1,    --Size scale of left list
 	buff_list_height_offset = 80,   --Margin from bottom for the buff list
 	buff_list_scale = 1,    --Size scale of buff list
@@ -290,17 +290,7 @@ function HUDListManager:_setup_buff_list()
 	local list_height = 45 * scale
 	local list_width = hud_panel:w()
 	local x = 0
-	local y
-
-	if HUDManager.CUSTOM_TEAMMATE_PANEL then
-		if managers.hud._teammate_panels_custom then
-			y = managers.hud._teammate_panels_custom[HUDManager.PLAYER_PANEL]:panel():top() - (list_height + 5)
-		else
-			y = managers.hud._teammate_panels[HUDManager.PLAYER_PANEL]:panel():top() - (list_height + 5)
-		end
-	else
-		y = hud_panel:bottom() - ((HUDListManager.ListOptions.buff_list_height_offset or 80) + list_height)
-	end
+	local y = hud_panel:bottom() - ((HUDListManager.ListOptions.buff_list_height_offset or 80) + list_height)
 
 	local buff_list = self:register_list("buff_list", HUDList.HorizontalList, {
 		align = "center",
