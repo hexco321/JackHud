@@ -181,6 +181,15 @@
 		},
 		{
 			"type": "toggle",
+			"id": "show_gage_packages",
+			"title": "show_gage_packages",
+			"description": "show_gage_packages_desc",
+			"callback": "callback_show_gage_packages",
+			"value": "show_gage_packages",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
 			"id": "show_special_pickups",
 			"title": "show_special_pickups",
 			"description": "show_special_pickups_desc",

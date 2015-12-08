@@ -146,6 +146,7 @@ HUDListManager.ListOptions = {
 	aggregate_loot = JackHUD._data.aggregate_loot, --Don't split loot on type; use a single entry for all
 	separate_bagged_loot = JackHUD._data.separate_bagged_loot,     --Show bagged loot as a separate value
 	show_special_pickups = JackHUD._data.show_special_pickups,    --Show number of special equipment/items
+	show_gage_packages = JackHUD._data.show_gage_packages,    --Show number of gage packages
 
 	--Buff list
 	show_buffs = JackHUD._data.show_buffs       --Active effects (buffs/debuffs). Also see HUDList.BuffItemBase.IGNORED_BUFFS table to ignore specific buffs that you don't want listed, or enable some of those not shown by default
@@ -950,13 +951,15 @@ end
 function HUDListManager:_set_show_special_pickups()
 	local list = self:list("right_side_list"):item("special_pickup_list")
 
-	if HUDListManager.ListOptions.show_special_pickups then
+	for _, item in pairs(list:items()) do
+		item:delete(true)
+	end
+
+	if HUDListManager.ListOptions.show_special_pickups or HUDListManager.ListOptions.show_gage_packages then
 		for id, data in pairs(HUDList.SpecialPickupItem.SPECIAL_PICKUP_ICON_MAP) do
-			list:register_item(id, data.class or HUDList.SpecialPickupItem)
-		end
-	else
-		for _, item in pairs(list:items()) do
-			item:delete(true)
+			if (id ~= "courier" and HUDListManager.ListOptions.show_special_pickups) or (id == "courier" and HUDListManager.ListOptions.show_gage_packages) then
+				list:register_item(id, data.class or HUDList.SpecialPickupItem)
+			end
 		end
 	end
 end
@@ -1833,11 +1836,11 @@ do
 
 	HUDList.SpecialPickupItem = HUDList.SpecialPickupItem or class(HUDList.RightListItem)
 	HUDList.SpecialPickupItem.SPECIAL_PICKUP_ICON_MAP = {
-		crowbar =                                       { hudpickups = { 0, 64, 32, 32 } },
-		keycard =                                       { hudpickups = { 32, 0, 32, 32 } },
-		courier =                                       { atlas = { 6, 0 } },
-		planks =                                        { hudpickups = { 0, 32, 32, 32 } },
-		meth_ingredients =      { waypoints = { 192, 32, 32, 32 } },
+		crowbar =			{ hudpickups = { 0, 64, 32, 32 } },
+		keycard =			{ hudpickups = { 32, 0, 32, 32 } },
+		courier =			{ atlas = { 6, 0 } },
+		planks =			{ hudpickups = { 0, 32, 32, 32 } },
+		meth_ingredients =	{ waypoints = { 192, 32, 32, 32 } },
 	}
 	function HUDList.SpecialPickupItem:init(parent, name, pickup_data)
 		local pickup_data = pickup_data or HUDList.SpecialPickupItem.SPECIAL_PICKUP_ICON_MAP[name]

@@ -226,6 +226,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.separate_bagged_loot = (item:value() =="on")
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_show_gage_packages = function(self, item)
+		JackHUD._data.show_gage_packages = (item:value() =="on")
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_show_special_pickups = function(self, item)
 		JackHUD._data.show_special_pickups = (item:value() =="on")
 		JackHUD:Save()

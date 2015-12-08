@@ -1,4 +1,8 @@
 
+1.7r8:
++ added: seperate option for gage courier packages
+~ changed: default options
+
 1.7r7:
 - Added some screen skipping options.
 - Added option for handling reload as interaction.
