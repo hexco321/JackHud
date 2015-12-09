@@ -121,6 +121,13 @@
 	"show_text_borders" : "Black text borders",
 	"show_text_borders_desc" : "Show black borders around the interaction/suspicion texts",
 
+	"truncate_name_tags" : "Truncate name tags",
+	"truncate_name_tags_desc" : "Truncate clan tags off names and replace them with a small dot",
+	"show_client_ranks" : "Show client ranks",
+	"show_client_ranks_desc" : "Show client ranks in front of the names",
+	"colorize_names" : "Colorize names",
+	"colorize_names_desc" : "Colorize player names",
+
 	"enable_filtersettings" : "Persistent CrimeNET Filter Settings",
 	"enable_filtersettings_desc" : "Saves the CrimeNET Filter Settings",
 	"lobby_skins_mode" : "Lobby weapon skins",

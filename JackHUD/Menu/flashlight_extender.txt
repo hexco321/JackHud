@@ -15,7 +15,7 @@
 		},
 		{
 			"type" : "divider",
-			"size" : 16,
+			"size" : 16
 		},
 		{
 			"type": "slider",

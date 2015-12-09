@@ -9,6 +9,19 @@ local set_max_stamina_original = HUDManager.set_max_stamina
 local set_mugshot_downed_original = HUDManager.set_mugshot_downed
 local set_mugshot_custody_original = HUDManager.set_mugshot_custody
 local set_mugshot_normal_original = HUDManager.set_mugshot_normal
+local teammate_progress_original = HUDManager.teammate_progress
+
+function HUDManager:teammate_progress(peer_id, type_index, enabled, tweak_data_id, timer, success, ...)
+	teammate_progress_original(self, peer_id, type_index, enabled, tweak_data_id, timer, success, ...)
+	local label = self:_name_label_by_peer_id(peer_id)
+	local panel = self:teammate_panel_from_peer_id(peer_id)
+	if panel then
+		if label then
+			self._teammate_panels[panel]:set_interact_text((label.panel:child("action"):text()))
+		end
+		self._teammate_panels[panel]:set_interact_visible(enabled)
+	end
+end
 
 function HUDManager:_mugshot_id_to_panel_id(id)
 	for _, data in pairs(managers.criminals:characters()) do

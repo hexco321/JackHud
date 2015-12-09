@@ -320,6 +320,18 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.show_text_borders = (item:value() =="on")
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_truncate_name_tags = function(self, item)
+		JackHUD._data.truncate_name_tags = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_client_ranks = function(self, item)
+		JackHUD._data.show_client_ranks = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_colorize_names = function(self, item)
+		JackHUD._data.colorize_names = (item:value() =="on")
+		JackHUD:Save()
+	end
 
 	MenuCallbackHandler.callback_jackhud_reset = function(self, item)
 		local menu_title = managers.localization:text("jackhud_reset")

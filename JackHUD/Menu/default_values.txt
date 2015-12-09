@@ -44,5 +44,8 @@
 	"show_reload_interaction" : true,
 	"show_interaction_circle" : false,
 	"show_interaction_text": true,
-	"show_text_borders" : true
+	"show_text_borders" : true,
+	"truncate_name_tags" : true,
+	"show_client_ranks" : true,
+	"colorize_names" : true
 }

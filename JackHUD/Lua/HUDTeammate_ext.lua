@@ -8,12 +8,15 @@ if not HUDTeammate.increment_kill_count then
 	local set_name_original = HUDTeammate.set_name
 	local set_state_original = HUDTeammate.set_state
 	local set_health_original = HUDTeammate.set_health
+	local teammate_progress_original = HUDTeammate.teammate_progress
 
 	function HUDTeammate:init(i, ...)
 		init_original(self, i, ...)
 		self._is_in_custody = false
 		if i == HUDManager.PLAYER_PANEL then
 			self:_init_stamina_meter()
+		else
+			self:_init_interact_info()
 		end
 		self:_init_killcount()
 		self:_init_revivecount()
@@ -82,7 +85,18 @@ if not HUDTeammate.increment_kill_count then
 		})
 		self._revives_count = 0
 		if self._main_player then
-			self:set_detection_risk(managers.blackmarket:get_suspicion_offset_of_outfit_string(managers.blackmarket:unpack_outfit_from_string(managers.blackmarket:outfit_string()), tweak_data.player.SUSPICION_OFFSET_LERP or 0.75))
+			self:set_detection_risk(managers.blackmarket:get_suspicion_offset_of_local(0.75))
+		end
+	end
+
+	function HUDTeammate:set_peer_id(peer_id)
+		self._peer_id = peer_id
+		local session = managers.network:session()
+		if session then
+			local peer = session:peer(peer_id)
+			if peer and alive(peer:unit()) then
+				self:set_detection_risk(managers.blackmarket:get_suspicion_offset_of_peer(peer, 0.75))
+			end
 		end
 	end
 
@@ -97,7 +111,7 @@ if not HUDTeammate.increment_kill_count then
 		})
 		local player_panel = self._panel:child("player")
 		local name_label = self._panel:child("name")
-		self._kills_panel:set_rightbottom(player_panel:right(), (self._id == HUDManager.PLAYER_PANEL) and name_label:bottom() or name_label:top())
+		self._kills_panel:set_rightbottom(player_panel:right(), name_label:bottom())
 		self._kill_icon = self._kills_panel:bitmap({
 			texture = "guis/textures/pd2/cn_miniskull",
 			w = self._kills_panel:h() * 0.75,
@@ -123,6 +137,105 @@ if not HUDTeammate.increment_kill_count then
 		self._kills_text:set_right(self._kills_panel:w())
 		self:reset_kill_count()
 		self:refresh_kill_count_visibility()
+	end
+
+	function HUDTeammate:_init_interact_info()
+		self._interact_info_panel = self._panel:panel({
+			name = "interact_info_panel",
+			x = 0,
+			y = 0,
+			visible = false
+		})
+		self._interact_info = self._interact_info_panel:text({
+			name = "interact_info",
+			text = "|",
+			layer = 3,
+			color = Color.white,
+			x = 0,
+			y = 1,
+			align = "right",
+			vertical = "top",
+			font_size = tweak_data.hud_players.name_size,
+			font = tweak_data.hud_players.name_font
+		})
+		local _, _, text_w, text_h = self._interact_info:text_rect()
+		self._interact_info:set_right(self._interact_info_panel:w() - 8)
+		self._interact_info_bg = self._interact_info_panel:bitmap({
+			name = "interact_info_bg",
+			texture = "guis/textures/pd2/hud_tabs",
+			texture_rect = {
+				84,
+				0,
+				44,
+				32
+			},
+			layer = 2,
+			color = Color.white / 3,
+			x = 0,
+			y = 0,
+			align = "left",
+			vertical = "bottom",
+			w = text_w + 4,
+			h = text_h
+		})
+	end
+
+	function HUDTeammate:teammate_progress(enabled, tweak_data_id, timer, success, ...)
+		teammate_progress_original(self, enabled, tweak_data_id, timer, success, ...)
+		if enabled then
+			self:_start_interact_timer(timer)
+		else
+			self:_stop_interact_timer()
+		end
+	end
+
+	function HUDTeammate:_start_interact_timer(interaction_time)
+		self._timer_paused = 0
+		self._timer = interaction_time
+		local condition_timer = self._panel:child("condition_timer")
+		condition_timer:set_font_size(tweak_data.hud_players.timer_size)
+		condition_timer:set_color(Color.white)
+		condition_timer:stop()
+		condition_timer:set_visible(true)
+		condition_timer:animate(callback(self, self, "_animate_interact_timer"), condition_timer)
+	end
+
+	function HUDTeammate:_stop_interact_timer(...)
+		if not alive(self._panel) then
+			return
+		end
+		local condition_timer = self._panel:child("condition_timer")
+		condition_timer:set_visible(false)
+		condition_timer:stop()
+	end
+
+	function HUDTeammate:_animate_interact_timer(_, condition_timer)
+		while self._timer >= 0 do
+			if self._timer_paused == 0 then
+				self._timer = self._timer - coroutine.yield()
+				if self._timer < 0 then
+					self._timer = 0
+				end
+				condition_timer:set_text(string.format("%.1f", self._timer) .. "s")
+				condition_timer:set_color(Color(self._timer / self._timer, 1, self._timer / self._timer))
+			end
+		end
+	end
+
+	function HUDTeammate:set_interact_text(text)
+		if not self._interact_info then
+			return
+		end
+		self._interact_info:set_text(text)
+		local _, _, w, _ = self._interact_info:text_rect()
+		self._interact_info_bg:set_w(w + 8)
+		self._interact_info_bg:set_right(self._interact_info:right() + 4)
+	end
+
+	function HUDTeammate:set_interact_visible(visible)
+		if self._interact_info_panel then
+			self._interact_info_panel:set_visible(visible)
+		end
 	end
 
 	function HUDTeammate:set_voice_com(status)
@@ -238,6 +351,8 @@ if not HUDTeammate.increment_kill_count then
 		local _, _, w, _ = self._kills_text:text_rect()
 		self._kill_icon:set_right(self._kills_panel:w() - w - self._kill_icon:w() * 0.15)
 		self:refresh_kill_count_visibility()
+		if not self._color_pos then self._color_pos = 1 end
+		self:_truncate_name()
 	end
 
 	function HUDTeammate:reset_kill_count()
@@ -252,7 +367,41 @@ if not HUDTeammate.increment_kill_count then
 			self._name = teammate_name
 			self:reset_kill_count()
 		end
-		return set_name_original(self, teammate_name, ...)
+		self._color_pos = 1
+		local peer = managers.network:session():peer(self._peer_id)
+		local truncated_name = teammate_name:gsub('^%b[]',''):gsub('^%b==',''):gsub('^%s*(.-)%s*$','%1')
+		if truncated_name:len() > 0 and teammate_name ~= truncated_name and JackHUD._data.truncate_name_tags then
+			teammate_name = utf8.char(1031) .. truncated_name
+		end
+		if peer and peer:level() and JackHUD._data.show_client_ranks then
+			local ranktag = ""
+			if peer:rank() > 0 and managers.experience:rank_string((peer:rank())) then
+				ranktag = managers.experience:rank_string((peer:rank())) .. "-"
+			end
+			local leveltag = ranktag .. peer:level() .. " "
+			teammate_name = leveltag .. teammate_name
+			self._color_pos = self._color_pos + leveltag:len()
+		end
+		self._panel:child("name"):set_text(teammate_name)
+		set_name_original(self, self._panel:child("name"):text(), ...)
+		self:_truncate_name()
+	end
+
+	function HUDTeammate:_truncate_name()
+		local teammate_name
+		local name_panel = self._panel:child("name")
+		local _,_,w,_ = name_panel:text_rect()
+		if JackHUD._data.enable_kill_counter then
+			while (name_panel:x() + w) > (self._kills_panel:x() + self._kill_icon:x() - 2) do
+				_,_,w,_ = name_panel:text_rect()
+				teammate_name = name_panel:text()
+				name_panel:set_text(teammate_name:sub(1, teammate_name:len() - 1))
+			end
+		end
+		if JackHUD._data.colorize_names then
+			self._panel:child("name"):set_range_color(self._color_pos, name_panel:text():len(), self._panel:child("callsign"):color():with_alpha(1))
+		end
+		self._panel:child("name_bg"):set_w(w + 4)
 	end
 
 	function HUDTeammate:refresh_kill_count_visibility()
@@ -266,7 +415,7 @@ if not HUDTeammate.increment_kill_count then
 			self._kills_panel:set_bottom(self._panel:child("player"):bottom())
 		else
 			local name_label = self._panel:child("name")
-			self._kills_panel:set_bottom((self._id == HUDManager.PLAYER_PANEL) and name_label:bottom() or name_label:top())
+			self._kills_panel:set_bottom(name_label:bottom())
 		end
 	end
 end
