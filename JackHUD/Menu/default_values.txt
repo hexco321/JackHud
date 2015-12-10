@@ -41,11 +41,15 @@
 	"equipment_interrupt" : true,
 	"lobby_skins_mode" : 1,
 	"show_suspicion_text" : true,
+	"show_melee_interaction" : true,
 	"show_reload_interaction" : true,
 	"show_interaction_circle" : false,
 	"show_interaction_text": true,
 	"show_text_borders" : true,
 	"truncate_name_tags" : true,
 	"show_client_ranks" : true,
-	"colorize_names" : true
+	"colorize_names" : true,
+	"show_armor_timer" : true,
+	"show_inspire_timer" : true,
+	"anti_stealth_grenades" : true
 }

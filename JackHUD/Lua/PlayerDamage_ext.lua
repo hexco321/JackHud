@@ -4,6 +4,7 @@ local build_suppression_original = PlayerDamage.build_suppression
 local restore_armor_original = PlayerDamage.restore_armor
 local _upd_health_regen_original = PlayerDamage._upd_health_regen
 local add_damage_to_hot_original = PlayerDamage.add_damage_to_hot
+local update_original = PlayerDamage.update
 
 PlayerDamage._ARMOR_REGEN_TABLE = {
 	[tweak_data.upgrades.values.player.headshot_regen_armor_bonus[1] ] = "bullseye_debuff",
@@ -11,6 +12,11 @@ PlayerDamage._ARMOR_REGEN_TABLE = {
 	[tweak_data.upgrades.values.player.headshot_regen_armor_bonus[2] ] = "bullseye_debuff",
 	[tweak_data.upgrades.values.player.killshot_regen_armor_bonus[1] + tweak_data.upgrades.values.player.killshot_close_regen_armor_bonus[1] ] = "tension_debuff",
 }
+
+function PlayerDamage:update(...)
+	update_original(self, ...)
+	managers.hud:update_armor_timer(self._regenerate_timer or 0)
+end
 
 function PlayerDamage:set_health(...)
 	set_health_original(self, ...)

@@ -11,6 +11,31 @@ local set_mugshot_custody_original = HUDManager.set_mugshot_custody
 local set_mugshot_normal_original = HUDManager.set_mugshot_normal
 local teammate_progress_original = HUDManager.teammate_progress
 
+function HUDManager:update_armor_timer(...)
+	self._teammate_panels[self.PLAYER_PANEL]:update_armor_timer(...)
+end
+
+function HUDManager:update_inspire_timer(...)
+	self._teammate_panels[self.PLAYER_PANEL]:update_inspire_timer(...)
+end
+
+function HUDManager:make_outline_text(panel, bg, txt)
+	bg.name = nil
+	bgs = {}
+	for i = 1, 4 do
+		table.insert(bgs, panel:text(bg))
+	end
+	bgs[1]:set_x(txt:x() - 1)
+	bgs[1]:set_y(txt:y() - 1)
+	bgs[2]:set_x(txt:x() + 1)
+	bgs[2]:set_y(txt:y() - 1)
+	bgs[3]:set_x(txt:x() - 1)
+	bgs[3]:set_y(txt:y() + 1)
+	bgs[4]:set_x(txt:x() + 1)
+	bgs[4]:set_y(txt:y() + 1)
+	return bgs
+end
+
 function HUDManager:teammate_progress(peer_id, type_index, enabled, tweak_data_id, timer, success, ...)
 	teammate_progress_original(self, peer_id, type_index, enabled, tweak_data_id, timer, success, ...)
 	local label = self:_name_label_by_peer_id(peer_id)

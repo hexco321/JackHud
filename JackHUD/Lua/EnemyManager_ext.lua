@@ -47,6 +47,14 @@ function EnemyManager:init(...)
 	end
 end
 
+function EnemyManager:get_delayed_clbk_expire_t(clbk_id)
+	for _, clbk in ipairs(self._delayed_clbks) do
+		if clbk[1] == clbk_id then
+			return clbk[2]
+		end
+	end
+end
+
 function EnemyManager:register_enemy(unit, ...)
 	self:_change_enemy_count(unit, 1)
 	return register_enemy_original(self, unit, ...)

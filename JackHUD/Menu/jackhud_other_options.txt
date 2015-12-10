@@ -69,6 +69,15 @@
 		},
 		{
 			"type": "toggle",
+			"id": "show_melee_interaction",
+			"title": "show_melee_interaction",
+			"description": "show_melee_interaction_desc",
+			"callback": "callback_show_melee_interaction",
+			"value": "show_melee_interaction",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
 			"id": "show_reload_interaction",
 			"title": "show_reload_interaction",
 			"description": "show_reload_interaction_desc",
@@ -133,6 +142,41 @@
 			"callback": "callback_colorize_names",
 			"value": "colorize_names",
 			"default_value": true
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type": "toggle",
+			"id": "show_armor_timer",
+			"title": "show_armor_timer",
+			"description": "show_armor_timer_desc",
+			"callback": "callback_show_armor_timer",
+			"value": "show_armor_timer",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
+			"id": "show_inspire_timer",
+			"title": "show_inspire_timer",
+			"description": "show_inspire_timer",
+			"callback": "callback_show_inspire_timer",
+			"value": "show_inspire_timer",
+			"default_value": true
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "toggle",
+			"id" : "anti_stealth_grenades",
+			"title" : "anti_stealth_grenades",
+			"description" : "anti_stealth_grenades_desc",
+			"callback" : "callback_anti_stealth_grenades",
+			"value" : "anti_stealth_grenades",
+			"default_value" : true
 		}
 	]
 }

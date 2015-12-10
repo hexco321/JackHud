@@ -304,6 +304,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.show_suspicion_text = (item:value() =="on")
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_show_melee_interaction = function(self, item)
+		JackHUD._data.show_melee_interaction = (item:value() =="on")
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_show_reload_interaction = function(self, item)
 		JackHUD._data.show_reload_interaction = (item:value() =="on")
 		JackHUD:Save()
@@ -330,6 +334,18 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	end
 	MenuCallbackHandler.callback_colorize_names = function(self, item)
 		JackHUD._data.colorize_names = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_armor_timer = function(self, item)
+		JackHUD._data.show_armor_timer = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_inspire_timer = function(self, item)
+		JackHUD._data.show_inspire_timer = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_anti_stealth_grenades = function(self, item)
+		JackHUD._data.anti_stealth_grenades = (item:value() =="on")
 		JackHUD:Save()
 	end
 

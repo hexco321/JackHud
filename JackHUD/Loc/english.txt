@@ -110,6 +110,8 @@
 	"enable_pacified" : "Pacified Civilian Marker",
 	"enable_pacified_desc" : "Enables green Marker for Pacified Civilians",
 
+	"show_melee_interaction" : "Show melee charging as interaction",
+	"show_melee_interaction_desc" : "Show interaction indicators when charging melee attack",
 	"show_reload_interaction" : "Show reload as interaction",
 	"show_reload_interaction_desc" : "Show interaction indicators when reloading",
 	"show_interaction_circle" : "Show interaction circle",
@@ -127,6 +129,14 @@
 	"show_client_ranks_desc" : "Show client ranks in front of the names",
 	"colorize_names" : "Colorize names",
 	"colorize_names_desc" : "Colorize player names",
+
+	"show_armor_timer" : "Show armor timer",
+	"show_armor_timer_desc" : "Show the time until armor regenerates",
+	"show_inspire_timer" : "Show inspire timer",
+	"show_inspire_timer_desc" : "Show the time of beeing inspired",
+
+	"anti_stealth_grenades" : "Anti stealth grenades",
+	"anti_stealth_grenades_desc" : "Supresses throwing of grenades in stealth (click again to force throw)",
 
 	"enable_filtersettings" : "Persistent CrimeNET Filter Settings",
 	"enable_filtersettings_desc" : "Saves the CrimeNET Filter Settings",

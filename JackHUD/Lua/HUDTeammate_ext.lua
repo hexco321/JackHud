@@ -15,6 +15,8 @@ if not HUDTeammate.increment_kill_count then
 		self._is_in_custody = false
 		if i == HUDManager.PLAYER_PANEL then
 			self:_init_stamina_meter()
+			self:_init_armor_timer()
+			self:_init_inspire_timer()
 		else
 			self:_init_interact_info()
 		end
@@ -178,6 +180,89 @@ if not HUDTeammate.increment_kill_count then
 			w = text_w + 4,
 			h = text_h
 		})
+	end
+
+	function HUDTeammate:_init_inspire_timer()
+		self._inspire_timer = self._player_panel:text({
+			name = "inspire_timer",
+			text = "0.0s",
+			color = Color.white,
+			visible = false,
+			align = "right",
+			vertical = "bottom",
+			font = tweak_data.hud_players.name_font,
+			font_size = 20,
+			layer = 4
+		})
+		self._inspire_timer:set_right(self._player_panel:child("radial_health_panel"):right())
+		self._inspire_timer_bg = managers.hud:make_outline_text(self._player_panel, {
+			text = "0.0s",
+			color = Color.black:with_alpha(0.5),
+			visible = false,
+			align = "right",
+			vertical = "bottom",
+			font = tweak_data.hud_players.name_font,
+			font_size = 20,
+			layer = 3
+		}, self._inspire_timer)
+	end
+
+	function HUDTeammate:_init_armor_timer()
+		self._armor_timer = self._player_panel:text({
+			name = "armor_regen",
+			text = "0.0s",
+			color = Color.white,
+			visible = false,
+			align = "left",
+			vertical = "bottom",
+			font = tweak_data.hud_players.name_font,
+			font_size = 20,
+			layer = 4
+		})
+		self._armor_timer_bg = managers.hud:make_outline_text(self._player_panel, {
+			text = "0.0s",
+			color = Color.black:with_alpha(0.5),
+			visible = false,
+			align = "left",
+			vertical = "bottom",
+			font = tweak_data.hud_players.name_font,
+			font_size = 20,
+			layer = 3
+		}, self._armor_timer)
+	end
+
+	function HUDTeammate:update_inspire_timer(t)
+		if t and t > 0 and self._inspire_timer then
+			t = string.format("%.1f", t) .. "s"
+			self._inspire_timer:set_text(t)
+			self._inspire_timer:set_visible(JackHUD._data.show_inspire_timer)
+			for _, bg in ipairs(self._inspire_timer_bg) do
+				bg:set_text(t)
+				bg:set_visible(JackHUD._data.show_inspire_timer)
+			end
+		elseif self._inspire_timer and self._inspire_timer:visible() then
+			self._inspire_timer:set_visible(false)
+			for _, bg in ipairs(self._inspire_timer_bg) do
+				bg:set_visible(false)
+			end
+		end
+	end
+
+	function HUDTeammate:update_armor_timer(t)
+		if t and t > 0 and self._armor_timer then
+			t = string.format("%.1f", t) .. "s"
+			self._armor_timer:set_text(t)
+			self._armor_timer:set_visible(JackHUD._data.show_armor_timer)
+			for _, bg in ipairs(self._armor_timer_bg) do
+				bg:set_text(t)
+				bg:set_visible(JackHUD._data.show_armor_timer)
+			end
+		elseif self._armor_timer and self._armor_timer:visible() then
+			self._armor_timer:set_visible(false)
+			for _, bg in ipairs(self._armor_timer_bg) do
+				bg:set_visible(false)
+			end
+		end
 	end
 
 	function HUDTeammate:teammate_progress(enabled, tweak_data_id, timer, success, ...)
@@ -398,7 +483,7 @@ if not HUDTeammate.increment_kill_count then
 				name_panel:set_text(teammate_name:sub(1, teammate_name:len() - 1))
 			end
 		end
-		if JackHUD._data.colorize_names then
+		if JackHUD._data.colorize_names and not self._ai then
 			self._panel:child("name"):set_range_color(self._color_pos, name_panel:text():len(), self._panel:child("callsign"):color():with_alpha(1))
 		end
 		self._panel:child("name_bg"):set_w(w + 4)
@@ -418,4 +503,5 @@ if not HUDTeammate.increment_kill_count then
 			self._kills_panel:set_bottom(name_label:bottom())
 		end
 	end
+
 end

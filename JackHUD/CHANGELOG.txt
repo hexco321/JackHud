@@ -1,4 +1,11 @@
 
+1.8r9:
++ added: Armor regeneration timer
++ added: Inspire timer
++ added: Option for anti stealth grenades
++ added: Show interaction circle when charging melee
+~ changed: AI names won't be colorized anymore
+
 1.7r8:
 + added: seperate option for gage courier packages
 + added: detection risk of other players will be shown in stealth mode
@@ -7,8 +14,6 @@
 ~ changed: Kill counters now align to the players name
 ~ changed: default options
 ~ fixed: push to interact in civilian mode (casino)
-
-NOTE: with this update you should disable the "bottom info box" of pocohud. (will be fixed in jackpack 1.8)
 
 1.7r7:
 - Added some screen skipping options.
