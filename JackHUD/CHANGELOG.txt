@@ -1,5 +1,5 @@
 
-next:
+1.8r10:
 ~ fixed: Added Bodhi to the tab-stats
 ~ fixed: Added presents to the bags-count (also removed pills and ladders since they arent loot)
 ~ fixed: Added blowtorch to specialpickups-list
