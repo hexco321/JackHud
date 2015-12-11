@@ -67,7 +67,7 @@
 	"aggregate_loot_desc" : "Don't split loot on type; use a single entry for all",
 	"separate_bagged_loot" : "Separate bagged loot",
 	"separate_bagged_loot_desc" : "Show bagged loot as a separate value",
-	"show_special_pickups" : "Show special pickpus",
+	"show_special_pickups" : "Show special pickups",
 	"show_special_pickups_desc" : "Show number of special equipment/items",
 	"show_gage_packages" : "Show gage packages",
 	"show_gage_packages_desc" : "Show number of gage packages",

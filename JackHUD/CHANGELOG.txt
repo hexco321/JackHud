@@ -1,4 +1,9 @@
 
+next:
+~ fixed: Added Bodhi to the tab-stats
+~ fixed: Added presents to the bags-count (also removed pills and ladders since they arent loot)
+~ fixed: Added blowtorch to specialpickups-list
+
 1.8r9:
 + added: Armor regeneration timer
 + added: Inspire timer

@@ -65,8 +65,7 @@ ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID = {
 	nail_muriatic_acid =					"MU",
 	nail_caustic_soda =						"CS",
 	nail_hydrogen_chloride =				"HCL",
-	nail_euphadrine_pills =					"euphadrine",
-	equipment_bag_global_event =			"ladder"
+	present =								"present"
 }
 
 ObjectInteractionManager.LOOT_TYPE_LEVEL_COMPENSATION = {

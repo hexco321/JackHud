@@ -1879,6 +1879,7 @@ do
 		courier =			{ atlas = { 6, 0 } },
 		planks =			{ hudpickups = { 0, 32, 32, 32 } },
 		meth_ingredients =	{ waypoints = { 192, 32, 32, 32 } },
+		Blowtorch =			{ hudpickups = { 96, 192, 32, 32 } }
 	}
 	function HUDList.SpecialPickupItem:init(parent, name, pickup_data)
 		local pickup_data = pickup_data or HUDList.SpecialPickupItem.SPECIAL_PICKUP_ICON_MAP[name]
@@ -1921,8 +1922,7 @@ do
 		MU =			{ text = "MU" },
 		CS =			{ text = "CS" },
 		HCL =			{ text = "HCL" },
-		euphadrine =	{ text = "Pills" },
-		ladder =		{ text = "Ladder"}
+		present =		{ text = "present"}
 		--container =   { text = "?" },
 	}
 	function HUDList.LootItem:init(parent, name, loot_data)
