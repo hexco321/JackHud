@@ -96,6 +96,23 @@
 	"flashlight_angle" : "Flashlight Angle",
 	"flashlight_angle_desc" : "Angle/width of beam, 0-160 (default 60)",
 
+	"laser_options" : "Laser options",
+	"laser_options_desc" : "Change the color of player lasers",
+	"laser_color_r" : "Red",
+	"laser_color_r_desc" : "",
+	"laser_color_g" : "Green",
+	"laser_color_g_desc" : "",
+	"laser_color_b" : "Blue",
+	"laser_color_b_desc" : "",
+	"laser_color_rainbow" : "Rainbow Colors",
+	"laser_color_rainbow_desc" : "Overrides custom colors above",
+	"laser_color_a" : "Ray Alpha",
+	"laser_color_a_desc" : "",
+	"laser_glow" : "Dot Glow",
+	"laser_glow_desc" : "",
+	"laser_light" : "Dot Brightness",
+	"laser_light_desc" : "",
+
 	"push_to_interact" : "Push to interact",
 	"push_to_interact_desc" : "No need to hold the interaction key [F] anymore",
 
@@ -134,6 +151,9 @@
 	"show_armor_timer_desc" : "Show the time until armor regenerates",
 	"show_inspire_timer" : "Show inspire timer",
 	"show_inspire_timer_desc" : "Show the time of beeing inspired",
+
+	"center_assault_banner" : "Center assault banner",
+	"center_assault_banner_desc" : "Center assault banner",
 
 	"anti_stealth_grenades" : "Anti stealth grenades",
 	"anti_stealth_grenades_desc" : "Supresses throwing of grenades in stealth (click again to force throw)",

@@ -235,16 +235,12 @@ if not HUDTeammate.increment_kill_count then
 		if t and t > 0 and self._inspire_timer then
 			t = string.format("%.1f", t) .. "s"
 			self._inspire_timer:set_text(t)
-			self._inspire_timer:set_visible(JackHUD._data.show_inspire_timer)
 			for _, bg in ipairs(self._inspire_timer_bg) do
 				bg:set_text(t)
-				bg:set_visible(JackHUD._data.show_inspire_timer)
 			end
+			self:set_inspire_timer_visibility(JackHUD._data.show_inspire_timer)
 		elseif self._inspire_timer and self._inspire_timer:visible() then
-			self._inspire_timer:set_visible(false)
-			for _, bg in ipairs(self._inspire_timer_bg) do
-				bg:set_visible(false)
-			end
+			self:set_inspire_timer_visibility(false)
 		end
 	end
 
@@ -252,16 +248,12 @@ if not HUDTeammate.increment_kill_count then
 		if t and t > 0 and self._armor_timer then
 			t = string.format("%.1f", t) .. "s"
 			self._armor_timer:set_text(t)
-			self._armor_timer:set_visible(JackHUD._data.show_armor_timer)
 			for _, bg in ipairs(self._armor_timer_bg) do
 				bg:set_text(t)
-				bg:set_visible(JackHUD._data.show_armor_timer)
 			end
+			self:set_armor_timer_visibility(JackHUD._data.show_armor_timer)
 		elseif self._armor_timer and self._armor_timer:visible() then
-			self._armor_timer:set_visible(false)
-			for _, bg in ipairs(self._armor_timer_bg) do
-				bg:set_visible(false)
-			end
+			self:set_armor_timer_visibility(false)
 		end
 	end
 
@@ -319,7 +311,7 @@ if not HUDTeammate.increment_kill_count then
 
 	function HUDTeammate:set_interact_visible(visible)
 		if self._interact_info_panel then
-			self._interact_info_panel:set_visible(visible)
+			self._interact_info_panel:set_visible(visible and not self._is_in_custody)
 		end
 	end
 
@@ -360,6 +352,24 @@ if not HUDTeammate.increment_kill_count then
 		end
 	end
 
+	function HUDTeammate:set_armor_timer_visibility(visible)
+		if self._armor_timer then
+			self._armor_timer:set_visible(visible and not self._is_in_custody)
+			for _, bg in ipairs(self._armor_timer_bg) do
+				bg:set_visible(visible and not self._is_in_custody)
+			end
+		end
+	end
+
+	function HUDTeammate:set_inspire_timer_visibility(visible)
+		if self._inspire_timer then
+			self._inspire_timer:set_visible(visible and not self._is_in_custody)
+			for _, bg in ipairs(self._inspire_timer_bg) do
+				bg:set_visible(visible and not self._is_in_custody)
+			end
+		end
+	end
+
 	function HUDTeammate:set_revive_visibility(visible)
 		if self._revives_counter then
 			self._revives_counter:set_visible(not managers.groupai:state():whisper_mode() and visible and not self._is_in_custody)
@@ -382,6 +392,9 @@ if not HUDTeammate.increment_kill_count then
 		self._is_in_custody = incustody
 		self:set_revive_visibility(not incustody)
 		self:set_stamina_meter_visibility(not incustody)
+		self:set_interact_visible(not incustody)
+		self:set_armor_timer_visibility(not incustody)
+		self:set_inspire_timer_visibility(not incustody)
 	end
 
 	function HUDTeammate:set_health(data)

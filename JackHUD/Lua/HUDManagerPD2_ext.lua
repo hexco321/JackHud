@@ -10,6 +10,63 @@ local set_mugshot_downed_original = HUDManager.set_mugshot_downed
 local set_mugshot_custody_original = HUDManager.set_mugshot_custody
 local set_mugshot_normal_original = HUDManager.set_mugshot_normal
 local teammate_progress_original = HUDManager.teammate_progress
+local feed_heist_time_original = HUDManager.feed_heist_time
+local show_casing_original =  HUDManager.show_casing
+local hide_casing_original =  HUDManager.hide_casing
+local sync_start_assault_original =  HUDManager.sync_start_assault
+local sync_end_assault_original =  HUDManager.sync_end_assault
+local show_point_of_no_return_timer_original =  HUDManager.show_point_of_no_return_timer
+local hide_point_of_no_return_timer_original =  HUDManager.hide_point_of_no_return_timer
+local _create_downed_hud_original =  HUDManager._create_downed_hud
+
+function HUDManager:_create_downed_hud(...)
+	_create_downed_hud_original(self, ...)
+	if JackHUD._data.center_assault_banner then
+		local timer_msg = self._hud_player_downed._hud_panel:child("downed_panel"):child("timer_msg")
+		timer_msg:set_y(50)
+		self._hud_player_downed._hud.timer:set_y(math.round(timer_msg:bottom() - 6))
+	end
+end
+
+function HUDManager:show_casing(...)
+	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD._data.center_assault_banner)
+	if self:alive("guis/mask_off_hud") and JackHUD._data.center_assault_banner then
+		self:script("guis/mask_off_hud").mask_on_text:set_y(50)
+	end
+	show_casing_original(self, ...)
+end
+
+function HUDManager:hide_casing(...)
+	hide_casing_original(self, ...)
+	self._hud_heist_timer._heist_timer_panel:set_visible(true)
+end
+
+function HUDManager:sync_start_assault(...)
+	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD._data.center_assault_banner)
+	sync_start_assault_original(self, ...)
+end
+
+function HUDManager:sync_end_assault(...)
+	sync_end_assault_original(self, ...)
+	self._hud_heist_timer._heist_timer_panel:set_visible(true)
+end
+
+function HUDManager:show_point_of_no_return_timer(...)
+	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD._data.center_assault_banner)
+	show_point_of_no_return_timer_original(self, ...)
+end
+
+function HUDManager:hide_point_of_no_return_timer(...)
+	hide_point_of_no_return_timer_original(self, ...)
+	self._hud_heist_timer._heist_timer_panel:set_visible(true)
+end
+
+function HUDManager:feed_heist_time(t, ...)
+	if self._hud_assault_corner then
+		self._hud_assault_corner:feed_heist_time(t)
+	end
+	feed_heist_time_original(self, t, ...)
+end
 
 function HUDManager:update_armor_timer(...)
 	self._teammate_panels[self.PLAYER_PANEL]:update_armor_timer(...)
@@ -153,7 +210,7 @@ end
 HUDListManager = HUDListManager or class()
 HUDListManager.ListOptions = {
 	--General settings
-	right_list_height_offset = 80,   --Margin from top for the right list
+	right_list_height_offset = JackHUD._data.center_assault_banner and 0 or 80,   --Margin from top for the right list
 	right_list_scale = 1,   --Size scale of right list
 	left_list_height_offset = 80,   --Margin from top for the left list
 	left_list_scale = 1,    --Size scale of left list

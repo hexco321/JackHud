@@ -177,6 +177,19 @@
 			"callback" : "callback_anti_stealth_grenades",
 			"value" : "anti_stealth_grenades",
 			"default_value" : true
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "toggle",
+			"id" : "center_assault_banner",
+			"title" : "center_assault_banner",
+			"description" : "center_assault_banner_desc",
+			"callback" : "callback_center_assault_banner",
+			"value" : "center_assault_banner",
+			"default_value" : true
 		}
 	]
 }

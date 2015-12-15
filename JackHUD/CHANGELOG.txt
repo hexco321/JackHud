@@ -1,4 +1,9 @@
 
+1.8r11:
++ added: laser options + rainbow laser functionality
++ added: "center assault banner" option
+~ fixes: hud fixes when in custody (needs more)
+
 1.8r10:
 ~ fixed: Added Bodhi to the tab-stats
 ~ fixed: Added presents to the bags-count (also removed pills and ladders since they arent loot)

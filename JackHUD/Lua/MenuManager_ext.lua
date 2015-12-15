@@ -15,6 +15,7 @@ JackHUD._menus = {
 	,"kill_counter_options"
 	,"menu_push_to_interact"
 	,"flashlight_extender"
+	,"laser_options"
 	,"jackhud_other_options"
 }
 
@@ -273,6 +274,36 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
+	-- Laser options
+	MenuCallbackHandler.callback_laser_color_r = function(self, item)
+		JackHUD._data.laser_color_r = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_g = function(self, item)
+		JackHUD._data.laser_color_g = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_b = function(self, item)
+		JackHUD._data.laser_color_b = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_rainbow = function(self, item)
+		JackHUD._data.laser_color_rainbow = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_a = function(self, item)
+		JackHUD._data.laser_color_a = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_glow = function(self, item)
+		JackHUD._data.laser_glow = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_light = function(self, item)
+		JackHUD._data.laser_light = item:value()
+		JackHUD:Save()
+	end
+
 	-- Push to interact
 	MenuCallbackHandler.callback_push_to_interact = function(self, item)
 		JackHUD._data.push_to_interact = (item:value() =="on")
@@ -346,6 +377,11 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	end
 	MenuCallbackHandler.callback_anti_stealth_grenades = function(self, item)
 		JackHUD._data.anti_stealth_grenades = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	MenuCallbackHandler.callback_center_assault_banner = function(self, item)
+		JackHUD._data.center_assault_banner = (item:value() =="on")
 		JackHUD:Save()
 	end
 
