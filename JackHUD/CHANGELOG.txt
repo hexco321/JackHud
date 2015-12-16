@@ -1,4 +1,7 @@
 
+1.8r12:
+~ fixes: hud fixes when in custody/down (needs more)
+
 1.8r11:
 + added: laser options + rainbow laser functionality
 + added: "center assault banner" option
