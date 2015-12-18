@@ -152,6 +152,17 @@
 	"show_inspire_timer" : "Show inspire timer",
 	"show_inspire_timer_desc" : "Show the time of beeing inspired",
 
+	"hps_meter" : "HPS Meter",
+	"hps_meter_desc" : "Heal per second meter options",
+	"enable_hps_meter" : "Enable HPS meters",
+	"enable_hps_meter_desc" : "Enables the heal per second meters",
+	"show_hps_current" : "Show current HPS",
+	"show_hps_current_desc" : "Shows your current heal per second",
+	"current_hps_timeout" : "Current HPS timeout",
+	"current_hps_timeout_desc" : "The time between heals to be added to current measuring (seconds)",
+	"show_hps_total" : "Show total HPS",
+	"show_hps_total_desc" : "Shows your heal per second of the heist day",
+
 	"center_assault_banner" : "Center assault banner",
 	"center_assault_banner_desc" : "Center assault banner",
 

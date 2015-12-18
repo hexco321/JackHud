@@ -1,4 +1,7 @@
 
+1.8r13:
++ added: added HPS meters (to compare effectiveness of several self-heal skills/perk-decks)
+
 1.8r12:
 ~ fixes: hud fixes when in custody/down (needs more)
 

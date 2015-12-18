@@ -19,6 +19,10 @@ local show_point_of_no_return_timer_original =  HUDManager.show_point_of_no_retu
 local hide_point_of_no_return_timer_original =  HUDManager.hide_point_of_no_return_timer
 local _create_downed_hud_original =  HUDManager._create_downed_hud
 
+function HUDManager:change_health(...)
+	self._teammate_panels[self.PLAYER_PANEL]:change_health(...)
+end
+
 function HUDManager:_create_downed_hud(...)
 	_create_downed_hud_original(self, ...)
 	if JackHUD._data.center_assault_banner then
@@ -66,6 +70,7 @@ function HUDManager:feed_heist_time(t, ...)
 		self._hud_assault_corner:feed_heist_time(t)
 	end
 	feed_heist_time_original(self, t, ...)
+	self._teammate_panels[self.PLAYER_PANEL]:change_health(0) -- force refresh hps meter atleast every second.
 end
 
 function HUDManager:update_armor_timer(...)

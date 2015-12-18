@@ -59,5 +59,9 @@
 	"laser_color_a" : 0.5,
 	"laser_glow" : 1,
 	"laser_light" : 10,
-	"center_assault_banner" : true
+	"center_assault_banner" : true,
+	"enable_hps_meter" : true,
+	"show_hps_current" : true,
+	"current_hps_timeout" : 5.0,
+	"show_hps_total" : true
 }

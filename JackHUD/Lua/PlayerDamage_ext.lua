@@ -5,6 +5,7 @@ local restore_armor_original = PlayerDamage.restore_armor
 local _upd_health_regen_original = PlayerDamage._upd_health_regen
 local add_damage_to_hot_original = PlayerDamage.add_damage_to_hot
 local update_original = PlayerDamage.update
+local change_health_original = PlayerDamage.change_health
 
 PlayerDamage._ARMOR_REGEN_TABLE = {
 	[tweak_data.upgrades.values.player.headshot_regen_armor_bonus[1] ] = "bullseye_debuff",
@@ -12,6 +13,11 @@ PlayerDamage._ARMOR_REGEN_TABLE = {
 	[tweak_data.upgrades.values.player.headshot_regen_armor_bonus[2] ] = "bullseye_debuff",
 	[tweak_data.upgrades.values.player.killshot_regen_armor_bonus[1] + tweak_data.upgrades.values.player.killshot_close_regen_armor_bonus[1] ] = "tension_debuff",
 }
+
+function PlayerDamage:change_health(change_of_health)
+	managers.hud:change_health(math.max(0, change_of_health or 0))
+	return change_health_original(self, change_of_health)
+end
 
 function PlayerDamage:update(...)
 	update_original(self, ...)

@@ -17,6 +17,7 @@ if not HUDTeammate.increment_kill_count then
 			self:_init_stamina_meter()
 			self:_init_armor_timer()
 			self:_init_inspire_timer()
+			self:_init_hps_meter()
 		else
 			self:_init_interact_info()
 		end
@@ -231,6 +232,59 @@ if not HUDTeammate.increment_kill_count then
 		}, self._armor_timer)
 	end
 
+	function HUDTeammate:_init_hps_meter()
+		self._hps_meter = self._player_panel:text({
+			name = "hps_meter",
+			text = "0hps",
+			color = Color.green,
+			visible = false,
+			align = "left",
+			vertical = "top",
+			font = tweak_data.hud_players.name_font,
+			font_size = tweak_data.hud_players.name_size,
+			layer = 4
+		})
+		self._hps_meter_bg = managers.hud:make_outline_text(self._player_panel, {
+			text = "0hps",
+			color = Color.black:with_alpha(0.5),
+			visible = false,
+			align = "left",
+			vertical = "top",
+			font = tweak_data.hud_players.name_font,
+			font_size = tweak_data.hud_players.name_size,
+			layer = 3
+		}, self._armor_timer)
+	end
+
+	function HUDTeammate:update_hps_meter(current_hps, total_hps)
+		if self._hps_meter then
+			if JackHUD._data.enable_hps_meter
+					and ((JackHUD._data.show_hps_current and current_hps and current_hps > 0)
+					or (JackHUD._data.show_hps_total and total_hps and total_hps > 0)) then
+				local hps_string = ""
+				if JackHUD._data.show_hps_current then
+					hps_string = "hps: " .. string.format("%.2f", current_hps or 0)
+				end
+				if JackHUD._data.show_hps_total then
+					hps_string = (hps_string and hps_string .. " / " or "hps: ") .. string.format("%.2f", total_hps or 0)
+				end
+				self._hps_meter:set_text(hps_string)
+				for _, bg in ipairs(self._hps_meter_bg) do
+					bg:set_text(hps_string)
+				end
+				self._hps_meter:set_visible(true)
+				for _, bg in ipairs(self._hps_meter_bg) do
+					bg:set_visible(true)
+				end
+			else
+				self._hps_meter:set_visible(false)
+				for _, bg in ipairs(self._hps_meter_bg) do
+					bg:set_visible(false)
+				end
+			end
+		end
+	end
+
 	function HUDTeammate:update_inspire_timer(t)
 		if t and t > 0 and self._inspire_timer then
 			t = string.format("%.1f", t) .. "s"
@@ -396,6 +450,37 @@ if not HUDTeammate.increment_kill_count then
 			self:set_interact_visible(false)
 			self:set_armor_timer_visibility(false)
 			self:set_inspire_timer_visibility(false)
+		end
+	end
+
+	function HUDTeammate:change_health(change_of_health)
+		if managers.player then
+			change_of_health = change_of_health or 0
+			local time_current = managers.player:player_timer():time()
+			local passed_time = time_current - (self._last_time or time_current)
+
+			self._total_hps_time = (self._total_hps_time or 0.0) + passed_time
+			self._total_hps_heal = (self._total_hps_heal or 0.0) + change_of_health
+			self._total_hps = self._total_hps_heal / self._total_hps_time
+
+			if time_current > (self._last_heal_happened or 0) + (JackHUD._data.current_hps_timeout or 5.0) then
+				self._current_hps_heal = nil
+				self._current_hps_time = nil
+			end
+
+			self._current_hps_time = (self._current_hps_time or 0.0) + passed_time
+			self._current_hps_heal = (self._current_hps_heal or 0.0) + change_of_health
+			self._current_hps = self._current_hps_heal / self._current_hps_time
+
+			self._last_time = time_current
+			if change_of_health > 0 then
+				self._last_heal_happened = time_current
+			end
+			if time_current > (self._last_hps_shown or 0) + 1 then
+				self._last_hps_shown = time_current
+				self:update_hps_meter(self._current_hps, self._total_hps)
+			end
+
 		end
 	end
 

@@ -13,6 +13,7 @@ JackHUD._menus = {
 	,"speed_up_options"
 	,"hud_lists_options"
 	,"kill_counter_options"
+	,"hps_meter"
 	,"menu_push_to_interact"
 	,"flashlight_extender"
 	,"laser_options"
@@ -257,6 +258,24 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	end
 	MenuCallbackHandler.callback_show_ai_kills = function(self, item)
 		JackHUD._data.show_ai_kills = (item:value() =="on")
+		JackHUD:Save()
+	end
+
+	-- HPS Meter
+	MenuCallbackHandler.callback_enable_hps_meter = function(self, item)
+		JackHUD._data.enable_hps_meter = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_hps_current = function(self, item)
+		JackHUD._data.show_hps_current = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_current_hps_timeout = function(self, item)
+		JackHUD._data.current_hps_timeout = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_show_hps_total = function(self, item)
+		JackHUD._data.show_hps_total = (item:value() =="on")
 		JackHUD:Save()
 	end
 
