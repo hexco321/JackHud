@@ -23,6 +23,9 @@ However.. i am not down with some originally included features of GageHud, so in
 * Push to Interact
 * Force enable/disable showing of weapon skins in lobby
 * Buy all assets
+* Armor/Inspire timers
+* Laser options
+* HPS Meters
 * and more...
 
 ###Planned/Suggestions

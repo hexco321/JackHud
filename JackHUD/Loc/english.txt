@@ -142,8 +142,8 @@
 
 	"truncate_name_tags" : "Truncate name tags",
 	"truncate_name_tags_desc" : "Truncate clan tags off names and replace them with a small dot",
-	"show_client_ranks" : "Show client ranks",
-	"show_client_ranks_desc" : "Show client ranks in front of the names",
+	"show_client_ranks" : "Show player ranks",
+	"show_client_ranks_desc" : "Show player ranks in front of the names",
 	"colorize_names" : "Colorize names",
 	"colorize_names_desc" : "Colorize player names",
 

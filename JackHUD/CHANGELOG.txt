@@ -1,4 +1,11 @@
 
+1.8r14:
+~ changed: removed some bag types, which arent loot
+~ fixed: align winters-icon to assault banner (when centered)
++ added: show own rank/level
+~ changed: down counter colors
+~ improved: name truncating
+
 1.8r13:
 + added: added HPS meters (to compare effectiveness of several self-heal skills/perk-decks)
 

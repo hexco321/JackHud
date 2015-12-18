@@ -12,7 +12,6 @@ if not HUDTeammate.increment_kill_count then
 
 	function HUDTeammate:init(i, ...)
 		init_original(self, i, ...)
-		self._is_in_custody = false
 		if i == HUDManager.PLAYER_PANEL then
 			self:_init_stamina_meter()
 			self:_init_armor_timer()
@@ -486,8 +485,8 @@ if not HUDTeammate.increment_kill_count then
 
 	function HUDTeammate:set_health(data)
 		if data.revives then
-			local revive_colors = { Color("FC9797"), Color("FCD997"), Color("C2FF97"), Color("97FC9A") }
-			self._revives_counter:set_color(revive_colors[data.revives - 1] or Color.black:with_alpha(0.9))
+			local revive_colors = { Color("FF8000"), Color("FFFF00"), Color("80FF00"), Color("00FF00") }
+			self._revives_counter:set_color(revive_colors[data.revives - 1] or Color.red)
 			local has_messiah = false
 			local messiah_charges = 0
 			if self._main_player then
@@ -553,40 +552,64 @@ if not HUDTeammate.increment_kill_count then
 			self:reset_kill_count()
 		end
 		self._color_pos = 1
-		local peer = managers.network:session():peer(self._peer_id)
 		local truncated_name = teammate_name:gsub('^%b[]',''):gsub('^%b==',''):gsub('^%s*(.-)%s*$','%1')
 		if truncated_name:len() > 0 and teammate_name ~= truncated_name and JackHUD._data.truncate_name_tags then
 			teammate_name = utf8.char(1031) .. truncated_name
 		end
-		if peer and peer:level() and JackHUD._data.show_client_ranks then
+		if JackHUD._data.show_client_ranks and not self._ai then
 			local ranktag = ""
-			if peer:rank() > 0 and managers.experience:rank_string((peer:rank())) then
-				ranktag = managers.experience:rank_string((peer:rank())) .. "-"
+			local rank = nil
+			local level = nil
+			if self._main_player then
+				rank = managers.experience:current_rank()
+				level = managers.experience:current_level()
+			elseif self._peer_id then
+				local peer = self._peer_id and managers.network:session():peer(self._peer_id)
+				if peer and peer:level() then
+					rank = peer:rank()
+					level = peer:level()
+				end
 			end
-			local leveltag = ranktag .. peer:level() .. " "
-			teammate_name = leveltag .. teammate_name
-			self._color_pos = self._color_pos + leveltag:len()
+			if rank and rank > 0 and managers.experience:rank_string(rank) then
+				ranktag = managers.experience:rank_string(rank) .. "-"
+			end
+			if level then
+				local leveltag = ranktag .. level .. " "
+				teammate_name = leveltag .. teammate_name
+				self._color_pos = self._color_pos + leveltag:len()
+			end
 		end
-		self._panel:child("name"):set_text(teammate_name)
-		set_name_original(self, self._panel:child("name"):text(), ...)
+		local name_panel = self._panel:child("name")
+		name_panel:set_text(teammate_name)
+		set_name_original(self, name_panel:text(), ...)
 		self:_truncate_name()
 	end
 
 	function HUDTeammate:_truncate_name()
-		local teammate_name
 		local name_panel = self._panel:child("name")
-		local _,_,w,_ = name_panel:text_rect()
+		local teammate_name = name_panel:text()
+		local name_bg_panel = self._panel:child("name_bg")
+		name_panel:set_vertical("center")
+		name_panel:set_font_size(tweak_data.hud_players.name_size)
+		name_panel:set_w(self._panel:w())
+		local _,_,w,h = name_panel:text_rect()
 		if JackHUD._data.enable_kill_counter then
-			while (name_panel:x() + w) > (self._kills_panel:x() + self._kill_icon:x() - 2) do
-				_,_,w,_ = name_panel:text_rect()
+			while (name_panel:x() + w) > (self._kills_panel:x() + self._kill_icon:x() - 4) do
+				if name_panel:font_size() > 15.1 then
+					name_panel:set_font_size(name_panel:font_size() - 0.1)
+				else
+					name_panel:set_text(teammate_name:sub(1, teammate_name:len() - 1))
+				end
 				teammate_name = name_panel:text()
-				name_panel:set_text(teammate_name:sub(1, teammate_name:len() - 1))
+				_,_,w,h = name_panel:text_rect()
 			end
 		end
 		if JackHUD._data.colorize_names and not self._ai then
-			self._panel:child("name"):set_range_color(self._color_pos, name_panel:text():len(), self._panel:child("callsign"):color():with_alpha(1))
+			name_panel:set_range_color(self._color_pos, name_panel:text():len(), self._panel:child("callsign"):color():with_alpha(1))
 		end
-		self._panel:child("name_bg"):set_w(w + 4)
+		name_bg_panel:set_w(w + 4)
+		name_bg_panel:set_h(h + 2)
+		name_bg_panel:set_y(name_panel:y() + name_panel:h() / 2 - h / 2 - 1)
 	end
 
 	function HUDTeammate:refresh_kill_count_visibility()
