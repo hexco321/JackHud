@@ -56,15 +56,10 @@ ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID = {
 	safe_ovk =								"safe",
 	unknown =								"dentist",
 	meth_half =								"meth",
-	parachute =								"parachute",
 	masterpiece_painting =					"painting",
 	master_server =							"server",
 	lost_artifact =							"artifact",
 	prototype =								"prototype",
-	breaching_charges =						"charges",
-	nail_muriatic_acid =					"MU",
-	nail_caustic_soda =						"CS",
-	nail_hydrogen_chloride =				"HCL",
 	present =								"present"
 }
 

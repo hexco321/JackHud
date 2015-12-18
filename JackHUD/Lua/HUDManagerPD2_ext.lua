@@ -1978,12 +1978,7 @@ do
 		dentist =		{ text = "Unknown" },
 		pig =			{ text = "Pig" },
 		safe =			{ text = "Safe" },
-		parachute =		{ text = "Para" },
 		prototype =		{ text = "Prototype" },
-		charges =		{ text = "Charges" },
-		MU =			{ text = "MU" },
-		CS =			{ text = "CS" },
-		HCL =			{ text = "HCL" },
 		present =		{ text = "present"}
 		--container =   { text = "?" },
 	}
