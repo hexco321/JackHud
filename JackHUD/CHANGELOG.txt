@@ -1,6 +1,11 @@
 
-NEXT:
-~ changed: some ui tweaks at the info boxes, the kill counters and the hps meters
+1.9r15:
+~ changed: Some ui tweaks at the info boxes, the kill counters and the hps meters
+~ changed: Combined laser and flashlight options into "gadget options"
++ added: Remember gadget state
++ added: Option for the HPS meter refresh rate
++ added: Option for the default player laser (disable laser options)
+~ changed: some default options
 
 1.8r14:
 ~ changed: removed some bag types, which arent loot

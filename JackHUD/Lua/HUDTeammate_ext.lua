@@ -489,24 +489,24 @@ if not HUDTeammate.increment_kill_count then
 			local time_current = managers.player:player_timer():time()
 			local passed_time = time_current - (self._last_time or time_current)
 
-			self._total_hps_time = (self._total_hps_time or 0.0) + passed_time
-			self._total_hps_heal = (self._total_hps_heal or 0.0) + change_of_health
+			self._total_hps_time = (self._total_hps_time or 0) + passed_time
+			self._total_hps_heal = (self._total_hps_heal or 0) + change_of_health
 			self._total_hps = self._total_hps_heal / self._total_hps_time
 
-			if time_current > (self._last_heal_happened or 0) + (JackHUD._data.current_hps_timeout or 5.0) then
+			if time_current > (self._last_heal_happened or 0) + (JackHUD._data.current_hps_timeout or 5) then
 				self._current_hps_heal = nil
 				self._current_hps_time = nil
 			end
 
-			self._current_hps_time = (self._current_hps_time or 0.0) + passed_time
-			self._current_hps_heal = (self._current_hps_heal or 0.0) + change_of_health
+			self._current_hps_time = (self._current_hps_time or 0) + passed_time
+			self._current_hps_heal = (self._current_hps_heal or 0) + change_of_health
 			self._current_hps = self._current_hps_heal / self._current_hps_time
 
 			self._last_time = time_current
 			if change_of_health > 0 then
 				self._last_heal_happened = time_current
 			end
-			if time_current > (self._last_hps_shown or 0) + 1 then
+			if time_current > (self._last_hps_shown or 0) + (JackHUD._data.hps_refresh_rate or 1) then
 				self._last_hps_shown = time_current
 				self:update_hps_meter(self._current_hps, self._total_hps)
 			end

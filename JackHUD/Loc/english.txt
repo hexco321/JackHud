@@ -86,8 +86,8 @@
 	"show_ai_kills" : "Show AI kills",
 	"show_ai_kills_desc" : "Kill Counter shows AI kills",
 
-	"flashlight_extender" : "Flashlight Extender",
-	"flashlight_extender_desc" : "Extends the range of the Flashlight",
+	"gadget_options" : "Gadget options",
+	"gadget_options_desc" : "Gadget options",
 
 	"enable_flashlight_extender" : "Enable Flashlight Extender",
 	"enable_flashlight_extender_desc" : "Enables the Flashlight Extender",
@@ -95,9 +95,8 @@
 	"flashlight_range_desc" : "Range of beam, 0+ (default 1000 -> 10m)",
 	"flashlight_angle" : "Flashlight Angle",
 	"flashlight_angle_desc" : "Angle/width of beam, 0-160 (default 60)",
-
-	"laser_options" : "Laser options",
-	"laser_options_desc" : "Change the color of player lasers",
+	"enable_laser_options" : "Enable Laser options",
+	"enable_laser_options_desc" : "Change the color of player lasers",
 	"laser_color_r" : "Red",
 	"laser_color_r_desc" : "",
 	"laser_color_g" : "Green",
@@ -112,6 +111,8 @@
 	"laser_glow_desc" : "",
 	"laser_light" : "Dot Brightness",
 	"laser_light_desc" : "",
+	"remember_gadget_state" : "Remember gadget state",
+	"remember_gadget_state_desc" : "Remember on/off state of lasers and flashlights",
 
 	"push_to_interact" : "Push to interact",
 	"push_to_interact_desc" : "No need to hold the interaction key [F] anymore",
@@ -156,6 +157,8 @@
 	"hps_meter_desc" : "Heal per second meter options",
 	"enable_hps_meter" : "Enable HPS meters",
 	"enable_hps_meter_desc" : "Enables the heal per second meters",
+	"hps_refresh_rate" : "Refresh rate",
+	"hps_refresh_rate_desc" : "The time to wait between refreshes (in seconds)",
 	"show_hps_current" : "Show current HPS",
 	"show_hps_current_desc" : "Shows your current heal per second",
 	"current_hps_timeout" : "Current HPS timeout",

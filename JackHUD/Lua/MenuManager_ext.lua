@@ -15,8 +15,7 @@ JackHUD._menus = {
 	,"kill_counter_options"
 	,"hps_meter"
 	,"menu_push_to_interact"
-	,"flashlight_extender"
-	,"laser_options"
+	,"gadget_options"
 	,"jackhud_other_options"
 }
 
@@ -266,6 +265,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.enable_hps_meter = (item:value() =="on")
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_hps_refresh_rate = function(self, item)
+		JackHUD._data.hps_refresh_rate = item:value()
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_show_hps_current = function(self, item)
 		JackHUD._data.show_hps_current = (item:value() =="on")
 		JackHUD:Save()
@@ -294,6 +297,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	end
 
 	-- Laser options
+	MenuCallbackHandler.callback_enable_laser_options = function(self, item)
+		JackHUD._data.enable_laser_options = (item:value() =="on")
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_laser_color_r = function(self, item)
 		JackHUD._data.laser_color_r = item:value()
 		JackHUD:Save()
@@ -320,6 +327,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	end
 	MenuCallbackHandler.callback_laser_light = function(self, item)
 		JackHUD._data.laser_light = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_remember_gadget_state = function(self, item)
+		JackHUD._data.remember_gadget_state = (item:value() =="on")
 		JackHUD:Save()
 	end
 

@@ -3,11 +3,11 @@
 	"description": "A GageHUD fork",
 	"authors": "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad, Martini and the RestorationMod-Crew, TimeR",
 	"contact": "",
-	"version": "1.8",
+	"version": "1.9",
 	"priority": 200,
 	"updates" : [
 		{
-			"revision" : 14,
+			"revision" : 15,
 			"identifier" : "jackhud",
 		},
 		{
@@ -196,6 +196,10 @@
 		{
 			"hook_id": "lib/managers/hud/hudinteraction",
 			"script_path": "Lua/HUDInteraction_ext.lua"
+		},
+		{
+			"hook_id": "lib/units/weapons/newraycastweaponbase",
+			"script_path" : "Lua/NewRayCastWeaponBase_ext.lua"
 		}
 	],
 	"keybinds": [

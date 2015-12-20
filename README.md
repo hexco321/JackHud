@@ -26,6 +26,7 @@ However.. i am not down with some originally included features of GageHud, so in
 * Armor/Inspire timers
 * Laser options
 * HPS Meters
+* Remember gadget state
 * and more...
 
 ###Planned/Suggestions

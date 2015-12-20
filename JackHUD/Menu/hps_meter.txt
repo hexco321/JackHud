@@ -14,6 +14,18 @@
 			"default_value": true
 		},
 		{
+			"type": "slider",
+			"id": "hps_refresh_rate",
+			"title": "hps_refresh_rate",
+			"description": "hps_refresh_rate_desc",
+			"callback": "callback_hps_refresh_rate",
+			"value": "hps_refresh_rate",
+			"max": 10,
+			"min": 0.1,
+			"step": 1,
+			"default_value": 1
+		},
+		{
 			"type" : "divider",
 			"size" : 16
 		},
