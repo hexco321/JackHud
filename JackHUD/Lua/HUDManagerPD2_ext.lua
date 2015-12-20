@@ -215,7 +215,7 @@ end
 HUDListManager = HUDListManager or class()
 HUDListManager.ListOptions = {
 	--General settings
-	right_list_height_offset = JackHUD._data.center_assault_banner and 0 or 80,   --Margin from top for the right list
+	right_list_height_offset = JackHUD._data.center_assault_banner and 0 or 50,   --Margin from top for the right list
 	right_list_scale = 1,   --Size scale of right list
 	left_list_height_offset = 80,   --Margin from top for the left list
 	left_list_scale = 1,    --Size scale of left list

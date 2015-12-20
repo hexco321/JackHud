@@ -1,4 +1,7 @@
 
+NEXT:
+~ changed: some ui tweaks at the info boxes, the kill counters and the hps meters
+
 1.8r14:
 ~ changed: removed some bag types, which arent loot
 ~ fixed: align winters-icon to assault banner (when centered)

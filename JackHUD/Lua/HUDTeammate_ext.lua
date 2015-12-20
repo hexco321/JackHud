@@ -12,7 +12,7 @@ if not HUDTeammate.increment_kill_count then
 
 	function HUDTeammate:init(i, ...)
 		init_original(self, i, ...)
-		if i == HUDManager.PLAYER_PANEL then
+		if self._main_player then
 			self:_init_stamina_meter()
 			self:_init_armor_timer()
 			self:_init_inspire_timer()
@@ -127,9 +127,9 @@ if not HUDTeammate.increment_kill_count then
 		self._kills_text = self._kills_panel:text({
 			name = "kills_text",
 			text = "-",
-			layer = 1,
+			layer = 4,
 			color = Color(1, 1, 0.65882355, 0),
-			w = self._kills_panel:w() - self._kill_icon:w(),
+			w = self._kills_panel:w() - self._kill_icon:w() - 4,
 			h = self._kills_panel:h(),
 			vertical = "center",
 			align = "right",
@@ -137,6 +137,25 @@ if not HUDTeammate.increment_kill_count then
 			font = tweak_data.hud_players.name_font
 		})
 		self._kills_text:set_right(self._kills_panel:w())
+		local _, _, text_w, text_h = self._kills_text:text_rect()
+		self._kills_text_bg = self._kills_panel:bitmap({
+			name = "kills_text_bg",
+			texture = "guis/textures/pd2/hud_tabs",
+			texture_rect = {
+				84,
+				0,
+				44,
+				32
+			},
+			layer = 2,
+			color = Color.white / 3,
+			x = self._kills_text:left() - 4,
+			y = self._kills_text:top() - 1,
+			align = "left",
+			vertical = "bottom",
+			w = text_w + 4,
+			h = text_h
+		})
 		self:reset_kill_count()
 		self:refresh_kill_count_visibility()
 	end
@@ -161,7 +180,7 @@ if not HUDTeammate.increment_kill_count then
 			font = tweak_data.hud_players.name_font
 		})
 		local _, _, text_w, text_h = self._interact_info:text_rect()
-		self._interact_info:set_right(self._interact_info_panel:w() - 8)
+		self._interact_info:set_right(self._interact_info_panel:w() - 4)
 		self._interact_info_bg = self._interact_info_panel:bitmap({
 			name = "interact_info_bg",
 			texture = "guis/textures/pd2/hud_tabs",
@@ -232,10 +251,18 @@ if not HUDTeammate.increment_kill_count then
 	end
 
 	function HUDTeammate:_init_hps_meter()
-		self._hps_meter = self._player_panel:text({
+		self._hps_meter_panel = self._panel:panel({
+			name = "hps_meter_panel",
+			x = 0,
+			y = 0,
+			visible = true
+		})
+		self._hps_meter = self._hps_meter_panel:text({
 			name = "hps_meter",
-			text = "0hps",
-			color = Color.green,
+			text = "|",
+			color = Color.white,
+			x = 4,
+			y = 1,
 			visible = false,
 			align = "left",
 			vertical = "top",
@@ -243,16 +270,25 @@ if not HUDTeammate.increment_kill_count then
 			font_size = tweak_data.hud_players.name_size,
 			layer = 4
 		})
-		self._hps_meter_bg = managers.hud:make_outline_text(self._player_panel, {
-			text = "0hps",
-			color = Color.black:with_alpha(0.5),
-			visible = false,
+		local _, _, text_w, text_h = self._hps_meter:text_rect()
+		self._hps_meter_bg = self._hps_meter_panel:bitmap({
+			name = "hps_meter_bg",
+			texture = "guis/textures/pd2/hud_tabs",
+			texture_rect = {
+				84,
+				0,
+				44,
+				32
+			},
+			layer = 2,
+			color = Color.white / 3,
+			x = 0,
+			y = 0,
 			align = "left",
-			vertical = "top",
-			font = tweak_data.hud_players.name_font,
-			font_size = tweak_data.hud_players.name_size,
-			layer = 3
-		}, self._armor_timer)
+			vertical = "bottom",
+			w = text_w + 8,
+			h = text_h + 2
+		})
 	end
 
 	function HUDTeammate:update_hps_meter(current_hps, total_hps)
@@ -260,26 +296,21 @@ if not HUDTeammate.increment_kill_count then
 			if JackHUD._data.enable_hps_meter
 					and ((JackHUD._data.show_hps_current and current_hps and current_hps > 0)
 					or (JackHUD._data.show_hps_total and total_hps and total_hps > 0)) then
-				local hps_string = ""
+				local hps_string = nil
 				if JackHUD._data.show_hps_current then
-					hps_string = "hps: " .. string.format("%.2f", current_hps or 0)
+					hps_string = "hps: " .. (current_hps and current_hps > 0 and string.format("%.2f", current_hps) or "-")
 				end
 				if JackHUD._data.show_hps_total then
 					hps_string = (hps_string and hps_string .. " / " or "hps: ") .. string.format("%.2f", total_hps or 0)
 				end
 				self._hps_meter:set_text(hps_string)
-				for _, bg in ipairs(self._hps_meter_bg) do
-					bg:set_text(hps_string)
-				end
 				self._hps_meter:set_visible(true)
-				for _, bg in ipairs(self._hps_meter_bg) do
-					bg:set_visible(true)
-				end
+				self._hps_meter_bg:set_visible(true)
+				local _, _, text_w, _ = self._hps_meter:text_rect()
+				self._hps_meter_bg:set_w(text_w + 8)
 			else
 				self._hps_meter:set_visible(false)
-				for _, bg in ipairs(self._hps_meter_bg) do
-					bg:set_visible(false)
-				end
+				self._hps_meter_bg:set_visible(false)
 			end
 		end
 	end
@@ -533,7 +564,10 @@ if not HUDTeammate.increment_kill_count then
 		end
 		self._kills_text:set_text(kill_string)
 		local _, _, w, _ = self._kills_text:text_rect()
-		self._kill_icon:set_right(self._kills_panel:w() - w - self._kill_icon:w() * 0.15)
+		self._kills_text:set_right(self._kills_panel:w() - 4)
+		self._kill_icon:set_right(self._kills_panel:w() - w - 8 - self._kill_icon:w() * 0.15)
+		self._kills_text_bg:set_right(self._kills_panel:w())
+		self._kills_text_bg:set_w(w + 8)
 		self:refresh_kill_count_visibility()
 		if not self._color_pos then self._color_pos = 1 end
 		self:_truncate_name()
