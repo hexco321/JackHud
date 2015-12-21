@@ -1,4 +1,7 @@
 
+1.10r17:
+~ fixed: pocohud config check
+
 1.9r16:
 + added: pocohud config check
 

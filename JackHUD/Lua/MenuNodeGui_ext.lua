@@ -8,14 +8,14 @@ function MenuNodeGui:_setup_item_rows(node, ...)
 	_setup_item_rows_original(self, node, ...)
 	if JackHUD._poco_conf and not JackHUD._poco_warning then
 		JackHUD._fixed_poco_conf = deep_clone(JackHUD._poco_conflicting_defaults)
-		for k,v in pairs(JackHUD._poco_conf.buff) do
-			JackHUD._fixed_poco_conf.buff[k] = v
-		end
-		for k,v in pairs(JackHUD._poco_conf.game) do
-			JackHUD._fixed_poco_conf.game[k] = v
-		end
-		for k,v in pairs(JackHUD._poco_conf.playerBottom) do
-			JackHUD._fixed_poco_conf.playerBottom[k] = v
+		for k,v in pairs(JackHUD._poco_conf) do
+			if not JackHUD._fixed_poco_conf[k] then
+				JackHUD._fixed_poco_conf[k] = v
+			else
+				for k2,v2 in pairs(JackHUD._poco_conf[k]) do
+					JackHUD._fixed_poco_conf[k][k2] = v2
+				end
+			end
 		end
 		local conflict_found = nil
 		local buff = JackHUD._fixed_poco_conf.buff
