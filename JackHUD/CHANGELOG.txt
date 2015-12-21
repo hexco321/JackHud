@@ -1,4 +1,7 @@
 
+1.9r16:
++ added: pocohud config check
+
 1.9r15:
 ~ changed: Some ui tweaks at the info boxes, the kill counters and the hps meters
 ~ changed: Combined laser and flashlight options into "gadget options"

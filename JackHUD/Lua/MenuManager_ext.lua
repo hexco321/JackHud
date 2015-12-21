@@ -7,6 +7,7 @@
 JackHUD = JackHUD or {}
 JackHUD._path = ModPath
 JackHUD._data_path = SavePath .. "JackHUD.txt"
+JackHUD._poco_path = SavePath .. "hud3_config.json"
 JackHUD._data = {}
 JackHUD._menus = {
 	"jackhud_options"
@@ -17,6 +18,30 @@ JackHUD._menus = {
 	,"menu_push_to_interact"
 	,"gadget_options"
 	,"jackhud_other_options"
+}
+JackHUD._poco_conflicting_defaults = {
+	buff = {
+		mirrorDirection = true,
+		showBoost = true,
+		showCharge = true,
+		showECM = true,
+		showFeedback = true,
+		showInteraction = true,
+		showReload = true,
+		showShield = true,
+		showStamina = true,
+		showSwanSong = true,
+		showTapeLoop = true,
+		simpleBusyIndicator = true
+	},
+	game = {
+		interactionClickStick = true,
+		rememberGadgetState = true
+	},
+	playerBottom = {
+		showRank = true,
+		uppercaseNames = true
+	}
 }
 
 --[[
@@ -44,6 +69,7 @@ function JackHUD:Load()
 		end
 	end
 	self:Save()
+	self:CheckPoco()
 end
 
 function JackHUD:LoadDefaults()
@@ -73,6 +99,30 @@ function JackHUD:ForceReloadAllMenus()
 	end
 end
 
+function JackHUD:CheckPoco()
+	local file = io.open(self._poco_path)
+	if file then
+		self._poco_conf = json.decode( file:read("*all") )
+		file:close()
+	end
+end
+
+function JackHUD:ApplyFixedPocoSettings()
+	local file = io.open( self._poco_path, "w+" )
+	if file and self._fixed_poco_conf then
+		file:write( json.encode( self._fixed_poco_conf ) )
+		file:close()
+		local menu_title = "JackHUD: PocoHUD config fixed"
+		local menu_message = "Config fixed. You NEED to restart the game NOW, to finish the process."
+		local menu_options = {
+			[1] = {
+				text = "ok, i understand",
+				is_cancel_button = true,
+			}
+		}
+		QuickMenu:new( menu_title, menu_message, menu_options, true )
+	end
+end
 if not JackHUD.setup then
 	JackHUD:Load()
 	JackHUD.setup = true
