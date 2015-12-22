@@ -1,4 +1,8 @@
 
+1.10r18:
++ added: added "contract broker" quick link to main menu
+~ changed: show which pocohud config conflicts have been found
+
 1.10r17:
 ~ fixed: pocohud config check
 

@@ -163,6 +163,12 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_jack
 	})
 end)
 
+Hooks:Add("MenuManagerBuildCustomMenus", "MenuManagerBuildCustomMenus_jackhud", function(menu_manager, nodes)
+	if nodes.main then
+		MenuHelper:AddMenuItem(nodes.main, "crimenet_contract_special", "menu_cn_premium_buy", "menu_cn_premium_buy_desc", "crimenet_offline", "before")
+	end
+end)
+
 --[[
 	Setup our menu callbacks, load our saved data, and build the menu from our json file.
 ]]
