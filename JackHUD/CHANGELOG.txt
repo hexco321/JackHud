@@ -1,4 +1,7 @@
 
+1.10r19:
++ fixed: Save/Load Preplanning
+
 1.10r18:
 + added: added "contract broker" quick link to main menu
 ~ changed: show which pocohud config conflicts have been found
