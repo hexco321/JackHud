@@ -1,6 +1,7 @@
 
--- This hack allows us to reroute every call for texts.
 local text_original = LocalizationManager.text
+
+-- This hack allows us to reroute every call for texts.
 function LocalizationManager:text(string_id, ...)
 	if string_id == "hud_assault_enhanced" then
 		-- enhanced assault banner

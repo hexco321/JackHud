@@ -1,7 +1,9 @@
 
-next:
+1.12r21:
++ added: Shows HUD version now
++ added: JackPack update reminder
++ added: Steam group membership check
 ~ changed: some code restructuring
-+ added: Shows HUD version now, added JackPack update reminder
 
 1.11r20:
 ~ fixed: correctly removing hud elements when in custody now

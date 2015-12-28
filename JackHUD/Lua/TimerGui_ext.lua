@@ -1,5 +1,3 @@
-TimerGui.SPAWNED_ITEMS = {}
-TimerGui._LISTENER_CALLBACKS = {}
 
 local init_original = TimerGui.init
 local set_background_icons_original = TimerGui.set_background_icons
@@ -10,6 +8,9 @@ local _set_done_original = TimerGui._set_done
 local _set_jammed_original = TimerGui._set_jammed
 local _set_powered = TimerGui._set_powered
 local destroy_original = TimerGui.destroy
+
+TimerGui.SPAWNED_ITEMS = {}
+TimerGui._LISTENER_CALLBACKS = {}
 
 function TimerGui:init(unit, ...)
 	TimerGui.SPAWNED_ITEMS[unit:key()] = { unit = unit, powered = true }

@@ -1,9 +1,10 @@
 
-local SKIP_LOOT_SCREEN = JackHUD._data.skip_loot_screen
-local SKIP_CARD_PICKING = JackHUD._data.skip_card_picking
-local SKIP_LOOT_SCREEN_DELAY = JackHUD._data.loot_screen_skip
-
 local update_original = LootDropScreenGui.update
+
+local SKIP_LOOT_SCREEN = JackHUD:GetOption("skip_loot_screen")
+local SKIP_CARD_PICKING = JackHUD:GetOption("skip_card_picking")
+local SKIP_LOOT_SCREEN_DELAY = JackHUD:GetOption("loot_screen_skip")
+
 function LootDropScreenGui:update(t, ...)
 	update_original(self, t, ...)
 	if not self._card_chosen and SKIP_CARD_PICKING then

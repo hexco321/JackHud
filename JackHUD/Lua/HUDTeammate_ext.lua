@@ -290,14 +290,14 @@ if not HUDTeammate.increment_kill_count then
 
 	function HUDTeammate:update_hps_meter(current_hps, total_hps)
 		if self._hps_meter then
-			if JackHUD._data.enable_hps_meter
-					and ((JackHUD._data.show_hps_current and current_hps and current_hps > 0)
-					or (JackHUD._data.show_hps_total and total_hps and total_hps > 0)) then
+			if JackHUD:GetOption("enable_hps_meter")
+					and ((JackHUD:GetOption("show_hps_current") and current_hps and current_hps > 0)
+					or (JackHUD:GetOption("show_hps_total") and total_hps and total_hps > 0)) then
 				local hps_string = nil
-				if JackHUD._data.show_hps_current then
+				if JackHUD:GetOption("show_hps_current") then
 					hps_string = "hps: " .. (current_hps and current_hps > 0 and string.format("%.2f", current_hps) or "-")
 				end
-				if JackHUD._data.show_hps_total then
+				if JackHUD:GetOption("show_hps_total") then
 					hps_string = (hps_string and hps_string .. " / " or "hps: ") .. string.format("%.2f", total_hps or 0)
 				end
 				self._hps_meter:set_text(hps_string)
@@ -319,7 +319,7 @@ if not HUDTeammate.increment_kill_count then
 			for _, bg in ipairs(self._inspire_timer_bg) do
 				bg:set_text(t)
 			end
-			self:set_inspire_timer_visibility(JackHUD._data.show_inspire_timer)
+			self:set_inspire_timer_visibility(JackHUD:GetOption("show_inspire_timer"))
 		elseif self._inspire_timer and self._inspire_timer:visible() then
 			self:set_inspire_timer_visibility(false)
 		end
@@ -332,7 +332,7 @@ if not HUDTeammate.increment_kill_count then
 			for _, bg in ipairs(self._armor_timer_bg) do
 				bg:set_text(t)
 			end
-			self:set_armor_timer_visibility(JackHUD._data.show_armor_timer)
+			self:set_armor_timer_visibility(JackHUD:GetOption("show_armor_timer"))
 		elseif self._armor_timer and self._armor_timer:visible() then
 			self:set_armor_timer_visibility(false)
 		end
@@ -489,7 +489,7 @@ if not HUDTeammate.increment_kill_count then
 			self._total_hps_time = (self._total_hps_time or 0) + passed_time
 			self._total_hps_heal = (self._total_hps_heal or 0) + change_of_health
 			self._total_hps = self._total_hps_heal / self._total_hps_time
-			if time_current > (self._last_heal_happened or 0) + (JackHUD._data.current_hps_timeout or 5) then
+			if time_current > (self._last_heal_happened or 0) + (JackHUD:GetOption("current_hps_timeout") or 5) then
 				self._current_hps_heal = nil
 				self._current_hps_time = nil
 			end
@@ -500,7 +500,7 @@ if not HUDTeammate.increment_kill_count then
 			if change_of_health > 0 then
 				self._last_heal_happened = time_current
 			end
-			if time_current > (self._last_hps_shown or 0) + (JackHUD._data.hps_refresh_rate or 1) then
+			if time_current > (self._last_hps_shown or 0) + (JackHUD:GetOption("hps_refresh_rate") or 1) then
 				self._last_hps_shown = time_current
 				self:update_hps_meter(self._current_hps, self._total_hps)
 			end
@@ -549,10 +549,10 @@ if not HUDTeammate.increment_kill_count then
 
 	function HUDTeammate:_update_kill_count_text()
 		local kill_string = tostring(self._kill_count)
-		if JackHUD._data.show_special_kills then
+		if JackHUD:GetOption("show_special_kills") then
 			kill_string = kill_string .. "/" .. tostring(self._kill_count_special)
 		end
-		if JackHUD._data.show_headshot_kills then
+		if JackHUD:GetOption("show_headshot_kills") then
 			kill_string = kill_string .. " (" .. tostring(self._headshot_kills) .. ")"
 		end
 		self._kills_text:set_text(kill_string)
@@ -580,10 +580,10 @@ if not HUDTeammate.increment_kill_count then
 		end
 		self._color_pos = 1
 		local truncated_name = teammate_name:gsub('^%b[]',''):gsub('^%b==',''):gsub('^%s*(.-)%s*$','%1')
-		if truncated_name:len() > 0 and teammate_name ~= truncated_name and JackHUD._data.truncate_name_tags then
+		if truncated_name:len() > 0 and teammate_name ~= truncated_name and JackHUD:GetOption("truncate_name_tags") then
 			teammate_name = utf8.char(1031) .. truncated_name
 		end
-		if JackHUD._data.show_client_ranks and not self._ai then
+		if JackHUD:GetOption("show_client_ranks") and not self._ai then
 			local ranktag = ""
 			local rank = nil
 			local level = nil
@@ -620,7 +620,7 @@ if not HUDTeammate.increment_kill_count then
 		name_panel:set_font_size(tweak_data.hud_players.name_size)
 		name_panel:set_w(self._panel:w())
 		local _,_,w,h = name_panel:text_rect()
-		if JackHUD._data.enable_kill_counter then
+		if JackHUD:GetOption("enable_kill_counter") then
 			while (name_panel:x() + w) > (self._kills_panel:x() + self._kill_icon:x() - 4) do
 				if name_panel:font_size() > 15.1 then
 					name_panel:set_font_size(name_panel:font_size() - 0.1)
@@ -631,7 +631,7 @@ if not HUDTeammate.increment_kill_count then
 				_,_,w,h = name_panel:text_rect()
 			end
 		end
-		if JackHUD._data.colorize_names and not self._ai then
+		if JackHUD:GetOption("colorize_names") and not self._ai then
 			name_panel:set_range_color(self._color_pos, name_panel:text():len(), self._panel:child("callsign"):color():with_alpha(1))
 		end
 		name_bg_panel:set_w(w + 4)
@@ -640,7 +640,7 @@ if not HUDTeammate.increment_kill_count then
 	end
 
 	function HUDTeammate:refresh_kill_count_visibility()
-		self._kills_panel:set_visible((not self._ai or JackHUD._data.show_ai_kills) and JackHUD._data.enable_kill_counter)
+		self._kills_panel:set_visible((not self._ai or JackHUD:GetOption("show_ai_kills")) and JackHUD:GetOption("enable_kill_counter"))
 	end
 
 	function HUDTeammate:set_state(...)

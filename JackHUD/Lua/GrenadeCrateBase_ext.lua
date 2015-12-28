@@ -1,14 +1,14 @@
 
-GrenadeCrateBase.SPAWNED_BAGS = {}
-GrenadeCrateBase.AGGREGATED_BAGS = {}
-
---TODO: Fix this dumb-ass stacking implementation, preferably before I get to pay for being lazy
-
 local init_original = GrenadeCrateBase.init
 local _set_visual_stage_original = GrenadeCrateBase._set_visual_stage
 local destroy_original = GrenadeCrateBase.destroy
 local custom_init_original = CustomGrenadeCrateBase.init
 local custom_destroy_original = CustomGrenadeCrateBase.destroy
+
+GrenadeCrateBase.SPAWNED_BAGS = {}
+GrenadeCrateBase.AGGREGATED_BAGS = {}
+
+--TODO: Fix this dumb-ass stacking implementation, preferably before I get to pay for being lazy
 
 function GrenadeCrateBase:init(unit, ...)
 	GrenadeCrateBase.SPAWNED_BAGS[unit:key()] = { unit = unit }

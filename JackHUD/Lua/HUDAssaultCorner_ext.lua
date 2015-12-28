@@ -7,7 +7,7 @@ function HUDAssaultCorner:init(...)
 	if self._hud_panel:child("hostages_panel") then
 		self:_hide_hostages()
 	end
-	if JackHUD._data.center_assault_banner then
+	if JackHUD:GetOption("center_assault_banner") then
 		self._hud_panel:child("assault_panel"):set_right(self._hud_panel:w() / 2 + 150)
 		self._hud_panel:child("assault_panel"):child("icon_assaultbox"):set_visible(false)
 		self._hud_panel:child("casing_panel"):set_right(self._hud_panel:w() / 2 + 150)

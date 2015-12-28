@@ -1,4 +1,17 @@
 
+local init_original = PlayerManager.init
+local update_original = PlayerManager.update
+local count_up_player_minions_original = PlayerManager.count_up_player_minions
+local count_down_player_minions_original = PlayerManager.count_down_player_minions
+local update_hostage_skills_original = PlayerManager.update_hostage_skills
+local activate_temporary_upgrade_original = PlayerManager.activate_temporary_upgrade
+local activate_temporary_upgrade_by_level_original = PlayerManager.activate_temporary_upgrade_by_level
+local deactivate_temporary_upgrade_original = PlayerManager.deactivate_temporary_upgrade
+local aquire_team_upgrade_original = PlayerManager.aquire_team_upgrade
+local unaquire_team_upgrade_original = PlayerManager.unaquire_team_upgrade
+local add_synced_team_upgrade_original = PlayerManager.add_synced_team_upgrade
+local peer_dropped_out_original = PlayerManager.peer_dropped_out
+
 PlayerManager._CHECK_BUFF_ACED = {
 	overkill = function() return managers.player:has_category_upgrade("player", "overkill_all_weapons") end,
 	pain_killer = function(level) return (level and level > 1) end,
@@ -56,19 +69,6 @@ PlayerManager._TEMPORARY_BUFFS = {
 PlayerManager.ACTIVE_TEAM_BUFFS = {}
 PlayerManager.ACTIVE_BUFFS = {}
 PlayerManager._LISTENER_CALLBACKS = {}
-
-local init_original = PlayerManager.init
-local update_original = PlayerManager.update
-local count_up_player_minions_original = PlayerManager.count_up_player_minions
-local count_down_player_minions_original = PlayerManager.count_down_player_minions
-local update_hostage_skills_original = PlayerManager.update_hostage_skills
-local activate_temporary_upgrade_original = PlayerManager.activate_temporary_upgrade
-local activate_temporary_upgrade_by_level_original = PlayerManager.activate_temporary_upgrade_by_level
-local deactivate_temporary_upgrade_original = PlayerManager.deactivate_temporary_upgrade
-local aquire_team_upgrade_original = PlayerManager.aquire_team_upgrade
-local unaquire_team_upgrade_original = PlayerManager.unaquire_team_upgrade
-local add_synced_team_upgrade_original = PlayerManager.add_synced_team_upgrade
-local peer_dropped_out_original = PlayerManager.peer_dropped_out
 
 function PlayerManager:init(...)
 	init_original(self, ...)

@@ -1,8 +1,8 @@
 
 local update_original = StageEndScreenGui.update
 
-local SKIP_STAT_SCREEN = JackHUD._data.skip_stat_screen
-local SKIP_STAT_SCREEN_DELAY = JackHUD._data.stat_screen_skip
+local SKIP_STAT_SCREEN = JackHUD:GetOption("skip_stat_screen")
+local SKIP_STAT_SCREEN_DELAY = JackHUD:GetOption("stat_screen_skip")
 
 function StageEndScreenGui:update(t, ...)
 	update_original(self, t, ...)

@@ -47,10 +47,10 @@ end
 
 function HUDInteraction:show_interaction_bar(current, total)
 	show_interaction_bar_original(self, current, total)
-	self._interact_circle:set_visible(JackHUD._data.show_interaction_circle)
-	self._interact_timer_text:set_visible(JackHUD._data.show_interaction_text)
+	self._interact_circle:set_visible(JackHUD:GetOption("show_interaction_circle"))
+	self._interact_timer_text:set_visible(JackHUD:GetOption("show_interaction_text"))
 	for i = 1, 4 do
-		self["_bgtext" .. i]:set_visible(JackHUD._data.show_interaction_text and JackHUD._data.show_text_borders)
+		self["_bgtext" .. i]:set_visible(JackHUD:GetOption("show_interaction_text") and JackHUD:GetOption("show_text_borders"))
 	end
 end
 
@@ -68,7 +68,7 @@ function HUDInteraction:set_interaction_bar_width(current, total)
 end
 
 function HUDInteraction:hide_interaction_bar(complete)
-	hide_interaction_bar_original(self, complete and JackHUD._data.show_interaction_circle)
+	hide_interaction_bar_original(self, complete and JackHUD:GetOption("show_interaction_circle"))
 	self._interact_timer_text:set_visible(false)
 	for i = 1, 4 do
 		self["_bgtext" .. i]:set_visible(false)

@@ -9,14 +9,14 @@ function PlayerDriving:_start_action_exit_vehicle(t)
 end
 
 function PlayerDriving:_check_action_exit_vehicle(t, input, ...)
-	if not (self:_check_interact_toggle(t, input) and JackHUD._data.push_to_interact) then
+	if not (self:_check_interact_toggle(t, input) and JackHUD:GetOption("push_to_interact")) then
 		return _check_action_exit_vehicle_original(self, t, input, ...)
 	end
 end
 
 function PlayerDriving:_check_interact_toggle(t, input)
 	local interrupt_key_press = input.btn_interact_press
-	if JackHUD._data.equipment_interrupt then
+	if JackHUD:GetOption("equipment_interrupt") then
 		interrupt_key_press = input.btn_use_item_press
 	end
 	if interrupt_key_press and self:_interacting() then

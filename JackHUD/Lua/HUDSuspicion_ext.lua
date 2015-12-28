@@ -53,9 +53,9 @@ function HUDSuspicion:init(hud, sound_source, ...)
 end
 
 function HUDSuspicion:_set_suspicion_text_visibility(panel)
-	panel:child("suspicion_text"):set_visible(JackHUD._data.show_suspicion_text)
+	panel:child("suspicion_text"):set_visible(JackHUD:GetOption("show_suspicion_text"))
 	for i = 1, 4 do
-		panel:child("suspicion_bgtext" .. i):set_visible(JackHUD._data.show_suspicion_text and JackHUD._data.show_text_borders)
+		panel:child("suspicion_bgtext" .. i):set_visible(JackHUD:GetOption("show_suspicion_text") and JackHUD:GetOption("show_text_borders"))
 	end
 end
 

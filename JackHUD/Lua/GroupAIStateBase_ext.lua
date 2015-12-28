@@ -8,6 +8,7 @@ local convert_hostage_to_criminal_original = GroupAIStateBase.convert_hostage_to
 local sync_converted_enemy_original = GroupAIStateBase.sync_converted_enemy
 local on_hostage_state_original = GroupAIStateBase.on_hostage_state
 local sync_hostage_headcount_original = GroupAIStateBase.sync_hostage_headcount
+local _upd_criminal_suspicion_progress_original = GroupAIStateBase._upd_criminal_suspicion_progress
 
 GroupAIStateBase._LISTENER_CALLBACKS = {}
 
@@ -159,7 +160,6 @@ function GroupAIStateBase._do_listener_callback(event, ...)
 	end
 end
 
-local _upd_criminal_suspicion_progress_original = GroupAIStateBase._upd_criminal_suspicion_progress
 function GroupAIStateBase:_upd_criminal_suspicion_progress(...)
 	if self._ai_enabled then
 		for obs_key, obs_susp_data in pairs(self._suspicion_hud_data or {}) do
@@ -168,7 +168,7 @@ function GroupAIStateBase:_upd_criminal_suspicion_progress(...)
 				local waypoint = managers.hud._hud.waypoints["susp1" .. tostring(obs_key)]
 				if waypoint then
 					local color, arrow_color
-					if JackHUD and JackHUD._data.enable_pacified and unit:anim_data().drop then
+					if JackHUD:GetOption("enable_pacified") and unit:anim_data().drop then
 						if not obs_susp_data._subdued_civ then
 							obs_susp_data._alerted_civ = nil
 							obs_susp_data._subdued_civ = true

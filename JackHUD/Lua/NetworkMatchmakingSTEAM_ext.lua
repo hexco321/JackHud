@@ -1,10 +1,11 @@
 
+local init_cbk = NetworkMatchMakingSTEAM.init
+
 local settings_file = SavePath .. "CrimeNetFilter.ini"
 
-local init_cbk = NetworkMatchMakingSTEAM.init
 function NetworkMatchMakingSTEAM:init()
 	init_cbk(self)
-	if JackHUD and JackHUD._data.enable_filtersettings then
+	if JackHUD and JackHUD:GetOption("enable_filtersettings") then
 		self:_load_persistent_settings()
 	end
 end

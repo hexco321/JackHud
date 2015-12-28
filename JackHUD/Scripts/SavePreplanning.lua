@@ -1,3 +1,7 @@
+if not JackHUD:IsMember() then
+	return
+end
+
 -- Preplanned - By ThatGuyFromBreakingBad
 -- SavePreplanning.lua
 -- v1.34.3_0

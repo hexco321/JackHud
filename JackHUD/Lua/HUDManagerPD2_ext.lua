@@ -1,5 +1,6 @@
 
 local _setup_player_info_hud_pd2_original = HUDManager._setup_player_info_hud_pd2
+local _create_downed_hud_original = HUDManager._create_downed_hud
 local update_original = HUDManager.update
 local set_stamina_value_original = HUDManager.set_stamina_value
 local set_max_stamina_original = HUDManager.set_max_stamina
@@ -8,13 +9,12 @@ local set_mugshot_custody_original = HUDManager.set_mugshot_custody
 local set_mugshot_normal_original = HUDManager.set_mugshot_normal
 local teammate_progress_original = HUDManager.teammate_progress
 local feed_heist_time_original = HUDManager.feed_heist_time
-local show_casing_original =  HUDManager.show_casing
-local hide_casing_original =  HUDManager.hide_casing
-local sync_start_assault_original =  HUDManager.sync_start_assault
-local sync_end_assault_original =  HUDManager.sync_end_assault
-local show_point_of_no_return_timer_original =  HUDManager.show_point_of_no_return_timer
-local hide_point_of_no_return_timer_original =  HUDManager.hide_point_of_no_return_timer
-local _create_downed_hud_original =  HUDManager._create_downed_hud
+local show_casing_original = HUDManager.show_casing
+local hide_casing_original = HUDManager.hide_casing
+local sync_start_assault_original = HUDManager.sync_start_assault
+local sync_end_assault_original = HUDManager.sync_end_assault
+local show_point_of_no_return_timer_original = HUDManager.show_point_of_no_return_timer
+local hide_point_of_no_return_timer_original = HUDManager.hide_point_of_no_return_timer
 local set_player_condition_original = HUDManager.set_player_condition
 
 function HUDManager:set_player_condition(icon_data, text)
@@ -32,7 +32,7 @@ end
 
 function HUDManager:_create_downed_hud(...)
 	_create_downed_hud_original(self, ...)
-	if JackHUD._data.center_assault_banner then
+	if JackHUD:GetOption("center_assault_banner") then
 		local timer_msg = self._hud_player_downed._hud_panel:child("downed_panel"):child("timer_msg")
 		timer_msg:set_y(50)
 		self._hud_player_downed._hud.timer:set_y(math.round(timer_msg:bottom() - 6))
@@ -40,8 +40,8 @@ function HUDManager:_create_downed_hud(...)
 end
 
 function HUDManager:show_casing(...)
-	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD._data.center_assault_banner)
-	if self:alive("guis/mask_off_hud") and JackHUD._data.center_assault_banner then
+	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD:GetOption("center_assault_banner"))
+	if self:alive("guis/mask_off_hud") and JackHUD:GetOption("center_assault_banner") then
 		self:script("guis/mask_off_hud").mask_on_text:set_y(50)
 	end
 	show_casing_original(self, ...)
@@ -53,7 +53,7 @@ function HUDManager:hide_casing(...)
 end
 
 function HUDManager:sync_start_assault(...)
-	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD._data.center_assault_banner)
+	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD:GetOption("center_assault_banner"))
 	sync_start_assault_original(self, ...)
 end
 
@@ -63,7 +63,7 @@ function HUDManager:sync_end_assault(...)
 end
 
 function HUDManager:show_point_of_no_return_timer(...)
-	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD._data.center_assault_banner)
+	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD:GetOption("center_assault_banner"))
 	show_point_of_no_return_timer_original(self, ...)
 end
 
@@ -213,7 +213,7 @@ end
 HUDListManager = HUDListManager or class()
 HUDListManager.ListOptions = {
 	--General settings
-	right_list_height_offset = JackHUD._data.center_assault_banner and 0 or 50,   --Margin from top for the right list
+	right_list_height_offset = JackHUD:GetOption("center_assault_banner") and 0 or 50,   --Margin from top for the right list
 	right_list_scale = 1,   --Size scale of right list
 	left_list_height_offset = 80,   --Margin from top for the left list
 	left_list_scale = 1,    --Size scale of left list
@@ -221,33 +221,33 @@ HUDListManager.ListOptions = {
 	buff_list_scale = 1,    --Size scale of buff list
 
 	--Left side list
-	show_timers = JackHUD._data.show_timers,     --Drills, time locks, hacking etc.
-	show_equipment = JackHUD._data.show_equipment,  --Deployables (ammo, doc bags, body bags)
-	show_sentries = JackHUD._data.show_sentries,   --Deployable sentries
-	hide_empty_sentries = JackHUD._data.hide_empty_sentries,     --Hide sentries with no ammo if player lacks the skill to refill them
-	show_ecms = JackHUD._data.show_ecms,       --Active ECMs
-	show_ecm_retrigger = JackHUD._data.show_ecm_retrigger,      --Countdown for players own ECM feedback retrigger delay
-	show_minions = JackHUD._data.show_minions,    --Converted enemies, type and health
-	show_pagers = JackHUD._data.show_pagers,     --Show currently active pagers
-	show_tape_loop = JackHUD._data.show_tape_loop,  --Show active tape loop duration
-	remove_answered_pager_contour = JackHUD._data.remove_answered_pager_contour,   --Removes the interaction contour on answered pagers
+	show_timers = JackHUD:GetOption("show_timers"),     --Drills, time locks, hacking etc.
+	show_equipment = JackHUD:GetOption("show_equipment"),  --Deployables (ammo, doc bags, body bags)
+	show_sentries = JackHUD:GetOption("show_sentries"),   --Deployable sentries
+	hide_empty_sentries = JackHUD:GetOption("hide_empty_sentries"),     --Hide sentries with no ammo if player lacks the skill to refill them
+	show_ecms = JackHUD:GetOption("show_ecms"),       --Active ECMs
+	show_ecm_retrigger = JackHUD:GetOption("show_ecm_retrigger"),      --Countdown for players own ECM feedback retrigger delay
+	show_minions = JackHUD:GetOption("show_minions"),    --Converted enemies, type and health
+	show_pagers = JackHUD:GetOption("show_pagers"),     --Show currently active pagers
+	show_tape_loop = JackHUD:GetOption("show_tape_loop"),  --Show active tape loop duration
+	remove_answered_pager_contour = JackHUD:GetOption("remove_answered_pager_contour"),   --Removes the interaction contour on answered pagers
 
 	--Right side list
-	show_enemies = JackHUD._data.show_enemies,            --Currently spawned enemies
-	aggregate_enemies = JackHUD._data.aggregate_enemies,      --Don't split enemies on type; use a single entry for all
-	show_turrets = JackHUD._data.show_turrets,    --Show active SWAT turrets
-	show_civilians = JackHUD._data.show_civilians,  --Currently spawned, untied civs
-	show_hostages = JackHUD._data.show_hostages,   --Currently tied civilian and dominated cops
-	show_minion_count = JackHUD._data.show_minion_count,       --Current number of jokered enemies
-	show_pager_count = JackHUD._data.show_pager_count,        --Show number of triggered pagers (only counts pagers triggered while you were present)
-	show_loot = JackHUD._data.show_loot,       --Show spawned and active loot bags/piles (may not be shown if certain mission parameters has not been met)
-	aggregate_loot = JackHUD._data.aggregate_loot, --Don't split loot on type; use a single entry for all
-	separate_bagged_loot = JackHUD._data.separate_bagged_loot,     --Show bagged loot as a separate value
-	show_special_pickups = JackHUD._data.show_special_pickups,    --Show number of special equipment/items
-	show_gage_packages = JackHUD._data.show_gage_packages,    --Show number of gage packages
+	show_enemies = JackHUD:GetOption("show_enemies"),            --Currently spawned enemies
+	aggregate_enemies = JackHUD:GetOption("aggregate_enemies"),      --Don't split enemies on type; use a single entry for all
+	show_turrets = JackHUD:GetOption("show_turrets"),    --Show active SWAT turrets
+	show_civilians = JackHUD:GetOption("show_civilians"),  --Currently spawned, untied civs
+	show_hostages = JackHUD:GetOption("show_hostages"),   --Currently tied civilian and dominated cops
+	show_minion_count = JackHUD:GetOption("show_minion_count"),       --Current number of jokered enemies
+	show_pager_count = JackHUD:GetOption("show_pager_count"),        --Show number of triggered pagers (only counts pagers triggered while you were present)
+	show_loot = JackHUD:GetOption("show_loot"),       --Show spawned and active loot bags/piles (may not be shown if certain mission parameters has not been met)
+	aggregate_loot = JackHUD:GetOption("aggregate_loot"), --Don't split loot on type; use a single entry for all
+	separate_bagged_loot = JackHUD:GetOption("separate_bagged_loot"),     --Show bagged loot as a separate value
+	show_special_pickups = JackHUD:GetOption("show_special_pickups"),    --Show number of special equipment/items
+	show_gage_packages = JackHUD:GetOption("show_gage_packages"),    --Show number of gage packages
 
 	--Buff list
-	show_buffs = JackHUD._data.show_buffs       --Active effects (buffs/debuffs). Also see HUDList.BuffItemBase.IGNORED_BUFFS table to ignore specific buffs that you don't want listed, or enable some of those not shown by default
+	show_buffs = JackHUD:GetOption("show_buffs")       --Active effects (buffs/debuffs). Also see HUDList.BuffItemBase.IGNORED_BUFFS table to ignore specific buffs that you don't want listed, or enable some of those not shown by default
 }
 
 function HUDListManager:init()

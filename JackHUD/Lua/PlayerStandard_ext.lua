@@ -24,7 +24,7 @@ end
 
 function PlayerStandard:_start_action_reload(t)
 	_start_action_reload_original(self, t)
-	if self._equipped_unit:base():can_reload() and managers.player:current_state() ~= "bleed_out" and JackHUD._data.show_reload_interaction then
+	if self._equipped_unit:base():can_reload() and managers.player:current_state() ~= "bleed_out" and JackHUD:GetOption("show_reload_interaction") then
 		self._state_data._isReloading = true
 		managers.hud:show_interaction_bar(0, self._state_data.reload_expire_t or 0)
 		self._state_data.reload_offset = t
@@ -33,7 +33,7 @@ end
 
 function PlayerStandard:_update_reload_timers(t, dt, input)
 	_update_reload_timers_original(self, t, dt, input)
-	if JackHUD._data.show_reload_interaction then
+	if JackHUD:GetOption("show_reload_interaction") then
 		if not self._state_data.reload_expire_t and self._state_data._isReloading then
 			managers.hud:hide_interaction_bar(true)
 			self._state_data._isReloading = false
@@ -47,7 +47,7 @@ function PlayerStandard:_update_reload_timers(t, dt, input)
 end
 
 function PlayerStandard:_interupt_action_reload(t)
-	if self._state_data._isReloading and managers.player:current_state() ~= "bleed_out" and JackHUD._data.show_reload_interaction then
+	if self._state_data._isReloading and managers.player:current_state() ~= "bleed_out" and JackHUD:GetOption("show_reload_interaction") then
 		managers.hud:hide_interaction_bar(false)
 		self._state_data._isReloading = false
 	end
@@ -122,7 +122,7 @@ function PlayerStandard:_update_melee_timers(t, ...)
 		managers.player:activate_buff("melee_charge")
 		managers.player:set_buff_attribute("melee_charge", "progress", self:_get_melee_charge_lerp_value(t))
 	end
-	if JackHUD._data.show_melee_interaction then
+	if JackHUD:GetOption("show_melee_interaction") then
 		if self._state_data.meleeing and not self._state_data.melee_attack_allowed_t and not tweak_data.blackmarket.melee_weapons[managers.blackmarket:equipped_melee_weapon()].instant then
 			if math.clamp(t - (self._state_data.melee_start_t or 0), 0, tweak_data.blackmarket.melee_weapons[managers.blackmarket:equipped_melee_weapon()].stats.charge_time) < 0.12 or self._state_data._at_max_melee then
 			elseif math.clamp(t - (self._state_data.melee_start_t or 0), 0, tweak_data.blackmarket.melee_weapons[managers.blackmarket:equipped_melee_weapon()].stats.charge_time) >= tweak_data.blackmarket.melee_weapons[managers.blackmarket:equipped_melee_weapon()].stats.charge_time then
@@ -143,7 +143,7 @@ end
 
 function PlayerStandard:_do_melee_damage(t, ...)
 	managers.player:deactivate_buff("melee_charge")
-	if JackHUD._data.show_melee_interaction then
+	if JackHUD:GetOption("show_melee_interaction") then
 		managers.hud:hide_interaction_bar(false)
 		self._state_data._need_show_interact = nil
 		self._state_data._at_max_melee = nil
@@ -164,7 +164,7 @@ function PlayerStandard:_do_melee_damage(t, ...)
 end
 
 function PlayerStandard:_interupt_action_melee(...)
-	if JackHUD._data.show_melee_interaction and self._state_data.meleeing then
+	if JackHUD:GetOption("show_melee_interaction") and self._state_data.meleeing then
 		self._state_data._need_show_interact = nil
 		self._state_data._at_max_melee = nil
 		managers.hud:hide_interaction_bar(false)
@@ -198,7 +198,7 @@ end
 
 function PlayerStandard:_check_action_throw_grenade(t, input, ...)
 	if input.btn_throw_grenade_press then
-		if JackHUD._data.anti_stealth_grenades and managers.groupai:state():whisper_mode() and (t - (self._last_grenade_t or 0) >= TIMEOUT) then
+		if JackHUD:GetOption("anti_stealth_grenades") and managers.groupai:state():whisper_mode() and (t - (self._last_grenade_t or 0) >= TIMEOUT) then
 			self._last_grenade_t = t
 			return
 		end
@@ -207,14 +207,14 @@ function PlayerStandard:_check_action_throw_grenade(t, input, ...)
 end
 
 function PlayerStandard:_check_action_interact(t, input, ...)
-	if not (self:_check_interact_toggle(t, input) and JackHUD._data.push_to_interact) then
+	if not (self:_check_interact_toggle(t, input) and JackHUD:GetOption("push_to_interact")) then
 		return _check_action_interact_original(self, t, input, ...)
 	end
 end
 
 function PlayerStandard:_check_interact_toggle(t, input)
 	local interrupt_key_press = input.btn_interact_press
-	if JackHUD._data.equipment_interrupt then
+	if JackHUD:GetOption("equipment_interrupt") then
 		interrupt_key_press = input.btn_use_item_press
 	end
 	if interrupt_key_press and self:_interacting() then

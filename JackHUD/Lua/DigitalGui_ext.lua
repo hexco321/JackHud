@@ -1,4 +1,15 @@
 
+local init_original = DigitalGui.init
+local update_original = DigitalGui.update
+local timer_set_original = DigitalGui.timer_set
+local timer_start_count_up_original = DigitalGui.timer_start_count_up
+local timer_start_count_down_original = DigitalGui.timer_start_count_down
+local timer_pause_original = DigitalGui.timer_pause
+local timer_resume_original = DigitalGui.timer_resume
+local _timer_stop_original = DigitalGui._timer_stop
+local load_original = DigitalGui.load
+local destroy_original = DigitalGui.destroy
+
 DigitalGui.SPAWNED_ITEMS = {}
 DigitalGui._LISTENER_CALLBACKS = {}
 
@@ -70,20 +81,10 @@ DigitalGui._TIMER_DATA = {
 	[104671] = { }, --Big Bank time lock door #2
 	[167575] = { }, --Golden Grin BFD timer
 }
+
 for i, editor_id in ipairs({ 130022, 130122, 130222, 130322, 130422, 130522 }) do               --Train heist vaults (1-6)
 	DigitalGui._TIMER_DATA[editor_id] = { timer_pause = stop_on_loud_pause }
 end
-
-local init_original = DigitalGui.init
-local update_original = DigitalGui.update
-local timer_set_original = DigitalGui.timer_set
-local timer_start_count_up_original = DigitalGui.timer_start_count_up
-local timer_start_count_down_original = DigitalGui.timer_start_count_down
-local timer_pause_original = DigitalGui.timer_pause
-local timer_resume_original = DigitalGui.timer_resume
-local _timer_stop_original = DigitalGui._timer_stop
-local load_original = DigitalGui.load
-local destroy_original = DigitalGui.destroy
 
 function DigitalGui:init(unit, ...)
 	init_original(self, unit, ...)

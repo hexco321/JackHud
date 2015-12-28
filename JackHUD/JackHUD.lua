@@ -1,3 +1,6 @@
+if not Steam then
+	return
+end
 
 --[[
 	We setup the global table for our mod, along with some path variables, and a data table.
@@ -11,6 +14,7 @@ if not JackHUD.setup then
 	JackHUD._data_path = SavePath .. "JackHUD.txt"
 	JackHUD._poco_path = SavePath .. "hud3_config.json"
 	JackHUD._data = {}
+	JackHUD._disabled_defaults = {}
 	JackHUD._menus = {
 		"jackhud_options"
 		,"speed_up_options"
@@ -97,9 +101,9 @@ if not JackHUD.setup then
 		A simple save function that json encodes our _data table and saves it to a file.
 	]]
 	function JackHUD:Save()
-		local file = io.open( self._data_path, "w+" )
+		local file = io.open(self._data_path, "w+")
 		if file then
-			file:write( json.encode( self._data ) )
+			file:write(json.encode(self._data))
 			file:close()
 		end
 	end
@@ -108,10 +112,11 @@ if not JackHUD.setup then
 		A simple load function that decodes the saved json _data table if it exists.
 	]]
 	function JackHUD:Load()
+		self:LoadDisabledDefaults()
 		self:LoadDefaults()
-		local file = io.open( self._data_path, "r" )
+		local file = io.open(self._data_path, "r")
 		if file then
-			local configt = json.decode( file:read("*all") )
+			local configt = json.decode(file:read("*all"))
 			file:close()
 			for k,v in pairs(configt) do
 				self._data[k] = v
@@ -121,28 +126,43 @@ if not JackHUD.setup then
 		self:CheckPoco()
 	end
 
+	function JackHUD:GetOption(id)
+		if self:IsMember() then
+			return self._data[id]
+		else
+			log("NOT A MEMBER")
+			return self._disabled_defaults[id]
+		end
+	end
+
+	function JackHUD:LoadDisabledDefaults()
+		local default_file = io.open(self._path .."Menu/default_disabled.txt")
+		self._disabled_defaults = json.decode(default_file:read("*all"))
+		default_file:close()
+	end
+
 	function JackHUD:LoadDefaults()
 		local default_file = io.open(self._path .."Menu/default_values.txt")
-		self._data = json.decode( default_file:read("*all") )
+		self._data = json.decode(default_file:read("*all"))
 		default_file:close()
 	end
 
 	function JackHUD:InitAllMenus()
-		for _,menu in pairs(JackHUD._menus) do
-			MenuHelper:LoadFromJsonFile(JackHUD._path .. "Menu/" .. menu .. ".txt", JackHUD, JackHUD._data)
+		for _,menu in pairs(self._menus) do
+			MenuHelper:LoadFromJsonFile(self._path .. "Menu/" .. menu .. ".txt", self, self._data)
 		end
 	end
 
 	function JackHUD:ForceReloadAllMenus()
-		for _,menu in pairs(JackHUD._menus) do
+		for _,menu in pairs(self._menus) do
 			_menu = MenuHelper:GetMenu(menu)
 			for _,_item in pairs(_menu._items_list) do
 				if _item._type == "toggle" then
-					_item.selected = JackHUD._data[_item._parameters.name] and 1 or 2
+					_item.selected = self._data[_item._parameters.name] and 1 or 2
 				elseif _item._type == "multi_choice" then
-					_item._current_index = JackHUD._data[_item._parameters.name]
+					_item._current_index = self._data[_item._parameters.name]
 				elseif _item._type == "slider" then
-					_item._value = JackHUD._data[_item._parameters.name]
+					_item._value = self._data[_item._parameters.name]
 				end
 			end
 		end
@@ -234,21 +254,47 @@ if not JackHUD.setup then
 		return version
 	end
 
+	function JackHUD:IsMember()
+		if JackHUD.jackhud_member_check_done then
+			return JackHUD.is_member or JackHUD.steam_offline
+		else
+			return true
+		end
+	end
+
+	function JackHUD:ShowSteamGroup()
+		Steam:overlay_activate("url", "http://steamcommunity.com/groups/jackhud")
+	end
+
+	function JackHUD:MemberCheck()
+		Steam:http_request("http://steamcommunity.com/gid/11078625/memberslistxml/?xml=1&p=" .. tostring(self.page_number), self.MembersListCallBack)
+	end
+
+	function JackHUD.MembersListCallBack(success, page)
+		if success then
+			if string.find(page, "<steamID64>" .. Steam:userid() .. "</steamID64>") then
+				JackHUD.is_member = true
+			elseif string.find(page, "<nextPageLink>") then
+				self.page_number = self.page_number + 1
+				self:MemberCheck()
+				return
+			end
+		else
+			JackHUD.steam_offline = true
+		end
+		JackHUD.jackhud_member_check_done = true
+	end
+
+	JackHUD.page_number = 1
+	JackHUD:MemberCheck()
 	JackHUD:Load()
 	JackHUD.setup = true
-	--log("JackHud loaded.")
 end
 
 if RequiredScript then
 	local requiredScript = RequiredScript:lower()
 	if JackHUD._hook_files[requiredScript] then
-		if type(JackHUD._hook_files[requiredScript]) == "table" then
-			for k, v in pairs(JackHUD._hook_files[requiredScript]) do
-				JackHUD:SafeDoFile(JackHUD._lua_path .. v)
-			end
-		else
-			JackHUD:SafeDoFile(JackHUD._lua_path .. JackHUD._hook_files[requiredScript])
-		end
+		JackHUD:SafeDoFile(JackHUD._lua_path .. JackHUD._hook_files[requiredScript])
 	else
 		log("JackHUD: unlinked script called: " .. requiredScript)
 	end
