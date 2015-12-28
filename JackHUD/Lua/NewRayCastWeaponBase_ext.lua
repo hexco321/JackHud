@@ -1,6 +1,3 @@
-if not JackHUD then
-	return
-end
 
 local on_equip_original = NewRaycastWeaponBase.on_equip
 local toggle_gadget_original = NewRaycastWeaponBase.toggle_gadget

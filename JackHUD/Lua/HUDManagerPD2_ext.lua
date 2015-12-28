@@ -1,6 +1,3 @@
-if not JackHUD then
-	return
-end
 
 local _setup_player_info_hud_pd2_original = HUDManager._setup_player_info_hud_pd2
 local update_original = HUDManager.update
@@ -89,23 +86,6 @@ end
 
 function HUDManager:update_inspire_timer(...)
 	self._teammate_panels[self.PLAYER_PANEL]:update_inspire_timer(...)
-end
-
-function HUDManager:make_outline_text(panel, bg, txt)
-	bg.name = nil
-	bgs = {}
-	for i = 1, 4 do
-		table.insert(bgs, panel:text(bg))
-	end
-	bgs[1]:set_x(txt:x() - 1)
-	bgs[1]:set_y(txt:y() - 1)
-	bgs[2]:set_x(txt:x() + 1)
-	bgs[2]:set_y(txt:y() - 1)
-	bgs[3]:set_x(txt:x() - 1)
-	bgs[3]:set_y(txt:y() + 1)
-	bgs[4]:set_x(txt:x() + 1)
-	bgs[4]:set_y(txt:y() + 1)
-	return bgs
 end
 
 function HUDManager:teammate_progress(peer_id, type_index, enabled, tweak_data_id, timer, success, ...)
@@ -197,6 +177,14 @@ end
 function HUDManager:set_max_stamina(value, ...)
 	self._teammate_panels[HUDManager.PLAYER_PANEL]:set_max_stamina(value)
 	return set_max_stamina_original(self, value, ...)
+end
+
+function HUDManager:increment_kill_count(teammate_panel_id, is_special, headshot)
+	self._teammate_panels[teammate_panel_id]:increment_kill_count(is_special, headshot)
+end
+
+function HUDManager:reset_kill_count(teammate_panel_id)
+	self._teammate_panels[teammate_panel_id]:reset_kill_count()
 end
 
 function HUDManager:_setup_player_info_hud_pd2(...)
@@ -3106,12 +3094,4 @@ do
 		end
 	end
 
-end
-
-function HUDManager:increment_kill_count(teammate_panel_id, is_special, headshot)
-	self._teammate_panels[teammate_panel_id]:increment_kill_count(is_special, headshot)
-end
-
-function HUDManager:reset_kill_count(teammate_panel_id)
-	self._teammate_panels[teammate_panel_id]:reset_kill_count()
 end

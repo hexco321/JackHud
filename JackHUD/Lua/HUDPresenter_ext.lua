@@ -1,4 +1,6 @@
+
 HUDPresenter = HUDPresenter or class()
+
 function HUDPresenter:init( hud )
 	self._hud_panel = hud.panel
 	if self._hud_panel:child( "present_panel" ) then

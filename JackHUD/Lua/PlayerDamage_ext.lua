@@ -1,3 +1,4 @@
+
 local set_health_original = PlayerDamage.set_health
 local _damage_screen_original = PlayerDamage._damage_screen
 local build_suppression_original = PlayerDamage.build_suppression
@@ -49,11 +50,9 @@ end
 function PlayerDamage:build_suppression(amount, ...)
 	if not self:_chk_suppression_too_soon(amount) then
 		build_suppression_original(self, amount, ...)
-
 		if self._supperssion_data.value > 0 then
 			managers.player:activate_timed_buff("suppression_debuff", tweak_data.player.suppression.decay_start_delay + self._supperssion_data.value)
 		end
-
 		if self._supperssion_data.value == tweak_data.player.suppression.max_value then
 			if self:get_real_armor() < self:_total_armor() then
 				managers.player:refresh_timed_buff("armor_regen_debuff")
@@ -64,13 +63,11 @@ end
 
 function PlayerDamage:restore_armor(armor_regen, ...)
 	restore_armor_original(self, armor_regen, ...)
-
 	local buff = PlayerDamage._ARMOR_REGEN_TABLE[armor_regen]
 	if buff then
 		local cooldown_key = buff == "bullseye_debuff" and "on_headshot_dealt_cooldown" or "on_killshot_cooldown"
 		managers.player:activate_timed_buff(buff, tweak_data.upgrades[cooldown_key])
 	end
-
 	if self:get_real_armor() >= self:_total_armor() then
 		managers.player:deactivate_buff("armor_regen_debuff")
 	end
@@ -78,9 +75,7 @@ end
 
 function PlayerDamage:_upd_health_regen(...)
 	local old_stack_count = #self._damage_to_hot_stack
-
 	_upd_health_regen_original(self, ...)
-
 	if #self._damage_to_hot_stack ~= old_stack_count then
 		managers.player:set_buff_attribute("damage_to_hot", "stack_count", #self._damage_to_hot_stack)
 	end
@@ -94,6 +89,5 @@ function PlayerDamage:add_damage_to_hot(...)
 		managers.player:activate_timed_buff("damage_to_hot", duration)
 		managers.player:set_buff_attribute("damage_to_hot", "stack_count", stacks)
 	end
-
 	return add_damage_to_hot_original(self, ...)
 end

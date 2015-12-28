@@ -1,3 +1,4 @@
+
 local _setup_mission_assets_original = MissionAssetsManager._setup_mission_assets
 local sync_unlock_asset_original = MissionAssetsManager.sync_unlock_asset
 local unlock_asset_original = MissionAssetsManager.unlock_asset

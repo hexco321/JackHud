@@ -8,7 +8,6 @@ local sync_teammate_progress_original = UnitNetworkHandler.sync_teammate_progres
 
 function UnitNetworkHandler:mark_minion(unit, owner_id, joker_level, partner_in_crime_level, ...)
 	mark_minion_original(self, unit, owner_id, joker_level, partner_in_crime_level, ...)
-
 	if self._verify_character(unit) then
 		local health_mult = 1
 		local damage_mult = 1
@@ -19,7 +18,6 @@ function UnitNetworkHandler:mark_minion(unit, owner_id, joker_level, partner_in_
 		if partner_in_crime_level > 0 then
 			health_mult = health_mult * tweak_data.upgrades.values.player.passive_convert_enemies_health_multiplier[partner_in_crime_level]
 		end
-
 		managers.enemy:add_minion_unit(unit, owner_id, health_mult, damage_mult)
 	end
 end
@@ -28,7 +26,6 @@ function UnitNetworkHandler:hostage_trade(unit, ...)
 	if self._verify_gamestate(self._gamestate_filter.any_ingame) and self._verify_character(unit) then
 		managers.enemy:remove_minion_unit(unit)
 	end
-
 	return hostage_trade_original(self, unit, ...)
 end
 
@@ -36,7 +33,6 @@ function UnitNetworkHandler:unit_traded(unit, trader, ...)
 	if self._verify_gamestate(self._gamestate_filter.any_ingame) and self._verify_character(unit) then
 		managers.enemy:remove_minion_unit(unit)
 	end
-
 	return unit_traded_original(self, unit, trader, ...)
 end
 
@@ -48,7 +44,6 @@ function UnitNetworkHandler:interaction_set_active(unit, u_id, active, tweak_dat
 				if not u_data then return end
 				unit = u_data and u_data.unit
 			end
-
 			if not active then
 				managers.interaction:pager_ended(unit)
 			elseif not flash then
@@ -56,7 +51,6 @@ function UnitNetworkHandler:interaction_set_active(unit, u_id, active, tweak_dat
 			end
 		end
 	end
-
 	return interaction_set_active_original(self, unit, u_id, active, tweak_data, flash, sender, ...)
 end
 
@@ -71,7 +65,6 @@ function UnitNetworkHandler:alarm_pager_interaction(u_id, tweak_table, status, s
 			end
 		end
 	end
-
 	return alarm_pager_interaction_original(self, u_id, tweak_table, status, sender, ...)
 end
 

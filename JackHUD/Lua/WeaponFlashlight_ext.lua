@@ -1,5 +1,6 @@
 
 local flash_cbk = WeaponFlashLight.init
+
 function WeaponFlashLight:init(unit)
 	flash_cbk(self, unit)
 	if JackHUD and JackHUD._data.enable_flashlight_extender then

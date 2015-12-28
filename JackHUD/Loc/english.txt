@@ -2,7 +2,7 @@
 	"jackhud_options" : "JackHUD",
 	"jackhud_options_desc" : "JackHUD Options",
 	"jackhud_reset" : "Reset all options",
-	"jackhud_reset_desc" : "Sets all jackhud options back to default",
+	"jackhud_reset_desc" : "Sets all JackHUD options back to default",
 	"jackhud_reset_message" : "Are you sure you want to reset all JackHUD options?",
 	"jackhud_reset_ok" : "Yes",
 	"jackhud_reset_cancel" : "Cancel",

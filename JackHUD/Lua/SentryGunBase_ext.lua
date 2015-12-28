@@ -1,10 +1,11 @@
-SentryGunBase.SPAWNED_SENTRIES = {}
 
 local spawn_original = SentryGunBase.spawn
 local init_original = SentryGunBase.init
 local sync_setup_original = SentryGunBase.sync_setup
 local activate_as_module_original = SentryGunBase.activate_as_module
 local destroy_original = SentryGunBase.destroy
+
+SentryGunBase.SPAWNED_SENTRIES = {}
 
 function SentryGunBase.spawn(owner, pos, rot, ammo_multiplier, armor_multiplier, damage_multiplier, peer_id, ...)
 	local unit = spawn_original(owner, pos, rot, ammo_multiplier, armor_multiplier, damage_multiplier, peer_id, ...)
@@ -32,6 +33,7 @@ function SentryGunBase:sync_setup(upgrade_lvl, peer_id, ...)
 	self._owner_id = self._owner_id or peer_id
 	return result
 end
+
 function SentryGunBase:activate_as_module(...)
 	SentryGunBase.SPAWNED_SENTRIES[self._unit:key()] = nil
 	UnitBase._do_listener_callback("on_sentry_destroy", self._unit)

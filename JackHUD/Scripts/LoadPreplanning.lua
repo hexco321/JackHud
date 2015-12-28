@@ -15,7 +15,7 @@ end
 
 if managers.preplanning and managers.job and managers.network then
     local sp_current_level_id =  managers.job:current_real_job_id() .. "_" .. managers.job:current_level_id()
-    dofile(SavePath .. "preplanning\\" .. sp_current_level_id .. ".lua")
+    dofile(SavePath .. "preplanning/" .. sp_current_level_id .. ".lua")
     if managers.chat then
         managers.chat:feed_system_message(ChatManager.GAME, "Preplanned: Preplanning loaded")
     end

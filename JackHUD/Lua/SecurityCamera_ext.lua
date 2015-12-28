@@ -1,3 +1,4 @@
+
 local _start_tape_loop_original = SecurityCamera._start_tape_loop
 local _deactivate_tape_loop_original = SecurityCamera._deactivate_tape_loop
 

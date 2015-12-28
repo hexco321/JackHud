@@ -91,7 +91,6 @@ function EnemyManager:on_civilian_destroyed(unit, ...)
 	return on_civilian_destroyed_original(self, unit, ...)
 end
 
-
 function EnemyManager:_check_minion(unit, killed)
 	if EnemyManager.MINION_UNITS[unit:key()] then
 		self:remove_minion_unit(unit, killed)
@@ -100,7 +99,6 @@ end
 
 function EnemyManager:_change_enemy_count(unit, change)
 	local tweak = unit:base()._tweak_table
-
 	if not EnemyManager._UNIT_TYPE_IGNORE[tweak] then
 		local u_type = EnemyManager._UNIT_TYPES[tweak] or "cop"
 		self._total_enemy_count = self._total_enemy_count + change
@@ -117,7 +115,6 @@ end
 
 function EnemyManager:_change_civilian_count(unit, change)
 	local tweak = unit:base()._tweak_table
-
 	if not EnemyManager._UNIT_TYPE_IGNORE[tweak] then
 		self._unit_count.civilian = self._unit_count.civilian + change
 		self._do_listener_callback("on_civilian_count_change", self._unit_count.civilian)
@@ -135,17 +132,14 @@ function EnemyManager:add_minion_unit(unit, owner_id, health_mult, damage_mult)
 		self._do_listener_callback("on_add_minion_unit", unit)
 		self._do_listener_callback("on_minion_count_change", self._minion_count)
 	end
-
 	if not EnemyManager.MINION_UNITS[unit:key()].owner_id and owner_id then
 		EnemyManager.MINION_UNITS[unit:key()].owner_id = owner_id
 		self._do_listener_callback("on_minion_set_owner", unit, owner_id)
 	end
-
 	if not EnemyManager.MINION_UNITS[unit:key()].health_mult and health_mult then
 		EnemyManager.MINION_UNITS[unit:key()].health_mult = health_mult
 		self._do_listener_callback("on_minion_set_health_mult", unit, health_mult)
 	end
-
 	if not EnemyManager.MINION_UNITS[unit:key()].damage_mult and damage_mult then
 		EnemyManager.MINION_UNITS[unit:key()].damage_mult = damage_mult
 		self._do_listener_callback("on_minion_set_damage_mult", unit, damage_mult)
@@ -171,7 +165,6 @@ end
 function EnemyManager:minion_count()
 	return table.size(EnemyManager.MINION_UNITS)
 end
-
 
 function EnemyManager.register_listener_clbk(name, event, clbk)
 	EnemyManager._LISTENER_CALLBACKS[event] = EnemyManager._LISTENER_CALLBACKS[event] or {}

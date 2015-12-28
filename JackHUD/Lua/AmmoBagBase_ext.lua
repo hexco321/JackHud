@@ -1,11 +1,11 @@
 
-AmmoBagBase.SPAWNED_BAGS = {}
-
 local spawn_original = AmmoBagBase.spawn
 local init_original = AmmoBagBase.init
 local sync_setup_original = AmmoBagBase.sync_setup
 local _set_visual_stage_original = AmmoBagBase._set_visual_stage
 local destroy_original = AmmoBagBase.destroy
+
+AmmoBagBase.SPAWNED_BAGS = {}
 
 function AmmoBagBase.spawn(pos, rot, ammo_upgrade_lvl, peer_id, ...)
 	local unit = spawn_original(pos, rot, ammo_upgrade_lvl, peer_id, ...)

@@ -1,3 +1,4 @@
+
 local deactivate_original = MissionDoor.deactivate
 
 function MissionDoor:deactivate(...)

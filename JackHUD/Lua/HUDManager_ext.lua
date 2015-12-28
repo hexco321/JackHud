@@ -1,3 +1,4 @@
+
 function HUDManager:add_waypoint(id, data)
 	if self._hud.waypoints[id] then
 		self:remove_waypoint(id)

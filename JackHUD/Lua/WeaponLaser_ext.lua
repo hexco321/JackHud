@@ -1,6 +1,3 @@
-if not JackHUD then
-	return
-end
 
 local update_original = WeaponLaser.update
 

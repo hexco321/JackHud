@@ -1,8 +1,3 @@
-if not JackHUD then
-	return
-end
-
-local TIMEOUT = 0.25
 
 local _check_action_throw_grenade_original = PlayerStandard._check_action_throw_grenade
 local _check_action_interact_original = PlayerStandard._check_action_interact
@@ -19,6 +14,8 @@ local _interupt_action_melee_original = PlayerStandard._interupt_action_melee
 local _do_action_intimidate_original = PlayerStandard._do_action_intimidate
 local _check_action_primary_attack_original = PlayerStandard._check_action_primary_attack
 local update_original = PlayerStandard.update
+
+local TIMEOUT = 0.25
 
 function PlayerStandard:update(t, ...)
 	managers.hud:update_inspire_timer(self._ext_movement:morale_boost() and managers.enemy:get_delayed_clbk_expire_t(self._ext_movement:morale_boost().expire_clbk_id) - t or -1)
@@ -69,18 +66,15 @@ function PlayerStandard:_update_omniscience(t, dt)
 			end
 			return
 		end
-
 		if not self._state_data.omniscience_t then
 			managers.player:activate_timed_buff("sixth_sense", tweak_data.player.omniscience.start_t + 0.05)
 			managers.player:set_buff_attribute("sixth_sense", "stack_count", 0)
 			self._state_data.omniscience_t = t + tweak_data.player.omniscience.start_t
 		end
-
 		if t >= self._state_data.omniscience_t then
 			local sensed_targets = World:find_units_quick("sphere", self._unit:movement():m_pos(), tweak_data.player.omniscience.sense_radius, World:make_slot_mask(12, 21, 33))
 			self._state_data.omniscience_units_detected = self._state_data.omniscience_units_detected or {}
 			managers.player:set_buff_attribute("sixth_sense", "stack_count", #sensed_targets, true)
-
 			for _, unit in ipairs(sensed_targets) do
 				if alive(unit) and not tweak_data.character[unit:base()._tweak_table].is_escort and not unit:anim_data().tied then
 					if not self._state_data.omniscience_units_detected[unit:key()] or t >= self._state_data.omniscience_units_detected[unit:key()] then
@@ -209,7 +203,6 @@ function PlayerStandard:_check_action_throw_grenade(t, input, ...)
 			return
 		end
 	end
-
 	return _check_action_throw_grenade_original(self, t, input, ...)
 end
 

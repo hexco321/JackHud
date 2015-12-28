@@ -4,7 +4,6 @@ UnitBase._LISTENER_CALLBACKS = {}
 function UnitBase:set_equipment_active(equipment, status, offset)
 	local base_class = _G[equipment]
 	local bag_data = base_class.SPAWNED_BAGS[self._unit:key()]
-
 	if bag_data then
 		bag_data.active = status
 		bag_data.amount_offset = offset or 0
@@ -15,7 +14,6 @@ function UnitBase:set_equipment_active(equipment, status, offset)
 		base_class._do_listener_callback("on_bag_set_active", nil, true)
 	end
 end
-
 
 function UnitBase.register_listener_clbk(name, event, clbk)
 	UnitBase._LISTENER_CALLBACKS[event] = GroupAIStateBase._LISTENER_CALLBACKS[event] or {}

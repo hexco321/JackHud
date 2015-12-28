@@ -33,10 +33,8 @@ function TimerGui:set_background_icons(...)
 			end
 		end
 	end
-
 	TimerGui.SPAWNED_ITEMS[self._unit:key()].can_upgrade = can_upgrade or nil
 	self._do_listener_callback("on_can_upgrade", self._unit, can_upgrade)
-
 	return set_background_icons_original(self, ...)
 end
 

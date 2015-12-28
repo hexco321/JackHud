@@ -1,12 +1,5 @@
+
 local _on_damage_received_original = CopDamage._on_damage_received
-
-function CopDamage:_on_damage_received(damage_info, ...)
-	if self._unit:in_slot(16) then
-		managers.enemy:update_minion_health(self._unit, self._health)
-	end
-	return _on_damage_received_original(self, damage_info, ...)
-end
-
 local bullet_original = CopDamage.damage_bullet
 local explosion_original = CopDamage.damage_explosion
 local melee_original = CopDamage.damage_melee
@@ -16,6 +9,13 @@ local sync_explosion_original = CopDamage.sync_damage_explosion
 local sync_melee_original = CopDamage.sync_damage_melee
 local sync_fire_original = CopDamage.sync_damage_fire
 
+function CopDamage:_on_damage_received(damage_info, ...)
+	if self._unit:in_slot(16) then
+		managers.enemy:update_minion_health(self._unit, self._health)
+	end
+	return _on_damage_received_original(self, damage_info, ...)
+end
+
 function CopDamage:_process_kill(aggressor, i_body)
 	if alive(aggressor) and aggressor:base() then
 		if aggressor:base().sentry_gun then
@@ -24,7 +24,6 @@ function CopDamage:_process_kill(aggressor, i_body)
 			aggressor = aggressor:base()._thrower_unit
 		end
 	end
-	
 	if alive(aggressor) then
 		local panel_id
 		if aggressor == managers.player:player_unit() then
@@ -33,7 +32,6 @@ function CopDamage:_process_kill(aggressor, i_body)
 			local char_data = managers.criminals:character_data_by_unit(aggressor)
 			panel_id = char_data and char_data.panel_id
 		end
-		
 		if panel_id then
 			local body_name = i_body and self._unit:body(i_body) and self._unit:body(i_body):name()
 			local headshot = self._head_body_name and body_name and body_name == self._ids_head_body_name or false
@@ -70,7 +68,6 @@ function CopDamage:damage_fire(attack_data, ...)
 			self:_process_kill(attack_data.attacker_unit, attack_data.col_ray and attack_data.col_ray.body and self._unit:get_body_index(attack_data.col_ray.body:name())) 
 		end
 	end
-	
 	--local result = fire_original(self, attack_data, ...)
 	--if result and result.type == "death" then self:_process_kill(attack_data.attacker_unit, self._unit:get_body_index(attack_data.col_ray.body:name())) end
 	--return result

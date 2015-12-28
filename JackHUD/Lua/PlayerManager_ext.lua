@@ -53,7 +53,6 @@ PlayerManager._TEMPORARY_BUFFS = {
 	loose_ammo_give_team = "ammo_give_out",
 }
 
-
 PlayerManager.ACTIVE_TEAM_BUFFS = {}
 PlayerManager.ACTIVE_BUFFS = {}
 PlayerManager._LISTENER_CALLBACKS = {}
@@ -73,7 +72,6 @@ local peer_dropped_out_original = PlayerManager.peer_dropped_out
 
 function PlayerManager:init(...)
 	init_original(self, ...)
-
 	for category, data in pairs(self._global.team_upgrades) do
 		for upgrade, value in pairs(data) do
 			local buff = PlayerManager._TEAM_BUFFS[category] and PlayerManager._TEAM_BUFFS[category][upgrade]
@@ -88,7 +86,6 @@ end
 
 function PlayerManager:update(t, dt, ...)
 	update_original(self, t, dt, ...)
-   
 	local expired_buffs = {}
 	for buff, data in pairs(PlayerManager.ACTIVE_BUFFS) do
 		if data.timed then
@@ -99,11 +96,9 @@ function PlayerManager:update(t, dt, ...)
 			end
 		end
 	end
-   
 	for _, buff in ipairs(expired_buffs) do
 		self:deactivate_buff(buff)
 	end
-
 	self._t = t
 end
 
@@ -126,17 +121,14 @@ end
 
 function PlayerManager:update_hostage_skills(...)
 	local stack_count = (managers.groupai and managers.groupai:state():hostage_count() or 0) + (self:num_local_minions() or 0)
-   
 	if self:has_team_category_upgrade("health", "hostage_multiplier") or self:has_team_category_upgrade("stamina", "hostage_multiplier") or self:has_team_category_upgrade("damage_dampener", "hostage_multiplier") then
 		self:set_buff_active("hostage_situation", stack_count > 0)
 		self:set_buff_attribute("hostage_situation", "stack_count", stack_count)
 	end
-   
 	if self:has_category_upgrade("player", "hostage_health_regen_addend") then
 		self:set_buff_active("hostage_taker", stack_count > 0)
 		self:set_buff_attribute("hostage_taker", "aced", self:upgrade_level("player", "hostage_health_regen_addend", 0) > 1)
 	end
-   
 	return update_hostage_skills_original(self, ...)
 end
 
@@ -154,7 +146,6 @@ function PlayerManager:activate_temporary_upgrade(category, upgrade, ...)
 			--DEBUG_PRINT("warnings", "Attempting to activate undefined buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. "\n")
 		end
 	end
-   
 	return activate_temporary_upgrade_original(self, category, upgrade, ...)
 end
 
@@ -175,7 +166,6 @@ function PlayerManager:activate_temporary_upgrade_by_level(category, upgrade, le
 			end
 		end
 	end
-
 	return activate_temporary_upgrade_by_level_original(self, category, upgrade, level, ...)
 end
 
@@ -189,13 +179,11 @@ function PlayerManager:deactivate_temporary_upgrade(category, upgrade, ...)
 			--DEBUG_PRINT("warnings", "Attempting to deactivate undefined buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. "\n")
 		end
 	end
-   
 	return deactivate_temporary_upgrade_original(self, category, upgrade, ...)
 end
 
 function PlayerManager:aquire_team_upgrade(upgrade, ...)
 	aquire_team_upgrade_original(self, upgrade, ...)
-   
 	local buff = PlayerManager._TEAM_BUFFS[upgrade.category] and PlayerManager._TEAM_BUFFS[upgrade.category][upgrade.upgrade]
 	if buff then
 		self:activate_team_buff(buff, 0)
@@ -206,7 +194,6 @@ end
 
 function PlayerManager:unaquire_team_upgrade(upgrade, ...)
 	unaquire_team_upgrade_original(self, upgrade, ...)
-   
 	local buff = PlayerManager._TEAM_BUFFS[upgrade.category] and PlayerManager._TEAM_BUFFS[upgrade.category][upgrade.upgrade]
 	if buff then
 		self:deactivate_team_buff(buff, 0)
@@ -217,7 +204,6 @@ end
 
 function PlayerManager:add_synced_team_upgrade(peer_id, category, upgrade, ...)
 	add_synced_team_upgrade_original(self, peer_id, category, upgrade, ...)
-
 	local buff = PlayerManager._TEAM_BUFFS[category] and PlayerManager._TEAM_BUFFS[category][upgrade]
 	if buff then
 		self:activate_team_buff(buff, peer_id)
@@ -229,7 +215,6 @@ end
 function PlayerManager:peer_dropped_out(peer, ...)
 	local peer_id = peer:id()
 	local buffs = {}
-   
 	for category, data in pairs(self._global.synced_team_upgrades[peer_id] or {}) do
 		for upgrade, value in pairs(data) do
 			local buff = PlayerManager._TEAM_BUFFS[category] and PlayerManager._TEAM_BUFFS[category][upgrade]
@@ -240,9 +225,7 @@ function PlayerManager:peer_dropped_out(peer, ...)
 			end
 		end
 	end
-   
 	peer_dropped_out_original(self, peer, ...)
-   
 	for _, buff in pairs(buffs) do
 		self:deactivate_team_buff(buff, peer_id)
 	end
@@ -252,12 +235,10 @@ end
 
 function PlayerManager:activate_team_buff(buff, peer)
 	PlayerManager.ACTIVE_TEAM_BUFFS[buff] = PlayerManager.ACTIVE_TEAM_BUFFS[buff] or {}
-   
 	if not PlayerManager.ACTIVE_TEAM_BUFFS[buff][peer] then
 		PlayerManager.ACTIVE_TEAM_BUFFS[buff][peer] = true
 		PlayerManager.ACTIVE_TEAM_BUFFS[buff].count = (PlayerManager.ACTIVE_TEAM_BUFFS[buff].count or 0) + 1
 		--DEBUG_PRINT("buff_basic", "TEAM BUFF ADD: " .. tostring(buff) .. " -> " .. tostring(PlayerManager.ACTIVE_TEAM_BUFFS[buff].count) .. "\n")
-	   
 		if PlayerManager.ACTIVE_TEAM_BUFFS[buff].count == 1 then
 			--DEBUG_PRINT("buff_basic", "\tACTIVATE\n")
 			PlayerManager._do_listener_callback("on_buff_activated", buff)
@@ -270,7 +251,6 @@ function PlayerManager:deactivate_team_buff(buff, peer)
 		PlayerManager.ACTIVE_TEAM_BUFFS[buff][peer] = nil
 		PlayerManager.ACTIVE_TEAM_BUFFS[buff].count = PlayerManager.ACTIVE_TEAM_BUFFS[buff].count - 1
 		--DEBUG_PRINT("buff_basic", "TEAM BUFF REMOVE: " .. tostring(buff) .. " -> " .. tostring(PlayerManager.ACTIVE_TEAM_BUFFS[buff].count) .. "\n")
-	   
 		if PlayerManager.ACTIVE_TEAM_BUFFS[buff].count <= 0 then
 			--DEBUG_PRINT("buff_basic", "\tDEACTIVATE\n")
 			PlayerManager.ACTIVE_TEAM_BUFFS[buff] = nil
@@ -303,15 +283,12 @@ end
 
 function PlayerManager:activate_timed_buff(buff, duration)
 	self:activate_buff(buff)
-   
 	PlayerManager.ACTIVE_BUFFS[buff].timed = true
 	PlayerManager.ACTIVE_BUFFS[buff].activation_t = self._t
-   
 	if PlayerManager.ACTIVE_BUFFS[buff].duration ~= duration then
 		PlayerManager.ACTIVE_BUFFS[buff].duration = duration
 		PlayerManager._do_listener_callback("on_buff_set_duration", buff, duration)
 	end
-   
 	local expiration_t = self._t + duration
 	if PlayerManager.ACTIVE_BUFFS[buff].expire_t ~=  expiration_t then
 		PlayerManager.ACTIVE_BUFFS[buff].expire_t = expiration_t
@@ -333,7 +310,6 @@ function PlayerManager:set_buff_attribute(buff, attribute, ...)
 	if PlayerManager.ACTIVE_BUFFS[buff] then
 		PlayerManager.ACTIVE_BUFFS[buff][attribute] = { ... }
 	end
-   
 	PlayerManager._do_listener_callback("on_buff_set_" .. attribute, buff, ...)
 end
 

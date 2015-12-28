@@ -1,11 +1,11 @@
 
-BodyBagsBagBase.SPAWNED_BAGS = {}
-
 local spawn_original = BodyBagsBagBase.spawn
 local init_original = BodyBagsBagBase.init
 local sync_setup_original = BodyBagsBagBase.sync_setup
 local _set_visual_stage_original = BodyBagsBagBase._set_visual_stage
 local destroy_original = BodyBagsBagBase.destroy
+
+BodyBagsBagBase.SPAWNED_BAGS = {}
 
 function BodyBagsBagBase.spawn(pos, rot, upgrade_lvl, peer_id, ...)
 	local unit = spawn_original(pos, rot, upgrade_lvl, peer_id, ...)

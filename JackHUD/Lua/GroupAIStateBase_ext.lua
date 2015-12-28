@@ -1,6 +1,3 @@
-if not JackHUD then
-	return
-end
 
 local init_original = GroupAIStateBase.init
 local update_original = GroupAIStateBase.update

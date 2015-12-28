@@ -1,6 +1,3 @@
-if not JackHUD then
-	return
-end
 
 if not HUDTeammate.increment_kill_count then
 
@@ -214,7 +211,7 @@ if not HUDTeammate.increment_kill_count then
 			layer = 4
 		})
 		self._inspire_timer:set_right(self._player_panel:child("radial_health_panel"):right())
-		self._inspire_timer_bg = managers.hud:make_outline_text(self._player_panel, {
+		self._inspire_timer_bg = JackHUD:MakeOutlineText(self._player_panel, {
 			text = "0.0s",
 			color = Color.black:with_alpha(0.5),
 			visible = false,
@@ -238,7 +235,7 @@ if not HUDTeammate.increment_kill_count then
 			font_size = 20,
 			layer = 4
 		})
-		self._armor_timer_bg = managers.hud:make_outline_text(self._player_panel, {
+		self._armor_timer_bg = JackHUD:MakeOutlineText(self._player_panel, {
 			text = "0.0s",
 			color = Color.black:with_alpha(0.5),
 			visible = false,
@@ -489,20 +486,16 @@ if not HUDTeammate.increment_kill_count then
 			change_of_health = change_of_health or 0
 			local time_current = managers.player:player_timer():time()
 			local passed_time = time_current - (self._last_time or time_current)
-
 			self._total_hps_time = (self._total_hps_time or 0) + passed_time
 			self._total_hps_heal = (self._total_hps_heal or 0) + change_of_health
 			self._total_hps = self._total_hps_heal / self._total_hps_time
-
 			if time_current > (self._last_heal_happened or 0) + (JackHUD._data.current_hps_timeout or 5) then
 				self._current_hps_heal = nil
 				self._current_hps_time = nil
 			end
-
 			self._current_hps_time = (self._current_hps_time or 0) + passed_time
 			self._current_hps_heal = (self._current_hps_heal or 0) + change_of_health
 			self._current_hps = self._current_hps_heal / self._current_hps_time
-
 			self._last_time = time_current
 			if change_of_health > 0 then
 				self._last_heal_happened = time_current
@@ -511,7 +504,6 @@ if not HUDTeammate.increment_kill_count then
 				self._last_hps_shown = time_current
 				self:update_hps_meter(self._current_hps, self._total_hps)
 			end
-
 		end
 	end
 

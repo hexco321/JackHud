@@ -1,3 +1,4 @@
+
 GrenadeCrateBase.SPAWNED_BAGS = {}
 GrenadeCrateBase.AGGREGATED_BAGS = {}
 
@@ -55,23 +56,22 @@ function CustomGrenadeCrateBase:destroy(...)
 	else
 		self._do_listener_callback("on_bag_amount_update", nil, GrenadeCrateBase.total_aggregated_amount())
 	end
-
 	return custom_destroy_original(self, ...)
 end
 
 
 function GrenadeCrateBase.total_aggregated_amount()
-		local amount = 0
-		for key, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
-				amount = amount + data.amount
-		end
-		return amount
+	local amount = 0
+	for key, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
+		amount = amount + data.amount
+	end
+	return amount
 end
 
 function GrenadeCrateBase.total_aggregated_max_amount()
-		local max_amount = 0
-		for key, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
-				max_amount = max_amount + data.max_amount
-		end
-		return max_amount
+	local max_amount = 0
+	for key, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
+		max_amount = max_amount + data.max_amount
+	end
+	return max_amount
 end

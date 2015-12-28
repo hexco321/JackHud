@@ -1,8 +1,7 @@
 {
 	"name" : "JackHUD",
 	"description" : "A GageHUD fork",
-	"authors" : "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad, Martini and the RestorationMod-Crew, TimeR",
-	"contact" : "",
+	"author" : "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad, Martini and the RestorationMod-Crew, TimeR",
 	"version" : "1.11",
 	"priority": 200,
 	"updates" : [
@@ -18,200 +17,60 @@
 			"display_name" : "JackHUD-Assets"
 		}
 	],
-	"pre_hooks" : [
-		{
-			"hook_id" : "lib/managers/menumanager",
-			"script_path" : "Lua/MenuManager_ext.lua",
-		}
-	],
 	"hooks" : [
-		{
-			"hook_id" : "lib/managers/group_ai_states/groupaistatebase",
-			"script_path" : "Lua/GroupAIStateBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hud/hudassaultcorner",
-			"script_path" : "Lua/HUDAssaultCorner_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hud/hudinteraction",
-			"script_path" : "Lua/HUDInteraction_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hud/hudstatsscreen",
-			"script_path" : "Lua/HUDStatsScreen_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hud/hudpresenter",
-			"script_path" : "Lua/HUDPresenter_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hud/hudsuspicion",
-			"script_path" : "Lua/HUDSuspicion_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hud/hudteammate",
-			"script_path" : "Lua/HUDTeammate_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/menu/crimenetfiltersgui",
-			"script_path" : "Lua/CrimeNetFiltersGui_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/menu/lootdropscreengui",
-			"script_path" : "Lua/LootDropScreenGui_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/menu/menubackdropgui",
-			"script_path" : "Lua/MenuBackDropGUI_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/menu/menunodegui",
-			"script_path" : "Lua/MenuNodeGui_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/menu/menuscenemanager",
-			"script_path" : "Lua/MenuSceneManager_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/menu/stageendscreengui",
-			"script_path" : "Lua/StageEndScreenGui_ext.Lua"
-		},
-		{
-			"hook_id" : "lib/managers/enemymanager",
-			"script_path" : "Lua/EnemyManager_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hudmanager",
-			"script_path" : "Lua/HUDManager_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/hudmanagerpd2",
-			"script_path" : "Lua/HUDManagerPD2_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/localizationmanager",
-			"script_path" : "Lua/LocalizationManager_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/missionassetsmanager",
-			"script_path" : "Lua/MissionAssetsManager_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/objectinteractionmanager",
-			"script_path" : "Lua/ObjectInteractionManager_ext.lua"
-		},
-		{
-			"hook_id" : "lib/managers/playermanager",
-			"script_path" : "Lua/PlayerManager_ext.lua"
-		},
-		{
-			"hook_id" : "lib/network/handlers/unitnetworkhandler",
-			"script_path" : "Lua/UnitNetworkHandler_ext.lua"
-		},
-		{
-			"hook_id" : "lib/network/matchmaking/networkmatchmakingsteam",
-			"script_path" : "Lua/NetworkMatchmakingSTEAM_ext.lua"
-		},
-		{
-			"hook_id" : "lib/states/ingamewaitingforplayers",
-			"script_path" : "Lua/IngameWaitingForPlayersState_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/beings/player/states/playercivilian",
-			"script_path" : "Lua/PlayerCivilian_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/beings/player/states/playerdriving",
-			"script_path" : "Lua/PlayerDriving_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/beings/player/states/playerstandard",
-			"script_path" : "Lua/PlayerStandard_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/beings/player/playerdamage",
-			"script_path" : "Lua/PlayerDamage_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/beings/player/playermovement",
-			"script_path" : "Lua/PlayerMovement_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/equipment/ammo_bag/ammobagbase",
-			"script_path" : "Lua/AmmoBagBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/equipment/bodybags_bag/bodybagsbagbase",
-			"script_path" : "Lua/BodyBagBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/equipment/doctor_bag/doctorbagbase",
-			"script_path" : "Lua/DoctorBagBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/equipment/ecm_jammer/ecmjammerbase",
-			"script_path" : "Lua/ECMJammerBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/equipment/grenade_crate/grenadecratebase",
-			"script_path" : "Lua/GrenadeCrateBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/equipment/sentry_gun/sentrygunbase",
-			"script_path" : "Lua/SentryGunBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/equipment/sentry_gun/sentrygundamage",
-			"script_path" : "Lua/SentryGunDamage_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/enemies/cop/copdamage",
-			"script_path" : "Lua/CopDamage_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/props/digitalgui",
-			"script_path" : "Lua/DigitalGui_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/props/missiondoor",
-			"script_path" : "Lua/MissionDoor_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/props/securitycamera",
-			"script_path" : "Lua/SecurityCamera_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/props/timergui",
-			"script_path" : "Lua/TimerGui_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/weapons/newraycastweaponbase",
-			"script_path" : "Lua/NewRayCastWeaponBase_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/weapons/sentrygunweapon",
-			"script_path" : "Lua/SentryGunWeapon_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/weapons/weaponflashlight",
-			"script_path" : "Lua/WeaponFlashlight_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/weapons/weaponlaser",
-			"script_path" : "Lua/WeaponLaser_ext.lua"
-		},
-		{
-			"hook_id" : "lib/units/unitbase",
-			"script_path" : "Lua/UnitBase_ext.lua"
-		}
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/group_ai_states/groupaistatebase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hud/hudassaultcorner"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hud/hudinteraction"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hud/hudstatsscreen"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hud/hudpresenter"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hud/hudsuspicion"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hud/hudteammate"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/menu/crimenetfiltersgui"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/menu/lootdropscreengui"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/menu/menubackdropgui"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/menu/menunodegui"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/menu/menuscenemanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/menu/stageendscreengui"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/enemymanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hudmanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/hudmanagerpd2"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/localizationmanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/menumanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/missionassetsmanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/objectinteractionmanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/playermanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/network/handlers/unitnetworkhandler"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/network/matchmaking/networkmatchmakingsteam"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/states/ingamewaitingforplayers"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/beings/player/states/playercivilian"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/beings/player/states/playerdriving"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/beings/player/states/playerstandard"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/beings/player/playerdamage"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/beings/player/playermovement"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/equipment/ammo_bag/ammobagbase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/equipment/bodybags_bag/bodybagsbagbase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/equipment/doctor_bag/doctorbagbase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/equipment/ecm_jammer/ecmjammerbase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/equipment/grenade_crate/grenadecratebase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/equipment/sentry_gun/sentrygunbase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/equipment/sentry_gun/sentrygundamage"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/enemies/cop/copdamage"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/props/digitalgui"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/props/missiondoor"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/props/securitycamera"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/props/timergui"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/weapons/newraycastweaponbase"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/weapons/sentrygunweapon"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/weapons/weaponflashlight"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/weapons/weaponlaser"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/units/unitbase"}
 	],
 	"keybinds" : [
 		{
 			"keybind_id" : "save_pre",
 			"name" : "Save Preplanning",
 			"description" : "Saves your Preplanning",
-			"script_path" : "Lua/SavePreplanning.lua",
+			"script_path" : "Scripts/SavePreplanning.lua",
 			"run_in_menu" : false,
 			"run_in_game" : true,
 			"localized" : false
@@ -220,7 +79,7 @@
 			"keybind_id" : "load_pre",
 			"name" : "Load Preplanning",
 			"description" : "Loads your Preplanning",
-			"script_path" : "Lua/LoadPreplanning.lua",
+			"script_path" : "Scripts/LoadPreplanning.lua",
 			"run_in_menu" : false,
 			"run_in_game" : true,
 			"localized" : false

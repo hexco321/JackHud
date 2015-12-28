@@ -1,6 +1,3 @@
-if not JackHUD then
-	return
-end
 
 local hudsuspicion_init_original = HUDSuspicion.init
 local hudsuspicions_animate_eye_original = HUDSuspicion.animate_eye
@@ -77,9 +74,7 @@ function HUDSuspicion:ColorGradient(perc, ...)
 		local r, g, b = ...
 		return r, g, b
 	end
-   
 	local num = select('#', ...) / 3
-
 	local segment, relperc = math.modf(perc*(num-1))
 	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
 	local r_ret = r1 + (r2-r1)*relperc

@@ -179,28 +179,23 @@ ObjectInteractionManager.INTERACTION_TRIGGERS = {
 
 function ObjectInteractionManager:init(...)
 	init_original(self, ...)
-
 	self._queued_units = {}
 	self._pager_count = 0
 	self._total_loot_count = { bagged = 0, unbagged = 0 }
 	self._loot_count = {}
 	self._loot_units_added = {}
 	self._special_pickup_count = {}
-
 	for carry_id, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID) do
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
 	end
 	for interaction_id, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID) do
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
 	end
-
 	for interaction_id, type_id in pairs(ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID) do
 		self._special_pickup_count[type_id] = 0
 	end
-
 	self._unit_triggers = {}
 	self._trigger_blocks = {}
-
 	GroupAIStateBase.register_listener_clbk("ObjectInteractionManager_cancel_pager_listener", "on_whisper_mode_change", callback(self, self, "_whisper_mode_change"))
 end
 
@@ -216,7 +211,6 @@ function ObjectInteractionManager:add_unit(unit, ...)
 			break
 		end
 	end
-
 	table.insert(self._queued_units, unit)
 	return add_unit_original(self, unit, ...)
 end
@@ -228,7 +222,6 @@ function ObjectInteractionManager:remove_unit(unit, ...)
 			break
 		end
 	end
-
 	self:_check_remove_unit(unit)
 	return remove_unit_original(self, unit, ...)
 end
@@ -237,7 +230,6 @@ function ObjectInteractionManager:interact(...)
 	if alive(self._active_unit) and self._active_unit:interaction().tweak_data == "corpse_alarm_pager" then
 		self:pager_answered(self._active_unit)
 	end
-
 	return interact_original(self, ...)
 end
 
@@ -245,7 +237,6 @@ function ObjectInteractionManager:interupt_action_interact(...)
 	if alive(self._active_unit) and self._active_unit:interaction() and self._active_unit:interaction().tweak_data == "corpse_alarm_pager" then
 		self:pager_ended(self._active_unit)
 	end
-
 	return interupt_action_interact_original(self, ...)
 end
 
@@ -253,21 +244,17 @@ end
 function ObjectInteractionManager:_check_queued_units(t)
 	local level_id = managers.job:current_level_id()
 	local ignore_ids = level_id and ObjectInteractionManager.IGNORE_EDITOR_ID[level_id]
-
 	for i, unit in ipairs(self._queued_units) do
 		if alive(unit) then
 			local editor_id = unit:editor_id()
-
 			if not (ignore_ids and ignore_ids[editor_id]) then
 				local carry_id = unit:carry_data() and unit:carry_data():carry_id()
 				local interaction_id = unit:interaction().tweak_data
 				local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
 				local special_pickup_type_id = ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID[interaction_id]
-
 				if ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id] then
 					local data = ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id]
 					local blocked
-
 					for trigger_id, editor_ids in pairs(ObjectInteractionManager.TRIGGERS) do
 						if table.contains(editor_ids, editor_id) then
 							blocked = self._trigger_blocks[trigger_id]
@@ -276,7 +263,6 @@ function ObjectInteractionManager:_check_queued_units(t)
 							break
 						end
 					end
-
 					--io.write("Equipment unit " .. tostring(editor_id) .. " (" .. tostring(data.class) .. ") made interactive, blocked: " .. tostring(blocked) .. "\n")
 					unit:base():set_equipment_active(data.class, not blocked, data.offset)
 				elseif loot_type_id then
@@ -288,12 +274,10 @@ function ObjectInteractionManager:_check_queued_units(t)
 				elseif interaction_id == "corpse_alarm_pager" then
 					self:_pager_started(unit)
 				end
-
 				self._do_listener_callback("on_unit_added", unit)
 			end
 		end
 	end
-
 	self._queued_units = {}
 end
 
@@ -304,17 +288,14 @@ function ObjectInteractionManager:_check_remove_unit(unit)
 			return
 		end
 	end
-
 	local level_id = managers.job:current_level_id()
 	local ignore_ids = level_id and ObjectInteractionManager.IGNORE_EDITOR_ID[level_id]
 	local editor_id = unit:editor_id()
-
 	if not (ignore_ids and ignore_ids[editor_id]) then
 		local carry_id = unit:carry_data() and unit:carry_data():carry_id()
 		local interaction_id = unit:interaction().tweak_data
 		local loot_type_id = carry_id and ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID[carry_id] or ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID[interaction_id]
 		local special_pickup_type_id = ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID[interaction_id]
-
 		if ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id] then
 			unit:base():set_equipment_active(ObjectInteractionManager.EQUIPMENT_INTERACTION_ID[interaction_id].class, false)
 		elseif loot_type_id or self._loot_units_added[unit:key()] then
@@ -327,7 +308,6 @@ function ObjectInteractionManager:_check_remove_unit(unit)
 		elseif interaction_id == "corpse_alarm_pager" then
 			self:pager_ended(unit)
 		end
-
 		self._do_listener_callback("on_unit_removed", unit)
 	end
 end
@@ -337,7 +317,6 @@ function ObjectInteractionManager:_change_loot_count(unit, loot_type, change, ba
 	self._loot_count[loot_type].bagged = self._loot_count[loot_type].bagged + (bagged and change or 0)
 	self._total_loot_count.unbagged = self._total_loot_count.unbagged + (bagged and 0 or change)
 	self._loot_count[loot_type].unbagged = self._loot_count[loot_type].unbagged + (bagged and 0 or change)
-
 	local total_compensation = self:_get_loot_level_compensation()
 	local type_compensation = self:_get_loot_level_compensation(loot_type)
 	self._do_listener_callback("on_total_loot_count_change", self._total_loot_count.unbagged - total_compensation, self._total_loot_count.bagged)
@@ -353,7 +332,6 @@ function ObjectInteractionManager:_get_loot_level_compensation(loot_type)
 			count = count + amount
 		end
 	end
-
 	return count
 end
 
@@ -412,7 +390,6 @@ function ObjectInteractionManager:block_trigger(trigger_id, status)
 	if ObjectInteractionManager.TRIGGERS[trigger_id] then
 		--io.write("ObjectInteractionManager:block_trigger(" .. tostring(trigger_id) .. ", " .. tostring(status) .. ")\n")
 		self._trigger_blocks[trigger_id] = status
-
 		for id, data in ipairs(self._unit_triggers[trigger_id] or {}) do
 			if alive(data.unit) then
 				--io.write("Set active " .. tostring(data.unit:editor_id()) .. ": " .. tostring(not status) .. "\n")

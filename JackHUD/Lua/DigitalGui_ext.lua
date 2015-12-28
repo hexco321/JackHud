@@ -1,3 +1,4 @@
+
 DigitalGui.SPAWNED_ITEMS = {}
 DigitalGui._LISTENER_CALLBACKS = {}
 
@@ -47,7 +48,6 @@ DigitalGui._TIMER_DATA = {
 	[132864] = {    --Meltdown vault temperature
 		class = "TemperatureGaugeItem",
 		params = { start = 0, goal = 50 },
-
 		timer_set = function(unit, timer, ...)
 			if timer > 0 then
 				DigitalGui._DEFAULT_CALLBACKS.timer_start_count(unit, true)
@@ -87,7 +87,6 @@ local destroy_original = DigitalGui.destroy
 
 function DigitalGui:init(unit, ...)
 	init_original(self, unit, ...)
-
 	if self.TYPE == "number" then
 		self._ignore = true
 	else
@@ -104,7 +103,6 @@ function DigitalGui:timer_set(timer, ...)
 	if not self._timer_callbacks and not self._ignore and Network:is_server() then
 		self:_setup_timer_data()
 	end
-
 	self:_do_timer_callback("timer_set", timer)
 	return timer_set_original(self, timer, ...)
 end
@@ -139,9 +137,7 @@ function DigitalGui:load(data, ...)
 		self:_setup_timer_data()
 		--DEBUG_PRINT("timer", "TIMER EVENT: load (" ..tostring(self._name_id or self._unit:editor_id()) .. ")\n", true)
 	end
-
 	load_original(self, data, ...)
-
 	local state = data.DigitalGui
 	if state.timer then
 		self:_do_timer_callback("timer_set", state.timer)
@@ -166,7 +162,7 @@ end
 
 function DigitalGui:_do_timer_callback(event, ...)
 	if not self._ignore then
-	--[[
+--[[
 		if event ~= "update" then
 			local str = "TIMER EVENT: " .. tostring(event) .. " (" .. tostring(self._name_id or self._unit:editor_id()) .. ")\n"
 			for i, v in ipairs({ ... }) do
@@ -174,8 +170,7 @@ function DigitalGui:_do_timer_callback(event, ...)
 			end
 			DEBUG_PRINT("timer", str, event ~= "update")
 		end
-	]]
-
+]]
 		if self._timer_callbacks[event] == false then
 			return
 		elseif self._timer_callbacks[event] then
@@ -201,7 +196,6 @@ function DigitalGui:_setup_timer_data()
 		timer_pause = timer_data.timer_pause,
 		timer_stop = timer_data.timer_stop,
 	}
-
 	DigitalGui._do_listener_callback("on_create", self._unit, timer_data.class, timer_data.params)
 end
 

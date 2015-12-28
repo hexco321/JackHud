@@ -1,6 +1,3 @@
-if not JackHUD then
-	return
-end
 
 local init_original = HUDAssaultCorner.init
 local _start_assault_original = HUDAssaultCorner._start_assault
@@ -19,7 +16,6 @@ function HUDAssaultCorner:init(...)
 		self._hud_panel:child("point_of_no_return_panel"):child("icon_noreturnbox"):set_visible(false)
 		self._hud_panel:child("buffs_panel"):set_x(self._hud_panel:child("assault_panel"):right())
 		self._vip_bg_box:set_x(0) -- left align this "buff"
-
 		self._last_assault_timer_size = 0
 		self._assault_timer = HUDHeistTimer:new({
 			panel = self._bg_box:panel({
@@ -32,7 +28,6 @@ function HUDAssaultCorner:init(...)
 		self._assault_timer._timer_text:set_align("left")
 		self._assault_timer._timer_text:set_vertical("center")
 		self._assault_timer._timer_text:set_color(Color.white:with_alpha(0.9))
-
 		self._last_casing_timer_size = 0
 		self._casing_timer = HUDHeistTimer:new({
 			panel = self._casing_bg_box:panel({
@@ -70,6 +65,7 @@ function HUDAssaultCorner:feed_heist_time(t, ...)
 end
 
 function HUDAssaultCorner:_show_hostages(...)
+	return
 end
 
 function HUDAssaultCorner:_start_assault(text_list, ...)

@@ -1,3 +1,4 @@
+
 local init_original = HUDInteraction.init
 local show_interaction_bar_original = HUDInteraction.show_interaction_bar
 local set_interaction_bar_width_original = HUDInteraction.set_interaction_bar_width
