@@ -25,7 +25,6 @@ JackHUD._poco_conflicting_defaults = {
 		showBoost = true,
 		showCharge = true,
 		showECM = true,
-		showFeedback = true,
 		showInteraction = true,
 		showReload = true,
 		showShield = true,

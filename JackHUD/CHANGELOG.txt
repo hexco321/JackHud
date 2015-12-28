@@ -1,6 +1,11 @@
 
+1.11r20:
+~ fixed: correctly removing hud elements when in custody now
+~ fixed: reverted previous Save/Load Preplanning fix, handling it by setup/rar now
+~ fixed: removed ecm-feedback from pocohud-incompatible list
+
 1.10r19:
-+ fixed: Save/Load Preplanning
+~ fixed: Save/Load Preplanning
 
 1.10r18:
 + added: added "contract broker" quick link to main menu

@@ -41,11 +41,6 @@ function MenuNodeGui:_setup_item_rows(node, ...)
 				table.insert(conflicts, "buff.showECM")
 				conflict_found = true
 			end
-			if buff.showFeedback ~= false then
-				JackHUD._fixed_poco_conf.buff.showFeedback = false
-				table.insert(conflicts, "buff.showFeedback")
-				conflict_found = true
-			end
 			if buff.showInteraction ~= false then
 				JackHUD._fixed_poco_conf.buff.showInteraction = false
 				table.insert(conflicts, "buff.showInteraction")

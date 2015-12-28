@@ -18,6 +18,16 @@ local sync_end_assault_original =  HUDManager.sync_end_assault
 local show_point_of_no_return_timer_original =  HUDManager.show_point_of_no_return_timer
 local hide_point_of_no_return_timer_original =  HUDManager.hide_point_of_no_return_timer
 local _create_downed_hud_original =  HUDManager._create_downed_hud
+local set_player_condition_original = HUDManager.set_player_condition
+
+function HUDManager:set_player_condition(icon_data, text)
+	set_player_condition_original(self, icon_data, text)
+	if icon_data == "mugshot_in_custody" then
+		self._teammate_panels[self.PLAYER_PANEL]:set_player_in_custody(true)
+	elseif icon_data == "mugshot_normal" then
+		self._teammate_panels[self.PLAYER_PANEL]:set_player_in_custody(false)
+	end
+end
 
 function HUDManager:change_health(...)
 	self._teammate_panels[self.PLAYER_PANEL]:change_health(...)

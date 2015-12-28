@@ -475,6 +475,7 @@ if not HUDTeammate.increment_kill_count then
 	function HUDTeammate:set_player_in_custody(incustody)
 		self._is_in_custody = incustody
 		self:set_revive_visibility(not incustody)
+		self:set_detection_visibility(not incustody)
 		self:set_stamina_meter_visibility(not incustody)
 		if incustody then
 			self:set_interact_visible(false)
