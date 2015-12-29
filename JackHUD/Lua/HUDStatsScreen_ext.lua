@@ -1,6 +1,7 @@
 
 local update_stats_screen_original = HUDStatsScreen._update_stats_screen_day
 local init_original = HUDStatsScreen.init
+local show_original = HUDStatsScreen.show
  
 local characters = {
 	female_1 = {
@@ -236,7 +237,7 @@ function HUDStatsScreen:init()
 		h = 25
 	})
 	blank:set_y(math.round(spending_cash_text:bottom()))
-		local blanka = day_wrapper_panel:text({
+	local blanka = day_wrapper_panel:text({
 		layer = 0,
 		x =  0,
 		y = 0,
@@ -334,7 +335,7 @@ function HUDStatsScreen:init()
 	})
 	total_killed_text:set_y(math.round(headshot_text:bottom()))
 	total_killed_title:set_top(total_killed_text:top())
-		local non_specials_killed_text = day_wrapper_panel:text({
+	local non_specials_killed_text = day_wrapper_panel:text({
 		layer = 0,
 		x =  -220,
 		y = 0,
@@ -502,7 +503,6 @@ function HUDStatsScreen:init()
 	})
 	cloakers_killed_text:set_y(math.round(tank_skull_killed_text:bottom()))
 	cloakers_killed_title:set_top(cloakers_killed_text:top())
-
 	local shields_killed_text = day_wrapper_panel:text({
 		layer = 0,
 		x =  -220,
@@ -848,4 +848,38 @@ function HUDStatsScreen:_update_stats_screen_day(right_panel)
 	update_stats_screen_original(self, right_panel)
 	self:clean_up(right_panel)
 	self:update(right_panel:child("day_wrapper_panel"))
+end
+
+-- Lobby Player Info compat
+function HUDStatsScreen:show()
+	show_original(self)
+	local right_panel = managers.hud:script(managers.hud.STATS_SCREEN_FULLSCREEN).panel:child("right_panel")
+	if right_panel then
+		local dwp = right_panel:child("day_wrapper_panel")
+		if dwp then
+			local y = dwp:child("accuracy_text"):top()
+			local x = dwp:w() / 2 - 5
+			for i = 1, 4 do
+				local name = dwp:child("lpi_team_text_name" .. tostring(i))
+				if name then
+					name:set_x(x - 5)
+					name:set_top(y)
+					name:set_font_size(18)
+				end
+				local skills = dwp:child("lpi_team_text_skills" .. tostring(i))
+				if skills then
+					skills:set_x(x)
+					skills:set_top(y + 20)
+					skills:set_font_size(15)
+				end
+				local perk = dwp:child("lpi_team_text_perk" .. tostring(i))
+				if perk then
+					perk:set_x(x)
+					perk:set_top(y + 36)
+					perk:set_font_size(15)
+				end
+				y = y + 46
+			end
+		end
+	end
 end

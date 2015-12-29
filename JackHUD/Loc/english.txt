@@ -10,8 +10,8 @@
 	"buy_all_assets" : "Buy All",
 	"buy_all_assets_desc" : "Buy all the assets that you are permitted to acquire",
 
-	"speed_up_options" : "Skip Screens",
-	"speed_up_options_desc" : "Allows to skip the Experience, Loot and Black Screen and picks a random card at the end of the heist",
+	"jackhud_menu_tweaks" : "Menu/Lobby Tweaks",
+	"jackhud_menu_tweaks_desc" : "Skip Screens, show/hide weapons, save crime.net settings",
 
 	"skip_black_screen" : "Skip the black screen",
 	"skip_black_screen_desc" : "Skips the Black Screen at the Beginning of a Heist",
@@ -19,8 +19,8 @@
 	"skip_stat_screen_desc" : "Skips the Stat Screen",
 	"stat_screen_skip" : "Stat skip delay",
 	"stat_screen_skip_desc" : "Skips the Stat Screen after X seconds",
-	"skip_card_picking" : "Skip card picking",
-	"skip_card_picking_desc" : "Skips the card picking by auto picking one of them",
+	"skip_card_picking" : "Auto pick card",
+	"skip_card_picking_desc" : "Skips the card picking by randomly auto picking one of them",
 	"skip_loot_screen" : "Skip Loot Screen",
 	"skip_loot_screen_desc" : "Skips the Loot Screen",
 	"loot_screen_skip" : "Loot skip delay",
@@ -120,11 +120,18 @@
 	"equipment_interrupt" : "Inventory key interrupt",
 	"equipment_interrupt_desc" : "Interrupt interaction by inventory key [G], instead of interaction key [F]",
 
-	"jackhud_other_options" : "Other Options",
-	"jackhud_other_options_desc" : "Other Options",
+	"jackhud_gameplay_tweaks" : "Gameplay tweaks",
+	"jackhud_gameplay_tweaks_desc" : "Gameplay tweaks",
 
 	"remove_answered_pager_contour" : "Remove answered pager contour",
 	"remove_answered_pager_contour_desc" : "Removes the interaction contour on answered pagers",
+
+	"anti_stealth_grenades" : "Anti stealth grenades",
+	"anti_stealth_grenades_desc" : "Supresses throwing of grenades in stealth (click again to force throw)",
+
+	"jackhud_hud_tweaks" : "HUD tweaks",
+	"jackhud_hud_tweaks_desc" : "HUD tweaks",
+
 	"enable_pacified" : "Pacified Civilian Marker",
 	"enable_pacified_desc" : "Enables green Marker for Pacified Civilians",
 
@@ -168,9 +175,6 @@
 
 	"center_assault_banner" : "Center assault banner",
 	"center_assault_banner_desc" : "Center assault banner",
-
-	"anti_stealth_grenades" : "Anti stealth grenades",
-	"anti_stealth_grenades_desc" : "Supresses throwing of grenades in stealth (click again to force throw)",
 
 	"enable_filtersettings" : "Persistent CrimeNET Filter Settings",
 	"enable_filtersettings_desc" : "Saves the CrimeNET Filter Settings",

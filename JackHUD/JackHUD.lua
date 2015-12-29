@@ -17,13 +17,14 @@ if not JackHUD.setup then
 	JackHUD._disabled_defaults = {}
 	JackHUD._menus = {
 		"jackhud_options"
-		,"speed_up_options"
+		,"jackhud_menu_tweaks"
+		,"jackhud_hud_tweaks"
 		,"hud_lists_options"
 		,"kill_counter_options"
 		,"hps_meter"
 		,"menu_push_to_interact"
 		,"gadget_options"
-		,"jackhud_other_options"
+		,"jackhud_gameplay_tweaks"
 	}
 	JackHUD._hook_files = {
 		["lib/managers/menumanager"] = "MenuManager_ext.lua",
@@ -252,6 +253,10 @@ if not JackHUD.setup then
 			end
 		end
 		return version
+	end
+
+	function JackHUD:ShowJackPackDownloads()
+		os.execute("start https://cloud.bangl.de/index.php/s/P5iWCDJgq8zBHiA?path=%2FJackPacks")
 	end
 
 	function JackHUD:IsMember()

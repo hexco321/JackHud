@@ -1,50 +1,9 @@
 {
-	"menu_id": "jackhud_other_options",
+	"menu_id": "jackhud_hud_tweaks",
 	"parent_menu_id": "jackhud_options",
-	"title": "jackhud_other_options",
-	"description": "jackhud_other_options_desc",
+	"title": "jackhud_hud_tweaks",
+	"description": "jackhud_hud_tweaks_desc",
 	"items": [
-		{
-		    "type": "toggle",
-			"id": "enable_filtersettings",
-			"title": "enable_filtersettings",
-			"description": "enable_filtersettings_desc",
-			"callback": "callback_enable_filtersettings",
-			"value": "enable_filtersettings",
-			"default_value": true
-		},
-		{
-			"type" : "multiple_choice",
-			"id" : "lobby_skins_mode",
-			"title" : "lobby_skins_mode",
-			"description" : "lobby_skins_mode_desc",
-			"callback" : "callback_lobby_skins_mode",
-			"items" : [
-				"lobby_skins_vanilla",
-				"lobby_skins_none",
-				"lobby_skins_primary",
-				"lobby_skins_secondary"
-			],
-			"value" : "lobby_skins_mode",
-			"default_value" : 1
-		},
-		{
-			"type" : "divider",
-			"size" : 16
-		},
-		{
-			"type": "toggle",
-			"id": "remove_answered_pager_contour",
-			"title": "remove_answered_pager_contour",
-			"description": "remove_answered_pager_contour_desc",
-			"callback": "callback_remove_answered_pager_contour",
-			"value": "remove_answered_pager_contour",
-			"default_value": true
-		},
-		{
-			"type" : "divider",
-			"size" : 16
-		},
 		{
 		    "type": "toggle",
 			"id": "enable_pacified",
@@ -164,19 +123,6 @@
 			"callback": "callback_show_inspire_timer",
 			"value": "show_inspire_timer",
 			"default_value": true
-		},
-		{
-			"type" : "divider",
-			"size" : 16
-		},
-		{
-			"type" : "toggle",
-			"id" : "anti_stealth_grenades",
-			"title" : "anti_stealth_grenades",
-			"description" : "anti_stealth_grenades_desc",
-			"callback" : "callback_anti_stealth_grenades",
-			"value" : "anti_stealth_grenades",
-			"default_value" : true
 		},
 		{
 			"type" : "divider",

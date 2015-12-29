@@ -1,6 +1,4 @@
 
-local animate_bg_text_original = MenuBackdropGUI.animate_bg_text
-
 function MenuBackdropGUI:animate_bg_text( text )
 	local animate_text = function(o)
 		local left = true

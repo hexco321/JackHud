@@ -3,10 +3,10 @@
 	"description" : "A GageHUD fork",
 	"author" : "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad, Martini and the RestorationMod-Crew, TimeR",
 	"version" : "1.12",
-	"priority": 200,
+	"priority": -1,
 	"updates" : [
 		{
-			"revision" : 21,
+			"revision" : 22,
 			"identifier" : "jackhud",
 		},
 		{

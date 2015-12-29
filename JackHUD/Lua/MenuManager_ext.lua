@@ -13,6 +13,12 @@ Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_jackhud", 
 	loc:load_localization_file(JackHUD._path .. "Loc/english.txt", false)
 end)
 
+Hooks:Add("MenuManagerBuildCustomMenus", "MenuManagerBuildCustomMenus_jackhud", function(menu_manager, nodes)
+	if nodes.main then
+		MenuHelper:AddMenuItem(nodes.main, "crimenet_contract_special", "menu_cn_premium_buy", "menu_cn_premium_buy_desc", "crimenet", "after")
+	end
+end)
+
 Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_jackhud", function(menu_manager, menu_nodes)
 	--[[
 		Add "Reset all options" to the jackhud main menu.
@@ -31,12 +37,6 @@ Hooks:Add("MenuManagerPopulateCustomMenus", "MenuManagerPopulateCustomMenus_jack
 		menu_id = "jackhud_options",
 		priority = 99
 	})
-end)
-
-Hooks:Add("MenuManagerBuildCustomMenus", "MenuManagerBuildCustomMenus_jackhud", function(menu_manager, nodes)
-	if nodes.main then
-		MenuHelper:AddMenuItem(nodes.main, "crimenet_contract_special", "menu_cn_premium_buy", "menu_cn_premium_buy_desc", "crimenet_offline", "before")
-	end
 end)
 
 --[[

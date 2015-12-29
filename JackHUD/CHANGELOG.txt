@@ -1,4 +1,9 @@
 
+1.12r22:
++ added lobby player info compatibility fixes
++ added "go to downloadss page" to JackPack update reminder, only show update if member
+~ changed option menu structure
+
 1.12r21:
 + added: Shows HUD version now
 + added: JackPack update reminder

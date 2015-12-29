@@ -19,9 +19,14 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 		elseif self["_JackPackVersion_version_added"] then
 			local jackpack_version = JackHUD:GetJackPackVersion()
 			self._version_string:set_text(versionstring .. " (" .. mod_name .. " " .. revision .. ")")
-			if jackpack_version ~= version and not JackHUD._pack_warning then
+			if JackHUD:IsMember() and jackpack_version ~= version and not JackHUD._pack_warning then
 				JackHUD._pack_warning = true
-				QuickMenu:new("Warning", "Seems like there's a new JackPack, you should get it.", {{text = "Thanks", is_cancel_button = true}}, true)
+				QuickMenu:new("JackPack update", "Guys, the new JackPack... go get it!", {
+					[1] = {text = "Go to downloads page", callback = function()
+						JackHUD:ShowJackPackDownloads()
+					end},
+					[2] = {text = "Remind me later", is_cancel_button = true}
+				}, true)
 			end
 		else
 			self._version_string:set_text(versionstring .. " and " .. fullversion)
@@ -30,7 +35,7 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 	end
 	if not JackHUD:IsMember() and not JackHUD._disabled_warning then
 		JackHUD._disabled_warning = true
-		QuickMenu:new("Warning", "You are not member of the JackHUD Steam group. Most of the JackHUD features are disabled. Please join the group, and then restart your game.", {
+		QuickMenu:new("Welcome", "You are not member of the JackHUD Steam group, so most of the JackHUD features got disabled. Please join the group, and then restart your game.", {
 			[1] = {text = "Go to group", callback = function()
 				JackHUD:ShowSteamGroup()
 			end},
