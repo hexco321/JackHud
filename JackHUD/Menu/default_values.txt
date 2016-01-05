@@ -48,6 +48,7 @@
 	"show_text_borders" : true,
 	"truncate_name_tags" : true,
 	"show_client_ranks" : true,
+	"show_own_rank" : false,
 	"colorize_names" : true,
 	"show_armor_timer" : true,
 	"show_inspire_timer" : true,
@@ -66,5 +67,9 @@
 	"hps_refresh_rate" : 1,
 	"show_hps_current" : true,
 	"current_hps_timeout" : 5,
-	"show_hps_total" : true
+	"show_hps_total" : true,
+	"enable_buy_all_assets" : true,
+	"enable_enhanced_assault_banner" : true,
+	"enhanced_assault_spawns" : true,
+	"enhanced_assault_time" : true
 }

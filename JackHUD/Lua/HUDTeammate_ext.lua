@@ -583,14 +583,14 @@ if not HUDTeammate.increment_kill_count then
 		if truncated_name:len() > 0 and teammate_name ~= truncated_name and JackHUD:GetOption("truncate_name_tags") then
 			teammate_name = utf8.char(1031) .. truncated_name
 		end
-		if JackHUD:GetOption("show_client_ranks") and not self._ai then
+		if not self._ai then
 			local ranktag = ""
 			local rank = nil
 			local level = nil
-			if self._main_player then
+			if self._main_player and JackHUD:GetOption("show_own_rank") then
 				rank = managers.experience:current_rank()
 				level = managers.experience:current_level()
-			elseif self._peer_id then
+			elseif self._peer_id and JackHUD:GetOption("show_client_ranks") then
 				local peer = self._peer_id and managers.network:session():peer(self._peer_id)
 				if peer and peer:level() then
 					rank = peer:rank()

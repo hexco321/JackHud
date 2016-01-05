@@ -279,6 +279,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.lobby_skins_mode = item:value()
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_enable_buy_all_assets = function(self, item)
+		JackHUD._data.enable_buy_all_assets = (item:value() =="on")
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_remove_answered_pager_contour = function(self, item)
 		JackHUD._data.remove_answered_pager_contour = (item:value() =="on")
 		JackHUD:Save()
@@ -319,6 +323,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.show_client_ranks = (item:value() =="on")
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_show_own_rank = function(self, item)
+		JackHUD._data.show_own_rank = (item:value() =="on")
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_colorize_names = function(self, item)
 		JackHUD._data.colorize_names = (item:value() =="on")
 		JackHUD:Save()
@@ -338,6 +346,18 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 
 	MenuCallbackHandler.callback_center_assault_banner = function(self, item)
 		JackHUD._data.center_assault_banner = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enable_enhanced_assault_banner = function(self, item)
+		JackHUD._data.enable_enhanced_assault_banner = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enhanced_assault_spawns = function(self, item)
+		JackHUD._data.enhanced_assault_spawns = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enhanced_assault_time = function(self, item)
+		JackHUD._data.enhanced_assault_time = (item:value() =="on")
 		JackHUD:Save()
 	end
 

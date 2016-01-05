@@ -1,4 +1,9 @@
 
+1.13r24:
++ added: Option for the bua all assets tweak
++ added: Options for the enhanced assault banner
++ added: Seperate option for showing the own rank
+
 1.13r23:
 ~ fixed: The "Buy all assets" feature should work alot better now.
 ~ fixed: lobby player info compatibility tweaks

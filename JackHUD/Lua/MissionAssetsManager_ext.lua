@@ -15,7 +15,7 @@ end
 
 function MissionAssetsManager:_setup_mission_assets()
 	_setup_mission_assets_original(self)
-	if not self:mission_has_preplanning() then
+	if not self:mission_has_preplanning() and JackHUD:GetOption("enable_buy_all_assets") then
 		self:insert_buy_all_assets_asset()
 		self:check_all_assets()
 	end
@@ -86,7 +86,7 @@ function MissionAssetsManager:unlock_asset(asset_id)
 end
 
 function MissionAssetsManager:sync_save(data)
-	if self:mission_has_preplanning() then
+	if self:mission_has_preplanning() or not JackHUD:GetOption("enable_buy_all_assets") then
 		return sync_save_original(self, data)
 	end
 	local _global = clone(self._global)
@@ -101,7 +101,7 @@ function MissionAssetsManager:sync_save(data)
 end
 
 function MissionAssetsManager:sync_load(data)
-	if not self:mission_has_preplanning() then
+	if not self:mission_has_preplanning() and JackHUD:GetOption("enable_buy_all_assets") then
 		self._global = data.MissionAssetsManager
 		self:insert_buy_all_assets_asset()
 		self:check_all_assets()
