@@ -17,6 +17,7 @@ function MissionAssetsManager:_setup_mission_assets()
 	_setup_mission_assets_original(self)
 	if not self:mission_has_preplanning() then
 		self:insert_buy_all_assets_asset()
+		self:check_all_assets()
 	end
 end
 
@@ -48,21 +49,28 @@ function MissionAssetsManager:insert_buy_all_assets_asset()
 			end
 		end
 	end
+	self:check_all_assets()
+end
+
+function MissionAssetsManager:check_all_assets()
+	if game_state_machine then
+		for _, asset in ipairs(self._global.assets) do
+			if self:asset_is_buyable(asset) then
+				return
+			end
+		end
+		if not self._all_assets_bought then
+			self._tweak_data.buy_all_assets.money_lock = 0
+			self._all_assets_bought = true
+			unlock_asset_original(self, "buy_all_assets")
+		end
+	end
 end
 
 function MissionAssetsManager:sync_unlock_asset(asset_id, peer)
 	sync_unlock_asset_original(self, asset_id, peer)
 	self:update_buy_all_assets_asset_cost()
-	for _, asset in ipairs(self._global.assets) do
-		if self:asset_is_buyable(asset) then
-			return
-		end
-	end
-	if not self._all_assets_bought then
-		self._tweak_data.buy_all_assets.money_lock = 0
-		self._all_assets_bought = true
-		unlock_asset_original(self, "buy_all_assets")
-	end
+	self:check_all_assets()
 end
 
 function MissionAssetsManager:unlock_asset(asset_id)
@@ -74,26 +82,29 @@ function MissionAssetsManager:unlock_asset(asset_id)
 			unlock_asset_original(self, asset.id)
 		end
 	end
+	self:check_all_assets()
 end
 
 function MissionAssetsManager:sync_save(data)
 	if self:mission_has_preplanning() then
 		return sync_save_original(self, data)
 	end
-	clone(self._global).assets = clone(clone(self._global).assets)
-	for id, asset in ipairs(clone(self._global).assets) do
+	local _global = clone(self._global)
+	_global.assets = clone(_global.assets)
+	for id, asset in ipairs(_global.assets) do
 		if asset.id == "buy_all_assets" then
-			clone(self._global).assets[id] = self._gage_saved
+			_global.assets[id] = self._gage_saved
 			break
 		end
 	end
-	data.MissionAssetsManager = clone(self._global)
+	data.MissionAssetsManager = _global
 end
 
 function MissionAssetsManager:sync_load(data)
 	if not self:mission_has_preplanning() then
 		self._global = data.MissionAssetsManager
 		self:insert_buy_all_assets_asset()
+		self:check_all_assets()
 	end
 	sync_load_original(self, data)
 end

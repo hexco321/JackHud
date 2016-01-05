@@ -1,7 +1,11 @@
 
+1.13r23:
+~ fixed: The "Buy all assets" feature should work alot better now.
+~ fixed: lobby player info compatibility tweaks
+
 1.12r22:
 + added lobby player info compatibility fixes
-+ added "go to downloadss page" to JackPack update reminder, only show update if member
++ added "go to downloads page" to JackPack update reminder, only show update if member
 ~ changed option menu structure
 
 1.12r21:

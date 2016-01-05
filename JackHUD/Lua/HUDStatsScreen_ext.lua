@@ -878,7 +878,7 @@ function HUDStatsScreen:show()
 					perk:set_top(y + 36)
 					perk:set_font_size(15)
 				end
-				y = y + 46
+				y = y + 52
 			end
 		end
 	end

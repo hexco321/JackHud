@@ -91,7 +91,6 @@ function GroupAIStateBase:sync_hostage_headcount(...)
 	end
 end
 
-
 function GroupAIStateBase:hostage_count_by_type(u_type)
 	if u_type == "cop_hostage" then
 		return self:police_hostage_count()      --Default function, updated for client-side
