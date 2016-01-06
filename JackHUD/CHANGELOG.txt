@@ -1,5 +1,5 @@
 
-next:
+1.13r25:
 + added: Options for all kind of lasers (other players, snipers, turrets)
 
 1.13r24:
