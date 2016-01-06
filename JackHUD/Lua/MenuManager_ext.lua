@@ -255,6 +255,166 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.laser_light = item:value()
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_enable_laser_options_others = function(self, item)
+		JackHUD._data.enable_laser_options_others = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_r_others = function(self, item)
+		JackHUD._data.laser_color_r_others = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_g_others = function(self, item)
+		JackHUD._data.laser_color_g_others = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_b_others = function(self, item)
+		JackHUD._data.laser_color_b_others = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_rainbow_others = function(self, item)
+		JackHUD._data.laser_color_rainbow_others = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_a_others = function(self, item)
+		JackHUD._data.laser_color_a_others = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_glow_others = function(self, item)
+		JackHUD._data.laser_glow_others = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_light_others = function(self, item)
+		JackHUD._data.laser_light_others = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enable_laser_options_snipers = function(self, item)
+		JackHUD._data.enable_laser_options_snipers = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_r_snipers = function(self, item)
+		JackHUD._data.laser_color_r_snipers = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_g_snipers = function(self, item)
+		JackHUD._data.laser_color_g_snipers = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_b_snipers = function(self, item)
+		JackHUD._data.laser_color_b_snipers = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_rainbow_snipers = function(self, item)
+		JackHUD._data.laser_color_rainbow_snipers = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_a_snipers = function(self, item)
+		JackHUD._data.laser_color_a_snipers = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_glow_snipers = function(self, item)
+		JackHUD._data.laser_glow_snipers = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_light_snipers = function(self, item)
+		JackHUD._data.laser_light_snipers = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enable_laser_options_turret = function(self, item)
+		JackHUD._data.enable_laser_options_turret = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_r_turret = function(self, item)
+		JackHUD._data.laser_color_r_turret = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_g_turret = function(self, item)
+		JackHUD._data.laser_color_g_turret = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_b_turret = function(self, item)
+		JackHUD._data.laser_color_b_turret = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_rainbow_turret = function(self, item)
+		JackHUD._data.laser_color_rainbow_turret = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_a_turret = function(self, item)
+		JackHUD._data.laser_color_a_turret = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_glow_turret = function(self, item)
+		JackHUD._data.laser_glow_turret = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_light_turret = function(self, item)
+		JackHUD._data.laser_light_turret = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enable_laser_options_turretr = function(self, item)
+		JackHUD._data.enable_laser_options_turretr = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_r_turretr = function(self, item)
+		JackHUD._data.laser_color_r_turretr = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_g_turretr = function(self, item)
+		JackHUD._data.laser_color_g_turretr = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_b_turretr = function(self, item)
+		JackHUD._data.laser_color_b_turretr = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_rainbow_turretr = function(self, item)
+		JackHUD._data.laser_color_rainbow_turretr = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_a_turretr = function(self, item)
+		JackHUD._data.laser_color_a_turretr = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_glow_turretr = function(self, item)
+		JackHUD._data.laser_glow_turretr = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_light_turretr = function(self, item)
+		JackHUD._data.laser_light_turretr = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enable_laser_options_turretm = function(self, item)
+		JackHUD._data.enable_laser_options_turretm = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_r_turretm = function(self, item)
+		JackHUD._data.laser_color_r_turretm = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_g_turretm = function(self, item)
+		JackHUD._data.laser_color_g_turretm = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_b_turretm = function(self, item)
+		JackHUD._data.laser_color_b_turretm = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_rainbow_turretm = function(self, item)
+		JackHUD._data.laser_color_rainbow_turretm = (item:value() =="on")
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_color_a_turretm = function(self, item)
+		JackHUD._data.laser_color_a_turretm = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_glow_turretm = function(self, item)
+		JackHUD._data.laser_glow_turretm = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_laser_light_turretm = function(self, item)
+		JackHUD._data.laser_light_turretm = item:value()
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_remember_gadget_state = function(self, item)
 		JackHUD._data.remember_gadget_state = (item:value() =="on")
 		JackHUD:Save()

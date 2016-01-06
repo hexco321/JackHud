@@ -1,4 +1,7 @@
 
+next:
++ added: Options for all kind of lasers (other players, snipers, turrets)
+
 1.13r24:
 + added: Option for the bua all assets tweak
 + added: Options for the enhanced assault banner
