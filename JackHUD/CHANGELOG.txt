@@ -1,4 +1,9 @@
 
+1.14r27:
++ added: options to colorize enemy/civilian counters
+~ fixed: detection risk indicators showing wrong values
+~ fixed: down counter resetting when player changed
+
 1.14r26:
 ~ changed: default options
 

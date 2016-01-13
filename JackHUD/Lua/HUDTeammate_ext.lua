@@ -84,18 +84,7 @@ if not HUDTeammate.increment_kill_count then
 		})
 		self._revives_count = 0
 		if self._main_player then
-			self:set_detection_risk(managers.blackmarket:get_suspicion_offset_of_local(0.75))
-		end
-	end
-
-	function HUDTeammate:set_peer_id(peer_id)
-		self._peer_id = peer_id
-		local session = managers.network:session()
-		if session then
-			local peer = session:peer(peer_id)
-			if peer and alive(peer:unit()) then
-				self:set_detection_risk(managers.blackmarket:get_suspicion_offset_of_peer(peer, 0.75))
-			end
+			self:set_detection_risk((managers.blackmarket:get_suspicion_offset_of_outfit_string(managers.blackmarket:unpack_outfit_from_string(managers.blackmarket:outfit_string()), tweak_data.player.SUSPICION_OFFSET_LERP or 0.75)))
 		end
 	end
 
@@ -577,6 +566,7 @@ if not HUDTeammate.increment_kill_count then
 		if teammate_name ~= self._name then
 			self._name = teammate_name
 			self:reset_kill_count()
+			self:reset_revives()
 		end
 		self._color_pos = 1
 		local truncated_name = teammate_name:gsub('^%b[]',''):gsub('^%b==',''):gsub('^%s*(.-)%s*$','%1')

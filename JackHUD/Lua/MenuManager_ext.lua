@@ -168,6 +168,31 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD:Save()
 	end
 
+	MenuCallbackHandler.callback_enemy_color_r = function(self, item)
+		JackHUD._data.enemy_color_r = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enemy_color_g = function(self, item)
+		JackHUD._data.enemy_color_g = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_enemy_color_b = function(self, item)
+		JackHUD._data.enemy_color_b = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_civilian_color_r = function(self, item)
+		JackHUD._data.civilian_color_r = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_civilian_color_g = function(self, item)
+		JackHUD._data.civilian_color_g = item:value()
+		JackHUD:Save()
+	end
+	MenuCallbackHandler.callback_civilian_color_b = function(self, item)
+		JackHUD._data.civilian_color_b = item:value()
+		JackHUD:Save()
+	end
+
 	-- Kill counter
 	MenuCallbackHandler.callback_enable_kill_counter = function(self, item)
 		JackHUD._data.enable_kill_counter = (item:value() =="on")

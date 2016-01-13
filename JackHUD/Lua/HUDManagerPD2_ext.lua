@@ -1,4 +1,5 @@
 
+local init_original = HUDManager.init
 local _setup_player_info_hud_pd2_original = HUDManager._setup_player_info_hud_pd2
 local _create_downed_hud_original = HUDManager._create_downed_hud
 local update_original = HUDManager.update
@@ -16,6 +17,45 @@ local sync_end_assault_original = HUDManager.sync_end_assault
 local show_point_of_no_return_timer_original = HUDManager.show_point_of_no_return_timer
 local hide_point_of_no_return_timer_original = HUDManager.hide_point_of_no_return_timer
 local set_player_condition_original = HUDManager.set_player_condition
+local set_slot_outfit_original = HUDManager.set_slot_outfit
+local add_teammate_panel_original = HUDManager.add_teammate_panel
+
+function HUDManager:init(...)
+	init_original(self, ...)
+	self._deferred_detections = {}
+end
+
+function HUDManager:set_slot_outfit(peer_id, criminal_name, outfit, ...)
+	self:set_slot_detection(peer_id, outfit, true)
+	return set_slot_outfit_original(self, peer_id, criminal_name, outfit, ...)
+end
+
+function HUDManager:add_teammate_panel(character_name, player_name, ai, peer_id, ...)
+	local result = add_teammate_panel_original(self, character_name, player_name, ai, peer_id, ...)
+	for peer_id, risk in pairs(self._deferred_detections) do
+		for panel_id, _ in ipairs(self._hud.teammate_panels_data) do
+			if self._teammate_panels[panel_id]:peer_id() == peer_id then
+				self._teammate_panels[panel_id]:set_detection_risk(risk)
+				self._deferred_detections[peer_id] = nil
+			end
+		end
+	end
+	return result
+end
+
+function HUDManager:set_slot_detection(peer_id, outfit, unpacked)
+	if not unpacked or not outfit then
+		outfit = managers.blackmarket:unpack_outfit_from_string(outfit)
+	end
+	local risk = managers.blackmarket:get_suspicion_offset_of_outfit_string(outfit, tweak_data.player.SUSPICION_OFFSET_LERP or 0.75)
+	for panel_id, _ in ipairs(self._hud.teammate_panels_data) do
+		if peer_id == managers.network:session():local_peer():id() and self._teammate_panels[panel_id]._main_player or self._teammate_panels[panel_id]:peer_id() == peer_id then
+			self._teammate_panels[panel_id]:set_detection_risk(risk)
+			return
+		end
+	end
+	self._deferred_detections[peer_id] = risk
+end
 
 function HUDManager:set_player_condition(icon_data, text)
 	set_player_condition_original(self, icon_data, text)
@@ -1812,13 +1852,22 @@ do
 		text:set_color(Color.white)
 	end
 
-
+--[[
 	local enemy_color = Color(1, 1, 1)--Color(0.8, 0.9, 0, 0)
 	local guard_color = enemy_color
 	local special_color = enemy_color
 	local turret_color = enemy_color
 	local thug_color = Color(1, 1, 1)--enemy_color--Color(1, 0.6, 0)
 	local civilian_color = Color(1, 1, 1)
+	local hostage_color = civilian_color
+]]
+
+	local enemy_color = Color(JackHUD:GetOption("enemy_color_r"), JackHUD:GetOption("enemy_color_g"), JackHUD:GetOption("enemy_color_b"))
+	local guard_color = enemy_color
+	local special_color = enemy_color
+	local turret_color = enemy_color
+	local thug_color = enemy_color
+	local civilian_color = Color(JackHUD:GetOption("civilian_color_r"), JackHUD:GetOption("civilian_color_g"), JackHUD:GetOption("civilian_color_b"))
 	local hostage_color = civilian_color
 
 	HUDList.UnitCountItem = HUDList.UnitCountItem or class(HUDList.RightListItem)

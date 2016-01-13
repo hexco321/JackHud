@@ -74,6 +74,19 @@
 	"show_buffs" : "Show buffs",
 	"show_buffs_desc" : "Shows buffs and debuffs",
 
+	"enemy_color_r" : "Enemy-Red",
+	"enemy_color_r_desc" : "",
+	"enemy_color_g" : "Enemy-Green",
+	"enemy_color_g_desc" : "",
+	"enemy_color_b" : "Enemy-Blue",
+	"enemy_color_b_desc" : "",
+	"civilian_color_r" : "Civilian-Red",
+	"civilian_color_r_desc" : "",
+	"civilian_color_g" : "Civilian-Green",
+	"civilian_color_g_desc" : "",
+	"civilian_color_b" : "Civilian-Blue",
+	"civilian_color_b_desc" : "",
+
 	"kill_counter_options" : "Kill Counter",
 	"kill_counter_options_desc" : "Configure Kill Counter",
 

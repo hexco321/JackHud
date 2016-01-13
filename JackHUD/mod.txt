@@ -6,7 +6,7 @@
 	"priority": -1,
 	"updates" : [
 		{
-			"revision" : 26,
+			"revision" : 27,
 			"identifier" : "jackhud",
 		},
 		{
@@ -39,6 +39,7 @@
 		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/missionassetsmanager"},
 		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/objectinteractionmanager"},
 		{"script_path" : "JackHUD.lua", "hook_id" : "lib/managers/playermanager"},
+		{"script_path" : "JackHUD.lua", "hook_id" : "lib/network/base/handlers/connectionnetworkhandler"},
 		{"script_path" : "JackHUD.lua", "hook_id" : "lib/network/handlers/unitnetworkhandler"},
 		{"script_path" : "JackHUD.lua", "hook_id" : "lib/network/matchmaking/networkmatchmakingsteam"},
 		{"script_path" : "JackHUD.lua", "hook_id" : "lib/states/ingamewaitingforplayers"},

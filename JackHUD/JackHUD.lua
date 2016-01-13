@@ -48,6 +48,7 @@ if not JackHUD.setup then
 		["lib/managers/missionassetsmanager"] = "MissionAssetsManager_ext.lua",
 		["lib/managers/objectinteractionmanager"] = "ObjectInteractionManager_ext.lua",
 		["lib/managers/playermanager"] = "PlayerManager_ext.lua",
+		["lib/network/base/handlers/connectionnetworkhandler"] = "ConnectionNetworkHandler_ext.lua",
 		["lib/network/handlers/unitnetworkhandler"] = "UnitNetworkHandler_ext.lua",
 		["lib/network/matchmaking/networkmatchmakingsteam"] = "NetworkMatchmakingSteam_ext.lua",
 		["lib/states/ingamewaitingforplayers"] = "IngameWaitingForPlayersState_ext.lua",
