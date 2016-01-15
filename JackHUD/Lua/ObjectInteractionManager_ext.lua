@@ -60,7 +60,8 @@ ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID = {
 	master_server =							"server",
 	lost_artifact =							"artifact",
 	prototype =								"prototype",
-	present =								"present"
+	present =								"present",
+	goat =									"goat"
 }
 
 ObjectInteractionManager.LOOT_TYPE_LEVEL_COMPENSATION = {

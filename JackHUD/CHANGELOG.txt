@@ -1,4 +1,7 @@
 
+1.14.1r29:
+~ added: Goat counter
+
 1.14.1r28:
 - version bump for packs notification
 
