@@ -1,4 +1,7 @@
 
+1.14.1r28:
+- version bump for packs notification
+
 1.14r27:
 + added: options to colorize enemy/civilian counters
 ~ fixed: detection risk indicators showing wrong values
