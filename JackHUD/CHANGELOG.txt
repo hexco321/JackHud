@@ -1,4 +1,7 @@
 
+1.14.1r30:
+~ fixed: game crashed when you bought assets while "buy all assets" was disabled.
+
 1.14.1r29:
 ~ added: Goat counter
 
