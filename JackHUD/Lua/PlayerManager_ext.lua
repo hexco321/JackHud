@@ -73,11 +73,11 @@ PlayerManager._LISTENER_CALLBACKS = {}
 function PlayerManager:init(...)
 	init_original(self, ...)
 	for category, data in pairs(self._global.team_upgrades) do
-		for upgrade, value in pairs(data) do
+		for upgrade, _ in pairs(data) do
 			local buff = PlayerManager._TEAM_BUFFS[category] and PlayerManager._TEAM_BUFFS[category][upgrade]
 			if buff then
 				self:activate_team_buff(buff, 0)
-			else
+			--else
 				--DEBUG_PRINT("warnings", "Attempting to activate undefined local team buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. "\n")
 			end
 		end
@@ -142,7 +142,7 @@ function PlayerManager:activate_temporary_upgrade(category, upgrade, ...)
 			if check_aced then
 				self:set_buff_attribute(buff, "aced", check_aced() or false)
 			end
-		else
+		--else
 			--DEBUG_PRINT("warnings", "Attempting to activate undefined buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. "\n")
 		end
 	end
@@ -161,7 +161,7 @@ function PlayerManager:activate_temporary_upgrade_by_level(category, upgrade, le
 				if check_aced then
 					self:set_buff_attribute(buff, "aced", check_aced() or false)
 				end
-			else
+			--else
 				--DEBUG_PRINT("warnings", "Attempting to activate undefined buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. " (" .. "level: " .. tostring(level) .. ")\n")
 			end
 		end
@@ -175,7 +175,7 @@ function PlayerManager:deactivate_temporary_upgrade(category, upgrade, ...)
 		local buff = PlayerManager._TEMPORARY_BUFFS[upgrade]
 		if buff then
 			self:deactivate_buff(buff)
-		else
+		--else
 			--DEBUG_PRINT("warnings", "Attempting to deactivate undefined buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. "\n")
 		end
 	end
@@ -187,7 +187,7 @@ function PlayerManager:aquire_team_upgrade(upgrade, ...)
 	local buff = PlayerManager._TEAM_BUFFS[upgrade.category] and PlayerManager._TEAM_BUFFS[upgrade.category][upgrade.upgrade]
 	if buff then
 		self:activate_team_buff(buff, 0)
-	else
+	--else
 		--DEBUG_PRINT("warnings", "Attempting to activate undefined local team buff: " .. tostring(upgrade.category) .. ", " .. tostring(upgrade.upgrade) .. "\n")
 	end
 end
@@ -197,7 +197,7 @@ function PlayerManager:unaquire_team_upgrade(upgrade, ...)
 	local buff = PlayerManager._TEAM_BUFFS[upgrade.category] and PlayerManager._TEAM_BUFFS[upgrade.category][upgrade.upgrade]
 	if buff then
 		self:deactivate_team_buff(buff, 0)
-	else
+	--else
 		--DEBUG_PRINT("warnings", "Attempting to deactivate undefined local team buff: " .. tostring(upgrade.category) .. ", " .. tostring(upgrade.upgrade) .. "\n")
 	end
 end
@@ -207,7 +207,7 @@ function PlayerManager:add_synced_team_upgrade(peer_id, category, upgrade, ...)
 	local buff = PlayerManager._TEAM_BUFFS[category] and PlayerManager._TEAM_BUFFS[category][upgrade]
 	if buff then
 		self:activate_team_buff(buff, peer_id)
-	else
+	--else
 		--DEBUG_PRINT("warnings", "Attempting to activate undefined team buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. " from peer ID: " .. tostring(peer_id) .. "\n")
 	end
 end
@@ -216,11 +216,11 @@ function PlayerManager:peer_dropped_out(peer, ...)
 	local peer_id = peer:id()
 	local buffs = {}
 	for category, data in pairs(self._global.synced_team_upgrades[peer_id] or {}) do
-		for upgrade, value in pairs(data) do
+		for upgrade, _ in pairs(data) do
 			local buff = PlayerManager._TEAM_BUFFS[category] and PlayerManager._TEAM_BUFFS[category][upgrade]
 			if buff then
 				table.insert(buffs, buff)
-			else
+			--else
 				--DEBUG_PRINT("warnings", "Attempting to deactivate undefined local team buff: " .. tostring(category) .. ", " .. tostring(upgrade) .. "\n")
 			end
 		end
@@ -322,7 +322,7 @@ end
 function PlayerManager.unregister_listener_clbk(name, event)
 	for event_id, listeners in pairs(PlayerManager._LISTENER_CALLBACKS) do
 		if not event or event_id == event then
-			for id, clbk in pairs(listeners) do
+			for id, _ in pairs(listeners) do
 				if id == name then
 					PlayerManager._LISTENER_CALLBACKS[event_id][id] = nil
 					break
@@ -334,7 +334,7 @@ end
 
 function PlayerManager._do_listener_callback(event, ...)
 	if PlayerManager._LISTENER_CALLBACKS[event] then
-		for id, clbk in pairs(PlayerManager._LISTENER_CALLBACKS[event]) do
+		for _, clbk in pairs(PlayerManager._LISTENER_CALLBACKS[event]) do
 			clbk(...)
 		end
 	end

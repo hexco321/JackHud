@@ -4,7 +4,7 @@ function MenuBackdropGUI:animate_bg_text( text )
 		local left = true
 		local target_speed = 10
 		local speed = 15
-		local dt = 0
+		local dt
 		local start_x = o:x()
 		while(true) do
 			dt = coroutine.yield()

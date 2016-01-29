@@ -62,7 +62,7 @@ end
 
 function GrenadeCrateBase.total_aggregated_amount()
 	local amount = 0
-	for key, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
+	for _, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
 		amount = amount + data.amount
 	end
 	return amount
@@ -70,7 +70,7 @@ end
 
 function GrenadeCrateBase.total_aggregated_max_amount()
 	local max_amount = 0
-	for key, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
+	for _, data in pairs(GrenadeCrateBase.AGGREGATED_BAGS) do
 		max_amount = max_amount + data.max_amount
 	end
 	return max_amount

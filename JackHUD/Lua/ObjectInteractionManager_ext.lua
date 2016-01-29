@@ -186,13 +186,13 @@ function ObjectInteractionManager:init(...)
 	self._loot_count = {}
 	self._loot_units_added = {}
 	self._special_pickup_count = {}
-	for carry_id, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID) do
+	for _, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID) do
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
 	end
-	for interaction_id, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID) do
+	for _, type_id in pairs(ObjectInteractionManager.LOOT_TYPE_FROM_INTERACTION_ID) do
 		self._loot_count[type_id] = { bagged = 0, unbagged = 0 }
 	end
-	for interaction_id, type_id in pairs(ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID) do
+	for _, type_id in pairs(ObjectInteractionManager.SPECIAL_PICKUP_TYPE_FROM_INTERACTION_ID) do
 		self._special_pickup_count[type_id] = 0
 	end
 	self._unit_triggers = {}
@@ -245,7 +245,7 @@ end
 function ObjectInteractionManager:_check_queued_units(t)
 	local level_id = managers.job:current_level_id()
 	local ignore_ids = level_id and ObjectInteractionManager.IGNORE_EDITOR_ID[level_id]
-	for i, unit in ipairs(self._queued_units) do
+	for _, unit in ipairs(self._queued_units) do
 		if alive(unit) then
 			local editor_id = unit:editor_id()
 			if not (ignore_ids and ignore_ids[editor_id]) then
@@ -376,7 +376,7 @@ end
 
 function ObjectInteractionManager:_whisper_mode_change(status)
 	if not status then
-		for key, data in pairs(ObjectInteractionManager.ACTIVE_PAGERS) do
+		for _, data in pairs(ObjectInteractionManager.ACTIVE_PAGERS) do
 			self:pager_ended(data.unit)
 		end
 		self._do_listener_callback("on_remove_all_pagers")
@@ -391,7 +391,7 @@ function ObjectInteractionManager:block_trigger(trigger_id, status)
 	if ObjectInteractionManager.TRIGGERS[trigger_id] then
 		--io.write("ObjectInteractionManager:block_trigger(" .. tostring(trigger_id) .. ", " .. tostring(status) .. ")\n")
 		self._trigger_blocks[trigger_id] = status
-		for id, data in ipairs(self._unit_triggers[trigger_id] or {}) do
+		for _, data in ipairs(self._unit_triggers[trigger_id] or {}) do
 			if alive(data.unit) then
 				--io.write("Set active " .. tostring(data.unit:editor_id()) .. ": " .. tostring(not status) .. "\n")
 				data.unit:base():set_equipment_active(data.class, not status, data.offset)
@@ -409,7 +409,7 @@ end
 function ObjectInteractionManager.unregister_listener_clbk(name, event)
 	for event_id, listeners in pairs(ObjectInteractionManager._LISTENER_CALLBACKS) do
 		if not event or event_id == event then
-			for id, clbk in pairs(listeners) do
+			for id, _ in pairs(listeners) do
 				if id == name then
 					ObjectInteractionManager._LISTENER_CALLBACKS[event_id][id] = nil
 					break
@@ -421,7 +421,7 @@ end
 
 function ObjectInteractionManager._do_listener_callback(event, ...)
 	if ObjectInteractionManager._LISTENER_CALLBACKS[event] then
-		for id, clbk in pairs(ObjectInteractionManager._LISTENER_CALLBACKS[event]) do
+		for _, clbk in pairs(ObjectInteractionManager._LISTENER_CALLBACKS[event]) do
 			clbk(...)
 		end
 	end

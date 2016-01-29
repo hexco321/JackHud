@@ -82,7 +82,7 @@ DigitalGui._TIMER_DATA = {
 	[167575] = { }, --Golden Grin BFD timer
 }
 
-for i, editor_id in ipairs({ 130022, 130122, 130222, 130322, 130422, 130522 }) do               --Train heist vaults (1-6)
+for _, editor_id in ipairs({ 130022, 130122, 130222, 130322, 130422, 130522 }) do               --Train heist vaults (1-6)
 	DigitalGui._TIMER_DATA[editor_id] = { timer_pause = stop_on_loud_pause }
 end
 
@@ -208,7 +208,7 @@ end
 function DigitalGui.unregister_listener_clbk(name, event)
 	for event_id, listeners in pairs(DigitalGui._LISTENER_CALLBACKS) do
 		if not event or event_id == event then
-			for id, clbk in pairs(listeners) do
+			for id, _ in pairs(listeners) do
 				if id == name then
 					DigitalGui._LISTENER_CALLBACKS[event_id][id] = nil
 					break
@@ -220,7 +220,7 @@ end
 
 function DigitalGui._do_listener_callback(event, ...)
 	if DigitalGui._LISTENER_CALLBACKS[event] then
-		for id, clbk in pairs(DigitalGui._LISTENER_CALLBACKS[event]) do
+		for _, clbk in pairs(DigitalGui._LISTENER_CALLBACKS[event]) do
 			clbk(...)
 		end
 	end

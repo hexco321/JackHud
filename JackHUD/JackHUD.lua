@@ -158,8 +158,7 @@ if not JackHUD.setup then
 
 	function JackHUD:ForceReloadAllMenus()
 		for _,menu in pairs(self._menus) do
-			_menu = MenuHelper:GetMenu(menu)
-			for _,_item in pairs(_menu._items_list) do
+			for _,_item in pairs(MenuHelper:GetMenu(menu)._items_list) do
 				if _item._type == "toggle" then
 					_item.selected = self._data[_item._parameters.name] and 1 or 2
 				elseif _item._type == "multi_choice" then
@@ -211,7 +210,7 @@ if not JackHUD.setup then
 
 	function JackHUD:MakeOutlineText(panel, bg, txt)
 		bg.name = nil
-		bgs = {}
+		local bgs = {}
 		for i = 1, 4 do
 			table.insert(bgs, panel:text(bg))
 		end
@@ -282,8 +281,8 @@ if not JackHUD.setup then
 			if string.find(page, "<steamID64>" .. Steam:userid() .. "</steamID64>") then
 				JackHUD.is_member = true
 			elseif string.find(page, "<nextPageLink>") then
-				self.page_number = self.page_number + 1
-				self:MemberCheck()
+				JackHUD.page_number = JackHUD.page_number + 1
+				JackHUD:MemberCheck()
 				return
 			end
 		else

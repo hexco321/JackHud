@@ -92,7 +92,7 @@ end
 function TimerGui.unregister_listener_clbk(name, event)
 	for event_id, listeners in pairs(TimerGui._LISTENER_CALLBACKS) do
 		if not event or event_id == event then
-			for id, clbk in pairs(listeners) do
+			for id, _ in pairs(listeners) do
 				if id == name then
 					TimerGui._LISTENER_CALLBACKS[event_id][id] = nil
 					break
@@ -104,7 +104,7 @@ end
 
 function TimerGui._do_listener_callback(event, ...)
 	if TimerGui._LISTENER_CALLBACKS[event] then
-		for id, clbk in pairs(TimerGui._LISTENER_CALLBACKS[event]) do
+		for _, clbk in pairs(TimerGui._LISTENER_CALLBACKS[event]) do
 			clbk(...)
 		end
 	end

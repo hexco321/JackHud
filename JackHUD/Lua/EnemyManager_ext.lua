@@ -42,7 +42,7 @@ function EnemyManager:init(...)
 	self._minion_count = 0
 	self._total_enemy_count = 0
 	self._unit_count = {}
-	for tweak, utype in pairs(EnemyManager._UNIT_TYPES) do
+	for _, utype in pairs(EnemyManager._UNIT_TYPES) do
 		self._unit_count[utype] = 0
 	end
 end
@@ -163,7 +163,7 @@ function EnemyManager:update_minion_health(unit, health)
 end
 
 function EnemyManager:minion_count()
-	return table.size(EnemyManager.MINION_UNITS)
+	return table.size(self.MINION_UNITS)
 end
 
 function EnemyManager.register_listener_clbk(name, event, clbk)
@@ -174,7 +174,7 @@ end
 function EnemyManager.unregister_listener_clbk(name, event)
 	for event_id, listeners in pairs(EnemyManager._LISTENER_CALLBACKS) do
 		if not event or event_id == event then
-			for id, clbk in pairs(listeners) do
+			for id, _ in pairs(listeners) do
 				if id == name then
 					EnemyManager._LISTENER_CALLBACKS[event_id][id] = nil
 					break
@@ -186,7 +186,7 @@ end
 
 function EnemyManager._do_listener_callback(event, ...)
 	if EnemyManager._LISTENER_CALLBACKS[event] then
-		for id, clbk in pairs(EnemyManager._LISTENER_CALLBACKS[event]) do
+		for _, clbk in pairs(EnemyManager._LISTENER_CALLBACKS[event]) do
 			clbk(...)
 		end
 	end

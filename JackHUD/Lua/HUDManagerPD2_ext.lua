@@ -32,11 +32,11 @@ end
 
 function HUDManager:add_teammate_panel(character_name, player_name, ai, peer_id, ...)
 	local result = add_teammate_panel_original(self, character_name, player_name, ai, peer_id, ...)
-	for peer_id, risk in pairs(self._deferred_detections) do
+	for pid, risk in pairs(self._deferred_detections) do
 		for panel_id, _ in ipairs(self._hud.teammate_panels_data) do
-			if self._teammate_panels[panel_id]:peer_id() == peer_id then
+			if self._teammate_panels[panel_id]:peer_id() == pid then
 				self._teammate_panels[panel_id]:set_detection_risk(risk)
-				self._deferred_detections[peer_id] = nil
+				self._deferred_detections[pid] = nil
 			end
 		end
 	end
@@ -408,10 +408,10 @@ function HUDListManager:_setup_right_list()
 	local scale = HUDListManager.ListOptions.right_list_scale or 1
 	local list = self:register_list("right_side_list", HUDList.VerticalList, { align = "right", x = x, y = y, w = list_width, h = list_height, top_to_bottom = true, item_margin = 5 })
 
-	local unit_count_list = list:register_item("unit_count_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 1 })
-	local hostage_count_list = list:register_item("hostage_count_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 4 })
-	local loot_list = list:register_item("loot_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 2 })
-	local special_equipment_list = list:register_item("special_pickup_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 4 })
+	list:register_item("unit_count_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 1 })
+	list:register_item("hostage_count_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 4 })
+	list:register_item("loot_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 2 })
+	list:register_item("special_pickup_list", HUDList.HorizontalList, { align = "top", w = list_width, h = 50 * scale, right_to_left = true, item_margin = 3, priority = 4 })
 
 	self:_set_show_enemies()
 	self:_set_show_turrets()
@@ -431,7 +431,7 @@ function HUDListManager:_setup_buff_list()
 	local x = 0
 	local y = hud_panel:bottom() - ((HUDListManager.ListOptions.buff_list_height_offset or 80) + list_height)
 
-	local buff_list = self:register_list("buff_list", HUDList.HorizontalList, {
+	self:register_list("buff_list", HUDList.HorizontalList, {
 		align = "center",
 		x = x,
 		y = y ,
@@ -646,7 +646,7 @@ function HUDListManager:_set_show_timers()
 	if HUDListManager.ListOptions.show_timers then
 		local timer_types = { DigitalGui, TimerGui }
 
-		for i, class in pairs(timer_types) do
+		for _, class in pairs(timer_types) do
 			for key, data in pairs(class.SPAWNED_ITEMS) do
 				if not data.ignore then
 					local item = list:register_item(tostring(key), data.class or HUDList.TimerItem, data.unit, data.params)
@@ -707,7 +707,7 @@ function HUDListManager:_set_show_equipment()
 		}
 
 		for type, class in pairs(equipment_types) do
-			for key, data in pairs(class.SPAWNED_BAGS) do
+			for _, data in pairs(class.SPAWNED_BAGS) do
 				local unit = data.unit
 				self:_bag_equipment_event("add", unit, type)
 				self:_bag_equipment_event("update_owner", unit, data.owner)
@@ -754,7 +754,7 @@ function HUDListManager:_set_show_sentries()
 	}
 
 	if HUDListManager.ListOptions.show_sentries then
-			for key, data in pairs(SentryGunBase.SPAWNED_SENTRIES) do
+			for _, data in pairs(SentryGunBase.SPAWNED_SENTRIES) do
 				local unit = data.unit
 				self:_sentry_equipment_event("add", unit, "sentry")
 				self:_sentry_equipment_event("update_owner", unit, data.owner)
@@ -1079,7 +1079,7 @@ end
 function HUDListManager:_set_aggregate_loot()
 	local list = self:list("right_side_list"):item("loot_list")
 
-	for name, data in pairs(HUDList.LootItem.LOOT_ICON_MAP) do
+	for name, _ in pairs(HUDList.LootItem.LOOT_ICON_MAP) do
 		list:unregister_item(name, true)
 	end
 
@@ -1423,7 +1423,7 @@ do
 		{ ratio = 1.0, color = Color(1, 0.1, 0.9, 0.1) } --Green
 	}
 	function HUDList.ItemBase:_get_color_from_table(value, max_value, color_table, default_color)
-		local color_table = color_table or HUDList.ItemBase.DEFAULT_COLOR_TABLE
+		color_table = color_table or HUDList.ItemBase.DEFAULT_COLOR_TABLE
 		local ratio = math.clamp(value / max_value, 0 , 1)
 		local tmp_color = color_table[#color_table].color
 		local color = default_color or Color(tmp_color.alpha, tmp_color.red, tmp_color.green, tmp_color.blue)
@@ -1476,7 +1476,7 @@ do
 
 	function HUDList.ListBase:active_items()
 		local count  = 0
-		for name, item in pairs(self._items) do
+		for _, item in pairs(self._items) do
 			if item:is_active() then
 				count = count + 1
 			end
@@ -1489,8 +1489,7 @@ do
 	end
 
 	function HUDList.ListBase:update(t, dt)
-		local delete_items = {}
-		for name, item in pairs(self._items) do
+		for _, item in pairs(self._items) do
 			if item.update and item:is_active() then
 				item:update(t, dt)
 			end
@@ -1633,7 +1632,7 @@ do
 	function HUDList.HorizontalList:_update_item_positions(insert_item, instant_move)
 		if self._centered then
 			local total_width = self._static_item and (self._static_item:panel():w() + self._item_margin) or 0
-			for i, item in ipairs(self._shown_items) do
+			for _, item in ipairs(self._shown_items) do
 				if not item:hidden() then
 					total_width = total_width + item:panel():w() + self._item_margin
 				end
@@ -1643,11 +1642,11 @@ do
 			local left = (self._panel:w() - math.min(total_width, self._panel:w())) / 2
 
 			if self._static_item then
-				self._static_item:move(left, item:panel():y(), instant_move)
+				self._static_item:move(left, self._static_item:panel():y(), instant_move)
 				left = left + self._static_item:panel():w() + self._item_margin
 			end
 
-			for i, item in ipairs(self._shown_items) do
+			for _, item in ipairs(self._shown_items) do
 				if not item:hidden() then
 					if insert_item and item == insert_item then
 						if item:panel():x() ~= left then
@@ -1662,7 +1661,7 @@ do
 			end
 		else
 			local prev_width = self._static_item and (self._static_item:panel():w() + self._item_margin) or 0
-			for i, item in ipairs(self._shown_items) do
+			for _, item in ipairs(self._shown_items) do
 				if not item:hidden() then
 					local width = item:panel():w()
 					local new_x = (self._left_to_right and prev_width) or (self._panel:w() - (width+prev_width))
@@ -1709,9 +1708,9 @@ do
 	function HUDList.VerticalList:_update_item_positions(insert_item, instant_move)
 		if self._centered then
 			local total_height = self._static_item and (self._static_item:panel():h() + self._item_margin) or 0
-			for i, item in ipairs(self._shown_items) do
+			for _, item in ipairs(self._shown_items) do
 				if not item:hidden() then
-					total_height = total_width + item:panel():h() + self._item_margin
+					total_height = total_height + item:panel():h() + self._item_margin
 				end
 			end
 			total_height = total_height - self._item_margin
@@ -1719,11 +1718,11 @@ do
 			local top = (self._panel:h() - math.min(total_height, self._panel:h())) / 2
 
 			if self._static_item then
-				self._static_item:move(item:panel():x(), top, instant_move)
+				self._static_item:move(self._static_item:panel():x(), top, instant_move)
 				top = top + self._static_item:panel():h() + self._item_margin
 			end
 
-			for i, item in ipairs(self._shown_items) do
+			for _, item in ipairs(self._shown_items) do
 				if not item:hidden() then
 					if insert_item and item == insert_item then
 						if item:panel():y() ~= top then
@@ -1738,7 +1737,7 @@ do
 			end
 		else
 			local prev_height = self._static_item and (self._static_item:panel():h() + self._item_margin) or 0
-			for i, item in ipairs(self._shown_items) do
+			for _, item in ipairs(self._shown_items) do
 				if not item:hidden() then
 					local height = item:panel():h()
 					local new_y = (self._top_to_bottom and prev_height) or (self._panel:h() - (height+prev_height))
@@ -1815,13 +1814,13 @@ do
 	end
 
 	function HUDList.RightListItem:post_init()
-		for i, data in ipairs(self._listener_clbks) do
+		for _, data in ipairs(self._listener_clbks) do
 			data.server.register_listener_clbk(data.name, data.event, data.clbk)
 		end
 	end
 
 	function HUDList.RightListItem:destroy()
-		for i, data in ipairs(self._listener_clbks) do
+		for _, data in ipairs(self._listener_clbks) do
 			data.server.unregister_listener_clbk(data.name, data.event)
 		end
 
@@ -1895,7 +1894,7 @@ do
 		minion =        { atlas = {6, 8}, color = hostage_color, priority = 0, class = "MinionCountItem" },
 	}
 	function HUDList.UnitCountItem:init(parent, name, unit_data)
-		local unit_data = unit_data or HUDList.UnitCountItem.ENEMY_ICON_MAP[name] or HUDList.UnitCountItem.HOSTAGE_ICON_MAP[name] or HUDList.UnitCountItem.MISC_ICON_MAP[name]
+		unit_data = unit_data or HUDList.UnitCountItem.ENEMY_ICON_MAP[name] or HUDList.UnitCountItem.HOSTAGE_ICON_MAP[name] or HUDList.UnitCountItem.MISC_ICON_MAP[name]
 		local params = unit_data.priority and { priority = unit_data.priority }
 		HUDList.UnitCountItem.super.init(self, parent, name, unit_data, params)
 
@@ -1991,7 +1990,7 @@ do
 		Blowtorch =			{ hudpickups = { 96, 192, 32, 32 } }
 	}
 	function HUDList.SpecialPickupItem:init(parent, name, pickup_data)
-		local pickup_data = pickup_data or HUDList.SpecialPickupItem.SPECIAL_PICKUP_ICON_MAP[name]
+		pickup_data = pickup_data or HUDList.SpecialPickupItem.SPECIAL_PICKUP_ICON_MAP[name]
 		HUDList.SpecialPickupItem.super.init(self, parent, name, pickup_data)
 
 		self._id = name
@@ -2031,7 +2030,7 @@ do
 		--container =   { text = "?" },
 	}
 	function HUDList.LootItem:init(parent, name, loot_data)
-		local loot_data = loot_data or HUDList.LootItem.LOOT_ICON_MAP[name]
+		loot_data = loot_data or HUDList.LootItem.LOOT_ICON_MAP[name]
 		HUDList.LootItem.super.init(self, parent, name, loot_data.icon_data or { hudtabs = { 32, 32, 32, 32 }, alpha = 0.75, w_ratio = 1.2 })
 
 		self._icon:set_center(self._panel:center())
@@ -2635,7 +2634,7 @@ do
 	end
 
 	function HUDList.ECMRetriggerItem:update_timer(t, time_left)
-		local text = ""
+		local text
 		if time_left > 60 then
 			text = string.format("%d:%02d", time_left/60, time_left%60)
 		else

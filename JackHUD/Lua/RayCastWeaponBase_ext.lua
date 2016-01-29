@@ -12,7 +12,7 @@ function RaycastWeaponBase:on_equip(...)
 end
 
 function RaycastWeaponBase:_setup_laser()
-	for id, part in pairs(self._parts) do
+	for _, part in pairs(self._parts) do
 		local base = part.unit and part.unit:base()
 		if base and base.set_color_by_theme then
 			base:set_color_by_theme("player")

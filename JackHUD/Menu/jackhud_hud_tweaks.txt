@@ -172,6 +172,19 @@
 			"callback" : "callback_enhanced_assault_time",
 			"value" : "enhanced_assault_time",
 			"default_value" : true
+		},
+		{
+			"type" : "divider",
+			"size" : 16
+		},
+		{
+			"type" : "toggle",
+			"id" : "enable_objective_animation",
+			"title" : "enable_objective_animation",
+			"description" : "enable_objective_animation_desc",
+			"callback" : "callback_enable_objective_animation",
+			"value" : "enable_objective_animation",
+			"default_value" : true
 		}
 	]
 }

@@ -24,7 +24,7 @@ end
 function UnitBase.unregister_listener_clbk(name, event)
 	for event_id, listeners in pairs(UnitBase._LISTENER_CALLBACKS) do
 		if not event or event_id == event then
-			for id, clbk in pairs(listeners) do
+			for id, _ in pairs(listeners) do
 				if id == name then
 					UnitBase._LISTENER_CALLBACKS[event_id][id] = nil
 					break
@@ -36,7 +36,7 @@ end
 
 function UnitBase._do_listener_callback(event, ...)
 	if UnitBase._LISTENER_CALLBACKS[event] then
-		for id, clbk in pairs(UnitBase._LISTENER_CALLBACKS[event]) do
+		for _, clbk in pairs(UnitBase._LISTENER_CALLBACKS[event]) do
 			clbk(...)
 		end
 	end

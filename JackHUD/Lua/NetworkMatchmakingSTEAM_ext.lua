@@ -20,7 +20,7 @@ function NetworkMatchMakingSTEAM:save_persistent_settings()
 	file:write("friends_only " .. tostring(self._search_friends_only) .. "\n")
 	file:write("max_lobbies " .. tostring(self._lobby_return_count) .. "\n")
 	file:write("distance " .. tostring(self._distance_filter) .. "\n")
-	for k, v in pairs(self._lobby_filters) do
+	for k, _ in pairs(self._lobby_filters) do
 		file:write(tostring(k) .. " " .. tostring(self._lobby_filters[k].value) .. "\n")
 	end
 	file:close()

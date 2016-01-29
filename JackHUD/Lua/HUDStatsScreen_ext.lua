@@ -2,7 +2,7 @@
 local update_stats_screen_original = HUDStatsScreen._update_stats_screen_day
 local init_original = HUDStatsScreen.init
 local show_original = HUDStatsScreen.show
- 
+
 local characters = {
 	female_1 = {
 		texture = "guis/textures/pd2/blackmarket/icons/characters/female_1",
@@ -57,7 +57,7 @@ local characters = {
 		color = Color.white,
 	}
 }
- 
+
 function HUDStatsScreen:init()
 	init_original(self)
 	local right_panel = self._full_hud_panel:child("right_panel")
@@ -94,8 +94,8 @@ function HUDStatsScreen:init()
 		w = day_wrapper_panel:w()/2-5,
 		h = 18
 	})
-	local job_stars = managers.job:current_job_stars()
-	local job_and_difficulty_stars = managers.job:current_job_and_difficulty_stars()
+	--local job_stars = managers.job:current_job_stars()
+	--local job_and_difficulty_stars = managers.job:current_job_and_difficulty_stars()
 	local difficulty_stars = managers.job:current_difficulty_stars()
 	local difficulty = tweak_data.difficulties[difficulty_stars + 2] or 1
 	local difficulty_string_id = tweak_data.difficulty_name_ids[difficulty]
@@ -671,7 +671,7 @@ function HUDStatsScreen:init()
 	})
 	melee_killed_text:set_y(math.round(phalanx_minion_killed_text:bottom()))
 	melee_killed_title:set_top(melee_killed_text:top())
-	local blank = day_wrapper_panel:text({
+	blank = day_wrapper_panel:text({
 		layer = 0,
 		x =  0,
 		y = 0,
@@ -741,7 +741,7 @@ function HUDStatsScreen:init()
 	})
 	downs_text:set_y(math.round(revives_text:bottom()))
 	downs_title:set_top(downs_text:top())
-	local blank = day_wrapper_panel:text({
+	blank = day_wrapper_panel:text({
 		layer = 0,
 		x =  0,
 		y = 0,
@@ -803,8 +803,8 @@ function HUDStatsScreen:init()
 	logo:set_left(day_wrapper_panel:w()/2+40)
 	logo:set_top(30)
 	self:update(day_wrapper_panel)
-end    
- 
+end
+
 function HUDStatsScreen:update(day_wrapper_panel)
 	day_wrapper_panel:child("cleaner_costs_text"):set_text(managers.experience:cash_string(managers.money:get_civilian_deduction() * (managers.statistics:session_total_civilian_kills() or 0)) .. " (" .. (managers.statistics:session_total_civilian_kills() or 0) .. ")")
 	day_wrapper_panel:child("offshore_payout_text"):set_text(managers.experience:cash_string(managers.money:get_potential_payout_from_current_stage() - math.round(managers.money:get_potential_payout_from_current_stage() * managers.money:get_tweak_value("money_manager", "offshore_rate"))))
@@ -826,14 +826,14 @@ function HUDStatsScreen:update(day_wrapper_panel)
 	day_wrapper_panel:child("non_specials_killed_text"):set_text(managers.statistics._global.session.killed.total.count - managers.statistics:session_total_specials_kills() - managers.statistics:session_total_civilian_kills())
 	day_wrapper_panel:child("revives_text"):set_text(managers.statistics._global.session.revives.player_count + managers.statistics._global.session.revives.npc_count)
 	day_wrapper_panel:child("downs_text"):set_text(managers.statistics._global.session.downed.bleed_out + managers.statistics._global.session.downed.incapacitated)
-	day_wrapper_panel:child("time_text"):set_text(os.date('%X'))  
+	day_wrapper_panel:child("time_text"):set_text(os.date('%X'))
 	if 0 <= math.round(managers.money:get_potential_payout_from_current_stage() * managers.money:get_tweak_value("money_manager", "offshore_rate")) - managers.money:get_civilian_deduction() * (managers.statistics:session_total_civilian_kills() or 0) then
 		day_wrapper_panel:child("spending_cash_text"):set_color(tweak_data.screen_colors.friend_color)
 	else
 		day_wrapper_panel:child("spending_cash_text"):set_color(tweak_data.screen_colors.heat_cold_color)
 	end
 end
- 
+
 function HUDStatsScreen:clean_up(right_panel)
 	--right_panel:child("ghost_icon"):set_visible(false)
 	right_panel:child("day_wrapper_panel"):child("ghostable_text"):set_visible(false)
@@ -843,7 +843,7 @@ function HUDStatsScreen:clean_up(right_panel)
 	right_panel:child("day_wrapper_panel"):child("day_description"):set_visible(false)
 	right_panel:child("day_wrapper_panel"):child("bains_plan"):set_visible(false)
 end
- 
+
 function HUDStatsScreen:_update_stats_screen_day(right_panel)
 	update_stats_screen_original(self, right_panel)
 	self:clean_up(right_panel)

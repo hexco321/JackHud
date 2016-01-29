@@ -117,5 +117,7 @@
 	"enemy_color_b" : 1,
 	"civilian_color_r" : 1,
 	"civilian_color_g" : 1,
-	"civilian_color_b" : 1
+	"civilian_color_b" : 1,
+	"enable_objective_animation" : false,
+	"show_poco_recommendations" : false
 }

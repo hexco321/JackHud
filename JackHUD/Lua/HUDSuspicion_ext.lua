@@ -82,8 +82,8 @@ function HUDSuspicion:ColorGradient(perc, ...)
 	local b_ret = b1 + (b2-b1)*relperc
 	return math.round(r_ret*100)/100, math.round(g_ret*100)/100, math.round(b_ret*100)/100
 end
- 
-function HUDSuspicion:_animate_detection_text(_suspicion_panel, param_2, ...)
+
+function HUDSuspicion:_animate_detection_text(_suspicion_panel, ...)
 	while self._animating_text do
 		local t = 0
 		while t <= 0.01 do
@@ -97,13 +97,13 @@ function HUDSuspicion:_animate_detection_text(_suspicion_panel, param_2, ...)
 		end
 	end
 end
- 
+
 function HUDSuspicion:animate_eye(...)
 	hudsuspicions_animate_eye_original(self, ...)
 	self._animating_text = true
 	self._text_animation = self._suspicion_panel:child("suspicion_text_panel"):animate(callback(self, self, "_animate_detection_text"))
 end
- 
+
 function HUDSuspicion:hide(...)
 	hudsuspicion_hide_original(self, ...)
 	if (self._text_animation) then

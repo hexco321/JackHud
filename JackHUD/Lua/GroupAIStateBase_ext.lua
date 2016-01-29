@@ -109,7 +109,7 @@ function GroupAIStateBase:_client_hostage_count_cbk()
 	local old_police_count = self._police_hostage_headcount
 	local old_civ_hostages = self._civilian_hostages
 	local police_count = 0
-	for u_key, u_data in pairs(managers.enemy:all_enemies()) do
+	for _, u_data in pairs(managers.enemy:all_enemies()) do
 		if u_data and u_data.unit and u_data.unit.anim_data and u_data.unit:anim_data() then
 			if u_data.unit:anim_data().surrender then
 				police_count = police_count + 1
@@ -141,7 +141,7 @@ end
 function GroupAIStateBase.unregister_listener_clbk(name, event)
 	for event_id, listeners in pairs(GroupAIStateBase._LISTENER_CALLBACKS) do
 		if not event or event_id == event then
-			for id, clbk in pairs(listeners) do
+			for id, _ in pairs(listeners) do
 				if id == name then
 					GroupAIStateBase._LISTENER_CALLBACKS[event_id][id] = nil
 					break
@@ -153,7 +153,7 @@ end
 
 function GroupAIStateBase._do_listener_callback(event, ...)
 	if GroupAIStateBase._LISTENER_CALLBACKS[event] then
-		for id, clbk in pairs(GroupAIStateBase._LISTENER_CALLBACKS[event]) do
+		for _, clbk in pairs(GroupAIStateBase._LISTENER_CALLBACKS[event]) do
 			clbk(...)
 		end
 	end

@@ -44,11 +44,11 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 	end
 	if JackHUD._poco_conf and not JackHUD._poco_warning then
 		JackHUD._fixed_poco_conf = deep_clone(JackHUD._poco_conflicting_defaults)
-		for k,v in pairs(JackHUD._poco_conf) do
+		for k, v in pairs(JackHUD._poco_conf) do
 			if not JackHUD._fixed_poco_conf[k] then
 				JackHUD._fixed_poco_conf[k] = v
 			else
-				for k2,v2 in pairs(JackHUD._poco_conf[k]) do
+				for k2, v2 in pairs(JackHUD._poco_conf[k]) do
 					JackHUD._fixed_poco_conf[k][k2] = v2
 				end
 			end
@@ -60,56 +60,6 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 			if buff.hideInteractionCircle ~= nil then
 				JackHUD._fixed_poco_conf.buff.hideInteractionCircle = nil
 				table.insert(conflicts, "buff.hideInteractionCircle")
-				conflict_found = true
-			end
-			if buff.showBoost ~= false then
-				JackHUD._fixed_poco_conf.buff.showBoost = false
-				table.insert(conflicts, "buff.showBoost")
-				conflict_found = true
-			end
-			if buff.showCharge ~= false then
-				JackHUD._fixed_poco_conf.buff.showCharge = false
-				table.insert(conflicts, "buff.showCharge")
-				conflict_found = true
-			end
-			if buff.showECM ~= false then
-				JackHUD._fixed_poco_conf.buff.showECM = false
-				table.insert(conflicts, "buff.showECM")
-				conflict_found = true
-			end
-			if buff.showInteraction ~= false then
-				JackHUD._fixed_poco_conf.buff.showInteraction = false
-				table.insert(conflicts, "buff.showInteraction")
-				conflict_found = true
-			end
-			if buff.showReload ~= false then
-				JackHUD._fixed_poco_conf.buff.showReload = false
-				table.insert(conflicts, "buff.showReload")
-				conflict_found = true
-			end
-			if buff.showShield ~= false then
-				JackHUD._fixed_poco_conf.buff.showShield = false
-				table.insert(conflicts, "buff.showShield")
-				conflict_found = true
-			end
-			if buff.showStamina ~= false then
-				JackHUD._fixed_poco_conf.buff.showStamina = false
-				table.insert(conflicts, "buff.showStamina")
-				conflict_found = true
-			end
-			if buff.showSwanSong ~= false then
-				JackHUD._fixed_poco_conf.buff.showSwanSong = false
-				table.insert(conflicts, "buff.showSwanSong")
-				conflict_found = true
-			end
-			if buff.showTapeLoop ~= false then
-				JackHUD._fixed_poco_conf.buff.showTapeLoop = false
-				table.insert(conflicts, "buff.showTapeLoop")
-				conflict_found = true
-			end
-			if buff.simpleBusyIndicator ~= false then
-				JackHUD._fixed_poco_conf.buff.simpleBusyIndicator = false
-				table.insert(conflicts, "buff.simpleBusyIndicator")
 				conflict_found = true
 			end
 		end
@@ -133,36 +83,6 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 		end
 		local playerBottom = JackHUD._fixed_poco_conf.playerBottom
 		if playerBottom then
-			if not playerBottom.showDetectionRisk or playerBottom.showDetectionRisk > 0 then
-				JackHUD._fixed_poco_conf.playerBottom.showDetectionRisk = 0
-				table.insert(conflicts, "playerBottom.showDetectionRisk")
-				conflict_found = true
-			end
-			if not playerBottom.showDowns or playerBottom.showDowns > 0 then
-				JackHUD._fixed_poco_conf.playerBottom.showDowns = 0
-				table.insert(conflicts, "playerBottom.showDowns")
-				conflict_found = true
-			end
-			if not playerBottom.showInteraction or playerBottom.showInteraction > 0 then
-				JackHUD._fixed_poco_conf.playerBottom.showInteraction = 0
-				table.insert(conflicts, "playerBottom.showInteraction")
-				conflict_found = true
-			end
-			if not playerBottom.showInteractionTime or playerBottom.showInteractionTime > 0 then
-				JackHUD._fixed_poco_conf.playerBottom.showInteractionTime = 0
-				table.insert(conflicts, "playerBottom.showInteractionTime")
-				conflict_found = true
-			end
-			if not playerBottom.showKill or playerBottom.showKill > 0 then
-				JackHUD._fixed_poco_conf.playerBottom.showKill = 0
-				table.insert(conflicts, "playerBottom.showKill")
-				conflict_found = true
-			end
-			if not playerBottom.showSpecial or playerBottom.showSpecial > 0 then
-				JackHUD._fixed_poco_conf.playerBottom.showSpecial = 0
-				table.insert(conflicts, "playerBottom.showSpecial")
-				conflict_found = true
-			end
 			if playerBottom.showRank ~= false then
 				JackHUD._fixed_poco_conf.playerBottom.showRank = false
 				table.insert(conflicts, "playerBottom.showRank")
@@ -174,23 +94,130 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 				conflict_found = true
 			end
 		end
-		if conflict_found and not JackHUD._poco_warning then
+		if conflict_found then
 			local menu_title = "JackHUD: PocoHUD config incompatible"
-			local menu_message = "Found some conflicting PocoHUD settings: " .. json.encode(conflicts) ..  " - Click ok to fix the conflicting settings."
+			local menu_message = "Found some conflicting PocoHUD settings: " .. json.encode(conflicts) ..  " - Fixing these now."
 			local menu_options = {
 				[1] = {
-					text = "ok, fix it please",
+					text = "ok",
+					is_cancel_button = true
+				}
+			}
+			QuickMenu:new( menu_title, menu_message, menu_options, true )
+			JackHUD:ApplyFixedPocoSettings()
+		end
+		local recommendation_found = nil
+		local recommendations = {}
+		buff = JackHUD._fixed_poco_conf.buff
+		if buff then
+			if buff.showBoost ~= false then
+				JackHUD._fixed_poco_conf.buff.showBoost = false
+				table.insert(recommendations, "buff.showBoost")
+				recommendation_found = true
+			end
+			if buff.showCharge ~= false then
+				JackHUD._fixed_poco_conf.buff.showCharge = false
+				table.insert(recommendations, "buff.showCharge")
+				recommendation_found = true
+			end
+			if buff.showECM ~= false then
+				JackHUD._fixed_poco_conf.buff.showECM = false
+				table.insert(recommendations, "buff.showECM")
+				recommendation_found = true
+			end
+			if buff.showInteraction ~= false then
+				JackHUD._fixed_poco_conf.buff.showInteraction = false
+				table.insert(recommendations, "buff.showInteraction")
+				recommendation_found = true
+			end
+			if buff.showReload ~= false then
+				JackHUD._fixed_poco_conf.buff.showReload = false
+				table.insert(recommendations, "buff.showReload")
+				recommendation_found = true
+			end
+			if buff.showShield ~= false then
+				JackHUD._fixed_poco_conf.buff.showShield = false
+				table.insert(recommendations, "buff.showShield")
+				recommendation_found = true
+			end
+			if buff.showStamina ~= false then
+				JackHUD._fixed_poco_conf.buff.showStamina = false
+				table.insert(recommendations, "buff.showStamina")
+				recommendation_found = true
+			end
+			if buff.showSwanSong ~= false then
+				JackHUD._fixed_poco_conf.buff.showSwanSong = false
+				table.insert(recommendations, "buff.showSwanSong")
+				recommendation_found = true
+			end
+			if buff.showTapeLoop ~= false then
+				JackHUD._fixed_poco_conf.buff.showTapeLoop = false
+				table.insert(recommendations, "buff.showTapeLoop")
+				recommendation_found = true
+			end
+			if buff.simpleBusyIndicator ~= false then
+				JackHUD._fixed_poco_conf.buff.simpleBusyIndicator = false
+				table.insert(recommendations, "buff.simpleBusyIndicator")
+				recommendation_found = true
+			end
+		end
+		playerBottom = JackHUD._fixed_poco_conf.playerBottom
+		if playerBottom then
+			if not playerBottom.showDetectionRisk or playerBottom.showDetectionRisk > 0 then
+				JackHUD._fixed_poco_conf.playerBottom.showDetectionRisk = 0
+				table.insert(recommendations, "playerBottom.showDetectionRisk")
+				recommendation_found = true
+			end
+			if not playerBottom.showDowns or playerBottom.showDowns > 0 then
+				JackHUD._fixed_poco_conf.playerBottom.showDowns = 0
+				table.insert(recommendations, "playerBottom.showDowns")
+				recommendation_found = true
+			end
+			if not playerBottom.showInteraction or playerBottom.showInteraction > 0 then
+				JackHUD._fixed_poco_conf.playerBottom.showInteraction = 0
+				table.insert(recommendations, "playerBottom.showInteraction")
+				recommendation_found = true
+			end
+			if not playerBottom.showInteractionTime or playerBottom.showInteractionTime > 0 then
+				JackHUD._fixed_poco_conf.playerBottom.showInteractionTime = 0
+				table.insert(recommendations, "playerBottom.showInteractionTime")
+				recommendation_found = true
+			end
+			if not playerBottom.showKill or playerBottom.showKill > 0 then
+				JackHUD._fixed_poco_conf.playerBottom.showKill = 0
+				table.insert(recommendations, "playerBottom.showKill")
+				recommendation_found = true
+			end
+			if not playerBottom.showSpecial or playerBottom.showSpecial > 0 then
+				JackHUD._fixed_poco_conf.playerBottom.showSpecial = 0
+				table.insert(recommendations, "playerBottom.showSpecial")
+				recommendation_found = true
+			end
+		end
+		if recommendation_found and JackHUD:GetOption("show_poco_recommendations") then
+			local menu_title = "JackHUD: PocoHUD config redundant"
+			local menu_message = "Found some redundant PocoHUD settings: " .. json.encode(recommendations) ..  " - You don't need to fix these, but it's recommended, since they would just clutter the screen."
+			local menu_options = {
+				[1] = {
+					text = "ok, fix recommendations",
 					callback = function()
 						JackHUD:ApplyFixedPocoSettings()
-					end,
+					end
 				},
 				[2] = {
-					text = "cancel",
-					is_cancel_button = true,
+					text = "no, keep these",
+					is_cancel_button = true
 				},
+				[3] = {
+					text = "no, keep these and don't remind me later",
+					callback = function()
+						JackHUD._data.show_poco_recommendations = false
+						JackHUD:Save()
+					end
+				}
 			}
-			JackHUD._poco_warning = true
 			QuickMenu:new( menu_title, menu_message, menu_options, true )
 		end
+		JackHUD._poco_warning = true
 	end
 end

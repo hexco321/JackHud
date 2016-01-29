@@ -11,7 +11,8 @@ function HUDManager:add_waypoint(id, data)
 	local waypoint_panel = hud.panel
 	local icon = data.icon or "wp_standard"
 	local text = ""
-	local icon, texture_rect = tweak_data.hud_icons:get_icon_data(icon, {
+	local texture_rect
+	icon, texture_rect = tweak_data.hud_icons:get_icon_data(icon, {
 		0,
 		0,
 		32,
@@ -84,7 +85,8 @@ function HUDManager:add_waypoint(id, data)
 	})
 	local _, _, w, _ = text:text_rect()
 	text:set_w(w)
-	local w, h = bitmap:size()
+	local h
+	w, h = bitmap:size()
 	self._hud.waypoints[id] = {
 		init_data = data,
 		state = data.state or "present",
@@ -104,11 +106,10 @@ function HUDManager:add_waypoint(id, data)
 		radius = data.radius or 160
 	}
 	self._hud.waypoints[id].init_data.position = data.position or data.unit:position()
-	local slot = 1
 	local t = {}
-	for _, data in pairs(self._hud.waypoints) do
-		if data.slot then
-			t[data.slot] = data.text:w()
+	for _, fdata in pairs(self._hud.waypoints) do
+		if fdata.slot then
+			t[fdata.slot] = fdata.text:w()
 		end
 	end
 	for i = 1, 10 do
