@@ -1,4 +1,10 @@
 
+1.15r31:
+- added option for the objective message animation
+- fixed several small bugs
+- optimization of locals and global
+- poco conflicts are now split into actual conflicts and recommendations.
+
 1.14.1r30:
 ~ fixed: game crashed when you bought assets while "buy all assets" was disabled.
 
