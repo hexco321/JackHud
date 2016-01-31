@@ -418,7 +418,11 @@ if not HUDTeammate.increment_kill_count then
 	function HUDTeammate:reset_revives()
 		if self._revives_counter then
 			self._revives_count = 0
-			self._revives_counter:set_text(tostring(self._revives_count))
+			if not self._main_player then
+				self._revives_counter:set_text(tostring(self._revives_count))
+		 	else
+				self._revives_counter:set_text(managers.player:has_category_upgrade("player", "cheat_death_chance") and "4" or "3")
+			end
 		end
 	end
 

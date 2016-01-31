@@ -1,4 +1,8 @@
 
+1.15r32:
+- fixed: down counter showed 0 downs at the start of a heist, until damage taken
+- fixed: objective message animation did not activate at all
+
 1.15r31:
 - added option for the objective message animation
 - fixed several small bugs

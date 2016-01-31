@@ -1,5 +1,5 @@
 
-if JackHUD.GetOption("enable_objective_animation") then
+if JackHUD:GetOption("enable_objective_animation") then
 
 	HUDPresenter = HUDPresenter or class()
 

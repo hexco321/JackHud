@@ -133,7 +133,6 @@ if not JackHUD.setup then
 		if self:IsMember() then
 			return self._data[id]
 		else
-			log("NOT A MEMBER")
 			return self._disabled_defaults[id]
 		end
 	end
@@ -261,13 +260,12 @@ if not JackHUD.setup then
 	end
 
 	function JackHUD:IsMember()
-		if JackHUD.jackhud_member_check_done then
-			return JackHUD.is_member or JackHUD.steam_offline
+		if self.jackhud_member_check_done then
+			return self.is_member or self.steam_offline
 		else
 			return true
 		end
 	end
-
 	function JackHUD:ShowSteamGroup()
 		Steam:overlay_activate("url", "http://steamcommunity.com/groups/jackhud")
 	end
