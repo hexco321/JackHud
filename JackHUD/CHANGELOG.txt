@@ -1,4 +1,7 @@
 
+1.15r33:
+- fixed: the own down counter shows pistol messiah/nine lives skills properly now
+
 1.15r32:
 - fixed: down counter showed 0 downs at the start of a heist, until damage taken
 - fixed: objective message animation did not activate at all

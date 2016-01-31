@@ -420,8 +420,10 @@ if not HUDTeammate.increment_kill_count then
 			self._revives_count = 0
 			if not self._main_player then
 				self._revives_counter:set_text(tostring(self._revives_count))
-		 	else
-				self._revives_counter:set_text(managers.player:has_category_upgrade("player", "cheat_death_chance") and "4" or "3")
+		  else
+				self._revives_counter:set_text(tostring(3 + managers.player:upgrade_value("player", "additional_lives", 0))
+						.. (managers.player:has_category_upgrade("player", "pistol_revive_from_bleed_out")
+						and ("/" .. managers.player:upgrade_value("player", "pistol_revive_from_bleed_out", 0)) or ""))
 			end
 		end
 	end
@@ -507,8 +509,7 @@ if not HUDTeammate.increment_kill_count then
 			local has_messiah = false
 			local messiah_charges = 0
 			if self._main_player then
-				messiah_charges = managers.player:upgrade_value("player", "pistol_revive_from_bleed_out", 0)
-				has_messiah = messiah_charges > 0
+				has_messiah = managers.player:has_category_upgrade("player", "pistol_revive_from_bleed_out")
 				if has_messiah and managers.player:player_unit() and managers.player:player_unit():character_damage() then
 					messiah_charges = managers.player:player_unit():character_damage()._messiah_charges
 				end
