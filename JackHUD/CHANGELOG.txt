@@ -1,4 +1,7 @@
 
+1.16r34:
+- version bump for packs notification
+
 1.15r33:
 - fixed: the own down counter shows pistol messiah/nine lives skills properly now
 
