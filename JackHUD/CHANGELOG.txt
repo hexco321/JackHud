@@ -1,4 +1,8 @@
 
+1.16r35:
++ added option for custom interaction text color
++ added check to prevent a random crash related to the detection risk meter
+
 1.16r34:
 - version bump for packs notification
 

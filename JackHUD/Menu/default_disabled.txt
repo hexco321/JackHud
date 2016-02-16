@@ -119,5 +119,8 @@
 	"civilian_color_g" : 1,
 	"civilian_color_b" : 1,
 	"enable_objective_animation" : false,
-	"show_poco_recommendations" : false
+	"show_poco_recommendations" : false,
+	"interaction_color_r" : 1,
+	"interaction_color_g" : 0.66,
+	"interaction_color_b" : 0
 }

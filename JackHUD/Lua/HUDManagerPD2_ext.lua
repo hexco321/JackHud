@@ -49,7 +49,7 @@ function HUDManager:set_slot_detection(peer_id, outfit, unpacked)
 	end
 	local risk = managers.blackmarket:get_suspicion_offset_of_outfit_string(outfit, tweak_data.player.SUSPICION_OFFSET_LERP or 0.75)
 	for panel_id, _ in ipairs(self._hud.teammate_panels_data) do
-		if peer_id == managers.network:session():local_peer():id() and self._teammate_panels[panel_id]._main_player or self._teammate_panels[panel_id]:peer_id() == peer_id then
+		if self._teammate_panels[panel_id].set_detection_risk and peer_id == managers.network:session():local_peer():id() and self._teammate_panels[panel_id]._main_player or self._teammate_panels[panel_id]:peer_id() == peer_id then
 			self._teammate_panels[panel_id]:set_detection_risk(risk)
 			return
 		end

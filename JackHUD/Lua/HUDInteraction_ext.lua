@@ -42,7 +42,6 @@ function HUDInteraction:init(hud, child_name)
 	self._bgtext3:set_x(self._bgtext3:x() - 1)
 	self._bgtext4:set_y(self._hud_panel:h() / 2 - 1)
 	self._bgtext4:set_x(self._bgtext4:x() + 1)
-	self._start_color = Color(1, 1, 0.65882355, 0)
 end
 
 function HUDInteraction:show_interaction_bar(current, total)
@@ -60,8 +59,14 @@ function HUDInteraction:set_interaction_bar_width(current, total)
 		return
 	end
 	local text = string.format("%.1f", total - current >= 0 and total - current or 0) .. "s"
+	local color = Color(JackHUD:GetOption("interaction_color_r"), JackHUD:GetOption("interaction_color_g"), JackHUD:GetOption("interaction_color_b"))
 	self._interact_timer_text:set_text(text)
-	self._interact_timer_text:set_color(Color(self._start_color.a + (current / total), self._start_color.r + (current / total), self._start_color.g + (current / total), self._start_color.b + (current / total)))
+	self._interact_timer_text:set_color(Color(
+		color.a + (current / total),
+		color.r + (current / total),
+		color.g + (current / total),
+		color.b + (current / total)
+	))
 	for i = 1, 4 do
 		self["_bgtext" .. i]:set_text(text)
 	end

@@ -211,6 +211,10 @@
 	"laser_light_turretm" : "Dot Brightness",
 	"laser_light_turretm_desc" : "",
 
+	"interaction_color_r" : "interaction text red",
+	"interaction_color_g" : "interaction text green",
+	"interaction_color_b" : "interaction text blue",
+
 	"remember_gadget_state" : "Remember gadget state",
 	"remember_gadget_state_desc" : "Remember on/off state of lasers and flashlights",
 
