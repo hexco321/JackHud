@@ -1,4 +1,8 @@
 
+1.17r36:
++ removed member check for now
++ added some checks for the buy all assets
+
 1.16r35:
 + added option for custom interaction text color
 + added check to prevent a random crash related to the detection risk meter

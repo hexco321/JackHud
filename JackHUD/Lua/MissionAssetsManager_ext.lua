@@ -4,6 +4,7 @@ local sync_unlock_asset_original = MissionAssetsManager.sync_unlock_asset
 local unlock_asset_original = MissionAssetsManager.unlock_asset
 local sync_load_original = MissionAssetsManager.sync_load
 local sync_save_original = MissionAssetsManager.sync_save
+local is_unlock_asset_allowed_original = MissionAssetsManager.is_unlock_asset_allowed
 
 function MissionAssetsManager:_setup_mission_assets()
 	_setup_mission_assets_original(self)
@@ -55,6 +56,13 @@ function MissionAssetsManager:sync_load(data)
 		self:check_all_assets()
 	end
 	sync_load_original(self, data)
+end
+
+function MissionAssetsManager:is_unlock_asset_allowed()
+	if not game_state_machine then
+		return false
+	end
+	return self:is_unlock_asset_allowed_original()
 end
 
 -------------------------------------------------------------------------------------------------------

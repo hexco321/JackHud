@@ -2,11 +2,11 @@
 	"name" : "JackHUD",
 	"description" : "A GageHUD fork",
 	"author" : "Seven, cjur3, BangL, Kail, cjure, undeadsewer, thatguyfrombreakingbad, Martini and the RestorationMod-Crew, TimeR",
-	"version" : "1.16",
+	"version" : "1.17",
 	"priority": -1,
 	"updates" : [
 		{
-			"revision" : 35,
+			"revision" : 36,
 			"identifier" : "jackhud",
 		},
 		{
