@@ -62,7 +62,7 @@ function MissionAssetsManager:is_unlock_asset_allowed()
 	if not game_state_machine then
 		return false
 	end
-	return self:is_unlock_asset_allowed_original()
+	return is_unlock_asset_allowed_original()
 end
 
 -------------------------------------------------------------------------------------------------------
