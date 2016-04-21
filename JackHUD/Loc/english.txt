@@ -287,6 +287,8 @@
 	"enhanced_assault_spawns_desc" : "Show spawns left (depends on enhanced assault banner)",
 	"enhanced_assault_time" : "Show time left",
 	"enhanced_assault_time_desc" : "Show time left (depends on enhanced assault banner)",
+	"enhanced_assault_count" : "Show wave count",
+	"enhanced_assault_count_desc" : "Show wave count (depends on enhanced assault banner)",
 
 	"enable_objective_animation" : "Animated objective messages",
 	"enable_objective_animation_desc" : "Animated the objective messages in the middle of the screen",

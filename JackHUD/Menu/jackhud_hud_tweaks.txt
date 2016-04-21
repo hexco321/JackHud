@@ -214,6 +214,15 @@
 			"default_value" : true
 		},
 		{
+			"type" : "toggle",
+			"id" : "enhanced_assault_count",
+			"title" : "enhanced_assault_count",
+			"description" : "enhanced_assault_count_desc",
+			"callback" : "callback_enhanced_assault_count",
+			"value" : "enhanced_assault_count",
+			"default_value" : true
+		},
+		{
 			"type" : "divider",
 			"size" : 16
 		},

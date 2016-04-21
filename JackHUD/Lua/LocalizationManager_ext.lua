@@ -29,6 +29,9 @@ function LocalizationManager:hud_assault_enhanced()
 				finaltext = finaltext .. " /// Time Left: " .. string.format("%.2f", atime + 350 - managers.groupai:state()._t)
 			end
 		end
+		if JackHUD:GetOption("enhanced_assault_count") then
+			finaltext = finaltext .. " /// Wave: " .. string.format("%d", managers.groupai:state()._wave_counter)
+		end
 		return finaltext
 	end
 end

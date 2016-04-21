@@ -112,6 +112,7 @@
 	"enable_enhanced_assault_banner" : true,
 	"enhanced_assault_spawns" : true,
 	"enhanced_assault_time" : true,
+	"enhanced_assault_count" : true,
 	"enemy_color_r" : 1,
 	"enemy_color_g" : 1,
 	"enemy_color_b" : 1,

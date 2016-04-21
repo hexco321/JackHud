@@ -545,6 +545,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.enhanced_assault_time = (item:value() =="on")
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_enhanced_assault_count = function(self, item)
+		JackHUD._data.enhanced_assault_count = (item:value() =="on")
+		JackHUD:Save()
+	end
 
 	MenuCallbackHandler.callback_enable_objective_animation = function(self, item)
 		JackHUD._data.enable_objective_animation = (item:value() =="on")

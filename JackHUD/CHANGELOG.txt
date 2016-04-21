@@ -1,4 +1,7 @@
 
+1.18r37:
++ added wave counter
+
 1.17r36:
 + removed member check for now
 + added some checks for the buy all assets

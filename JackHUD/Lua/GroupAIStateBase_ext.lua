@@ -14,6 +14,7 @@ GroupAIStateBase._LISTENER_CALLBACKS = {}
 
 function GroupAIStateBase:init(...)
 	self._civilian_hostages = 0
+	self._wave_counter = 0
 	return init_original(self, ...)
 end
 

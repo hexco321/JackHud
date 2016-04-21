@@ -94,6 +94,7 @@ end
 
 function HUDManager:sync_start_assault(...)
 	self._hud_heist_timer._heist_timer_panel:set_visible(not JackHUD:GetOption("center_assault_banner"))
+	managers.groupai:state()._wave_counter = managers.groupai:state()._wave_counter + 1
 	sync_start_assault_original(self, ...)
 end
 
