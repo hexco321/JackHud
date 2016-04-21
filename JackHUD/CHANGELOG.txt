@@ -1,4 +1,7 @@
 
+1.18r38:
++ quick fix to prevent crashes by the wave counter
+
 1.18r37:
 + added wave counter
 
