@@ -119,7 +119,7 @@
 			h = self._kills_panel:h(),
 			vertical = "center",
 			align = "right",
-			font_size = self._kills_panel:h(),
+			font_size = tweak_data.hud_players.name_size,
 			font = tweak_data.hud_players.name_font
 		})
 		self._kills_text:set_right(self._kills_panel:w())
@@ -550,14 +550,18 @@
 			kill_string = kill_string .. " (" .. tostring(self._headshot_kills) .. ")"
 		end
 		self._kills_text:set_text(kill_string)
+		self:_update_kill_count_pos()
+		self:refresh_kill_count_visibility()
+		if not self._color_pos then self._color_pos = 1 end
+		self:_truncate_name()
+	end
+
+	function HUDTeammate:_update_kill_count_pos()
 		self._kills_text:set_right(self._kills_panel:w() - 4)
 		local _, _, w, _ = self._kills_text:text_rect()
 		self._kill_icon:set_right(self._kills_panel:w() - w - 4 - self._kill_icon:w() * 0.15)
 		self._kills_text_bg:set_right(self._kills_panel:w())
 		self._kills_text_bg:set_w(w + 8)
-		self:refresh_kill_count_visibility()
-		if not self._color_pos then self._color_pos = 1 end
-		self:_truncate_name()
 	end
 
 	function HUDTeammate:reset_kill_count()
@@ -612,13 +616,18 @@
 		local teammate_name = name_panel:text()
 		local name_bg_panel = self._panel:child("name_bg")
 		name_panel:set_vertical("center")
+		self._kills_text:set_font_size(tweak_data.hud_players.name_size)
+		self:_update_kill_count_pos()
 		name_panel:set_font_size(tweak_data.hud_players.name_size)
 		name_panel:set_w(self._panel:w())
 		local _,_,w,h = name_panel:text_rect()
 		if JackHUD:GetOption("enable_kill_counter") then
 			while (name_panel:x() + w) > (self._kills_panel:x() + self._kill_icon:x() - 4) do
 				if name_panel:font_size() > 15.1 then
-					name_panel:set_font_size(name_panel:font_size() - 0.1)
+					local newsize = name_panel:font_size() - 0.1
+					self._kills_text:set_font_size(newsize)
+					self:_update_kill_count_pos()
+					name_panel:set_font_size(newsize)
 				else
 					name_panel:set_text(teammate_name:sub(1, teammate_name:len() - 1))
 				end
