@@ -1,5 +1,5 @@
 
-if not HUDTeammate.increment_kill_count then
+--if not HUDTeammate.increment_kill_count then
 
 	local init_original = HUDTeammate.init
 	local set_name_original = HUDTeammate.set_name
@@ -92,7 +92,7 @@ if not HUDTeammate.increment_kill_count then
 		self._kills_panel = self._panel:panel({
 			name = "kills_panel",
 			visible = true,
-			w = 100,
+			w = 150,
 			h = 20,
 			x = 0,
 			halign = "right"
@@ -550,9 +550,9 @@ if not HUDTeammate.increment_kill_count then
 			kill_string = kill_string .. " (" .. tostring(self._headshot_kills) .. ")"
 		end
 		self._kills_text:set_text(kill_string)
-		local _, _, w, _ = self._kills_text:text_rect()
 		self._kills_text:set_right(self._kills_panel:w() - 4)
-		self._kill_icon:set_right(self._kills_panel:w() - w - 8 - self._kill_icon:w() * 0.15)
+		local _, _, w, _ = self._kills_text:text_rect()
+		self._kill_icon:set_right(self._kills_panel:w() - w - 4 - self._kill_icon:w() * 0.15)
 		self._kills_text_bg:set_right(self._kills_panel:w())
 		self._kills_text_bg:set_w(w + 8)
 		self:refresh_kill_count_visibility()
@@ -649,4 +649,4 @@ if not HUDTeammate.increment_kill_count then
 		end
 	end
 
-end
+--end
