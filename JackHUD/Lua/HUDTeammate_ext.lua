@@ -6,6 +6,12 @@
 	local set_state_original = HUDTeammate.set_state
 	local set_health_original = HUDTeammate.set_health
 	local teammate_progress_original = HUDTeammate.teammate_progress
+	local set_custom_radial_original = HUDTeammate.set_custom_radial
+	local set_armor_original = HUDTeammate.set_armor
+	local set_callsign_original = HUDTeammate.set_callsign
+
+	local tm_color = Color(0.1, 0.1, 0.1)
+	local tm_alpha = 0.71
 
 	function HUDTeammate:init(i, ...)
 		init_original(self, i, ...)
@@ -19,9 +25,203 @@
 		end
 		self:_init_killcount()
 		self:_init_revivecount()
+
+		local teammate_panel = self._panel
+		local player_panel = self._player_panel
+
+		-- Hide vanilla HUD elements
+		teammate_panel:child("name_bg"):set_visible(false)
+		teammate_panel:child("callsign"):set_visible(false)
+		teammate_panel:child("callsign_bg"):set_visible(false)
+		player_panel:child("weapons_panel"):child("primary_weapon_panel"):child("bg"):set_visible(false)
+		player_panel:child("weapons_panel"):child("secondary_weapon_panel"):child("bg"):set_visible(false)
+		player_panel:child("radial_health_panel"):set_visible(false)
+		player_panel:child("cable_ties_panel"):child("bg"):set_visible(false)
+		player_panel:child("grenades_panel"):child("bg"):set_visible(false)
+		player_panel:child("deployable_equipment_panel"):child("bg"):set_visible(false)
+
+		-- Paint custom HUD elements
+		if self._main_player then
+			local armor_line = teammate_panel:rect({
+				name = "armor_line",
+				align = "center",
+				layer = 1
+			})
+			local rip_line = teammate_panel:rect({
+				name = "rip_line",
+				align = "center",
+				visible = false,
+				layer = 1,
+				w = 2,
+				h = 48
+			})
+			local info_line = teammate_panel:rect({
+				name = "info_line",
+				align = "center",
+				layer = 1,
+				visible = false,
+				w = 2,
+				h = 48
+			})
+			local line = self._panel:rect({
+				name = "line",
+				layer = 1,
+				color = self._panel:child("callsign"):color(),
+				w = 2
+			})
+		else
+			local line = self._panel:rect({
+				name = "line",
+				layer = 1,
+				color = self._panel:child("callsign"):color(),
+				w = 2
+			})
+		end
+		local top, right, bottom, left = 30, 0, 0, 0
+		local bg = teammate_panel:rect({
+			name = "bg",
+			color = tm_color,
+			alpha = tm_alpha,
+			x = left,
+			y = top,
+			w = (teammate_panel:w() - left) - right,
+			h = (teammate_panel:h() - top) - bottom,
+			layer = 0
+		})
+		local hp_text = teammate_panel:text({
+			name = "hp_text",
+			layer = 3,
+			font_size = 20,
+			font = "fonts/font_large_mf",
+			text = "100%",
+			vertical = "bottom",
+			align = "center"
+		})
+		self:update_custom_hud()
+	end
+
+	function HUDTeammate:update_custom_hud()
+		local teammate_panel = self._panel
+		local bg = teammate_panel:child("bg")
+		local hp_text = teammate_panel:child("hp_text")
+		local line = teammate_panel:child("line")
+		local name = teammate_panel:child("name")
+		name:set_left(2)
+		local _,_,_,h = hp_text:text_rect()
+		local old_text = hp_text:text()
+		hp_text:configure({
+			h = h,
+			x = 2,
+			color = Color.white,
+			text = "WWWW",
+			align = center
+		})
+		line:configure({
+			w = 2,
+			h = bg:h(),
+			x = bg:x(),
+			color = self._panel:child("callsign"):color()
+		})
+		managers.hud:make_fine_text(hp_text)
+		hp_text:set_text(old_text)
+		hp_text:set_bottom(bg:bottom())
+		line:set_top(bg:top())
+		if self._ai then
+			hp_text:set_visible(false)
+		else
+			hp_text:set_visible(true)
+		end
+		if self._main_player then
+			local armor_line = teammate_panel:child("armor_line")
+			local rip_line = teammate_panel:child("rip_line")
+			local info_line = teammate_panel:child("info_line")
+			armor_line:configure({
+				w = bg:w(),
+				h = 2,
+				x = bg:x(),
+				color = Color.white
+			})
+			rip_line:configure({
+				w = 2,
+				h = bg:h(),
+				x = bg:x() + 2,
+				color = Color.blue
+			})
+			info_line:configure({
+				w = 2,
+				h = bg:h(),
+				x = bg:x() + 4,
+				color = Color.white
+			})
+			armor_line:set_bottom(bg:bottom())  
+			rip_line:set_top(bg:top())
+			info_line:set_top(bg:top())
+			hp_text:set_left(bg:left() + 15)
+			hp_text:set_bottom(armor_line:top() - 15)
+			hp_text:set_font_size(30)
+		end
+	end
+
+	function HUDTeammate:set_condition(icon_data, text)
+		if self._panel:child("hp_text") then
+			local condition_icon = self._panel:child("condition_icon")
+			local condition_timer = self._panel:child("condition_timer")
+			local hp_text = self._panel:child("hp_text")
+			condition_icon:set_alpha(0)
+			condition_timer:set_alpha(0)
+			if icon_data == "mugshot_normal" then
+				condition_icon:set_visible(false)
+				if not self._main_player then
+					self._panel:set_alpha(1)
+				end
+			end
+			if icon_data == "mugshot_downed" then
+				if not self._main_player then
+					hp_text:set_text("Dwnd")
+					self._panel:set_alpha(1)
+				end
+			end
+			if icon_data == "mugshot_in_custody" then
+				if not self._main_player then
+					hp_text:set_text("Cstd")
+				else
+					hp_text:set_text("0%")
+				end
+			end
+		end
+		self:update_custom_hud()
+	end
+
+	function HUDTeammate:_animate_timer()
+		local hp_text = self._panel:child("hp_text")
+		local rounded_timer = math.round(self._timer)
+		hp_text:set_text("D00s")
+		self:update_custom_hud()
+		while self._timer >= 0 do
+			local dt = coroutine.yield()
+			if self._timer_paused == 0 then
+				self._timer = self._timer - dt
+				local text = self._timer < 0 and "0" or math.round(self._timer)
+				hp_text:set_text("D"..text.."s")
+				if rounded_timer > math.round(self._timer) then
+					rounded_timer = math.round(self._timer)
+					if rounded_timer < 11 then
+						self._panel:child("condition_timer"):animate(callback(self, self, "_animate_timer_flash"))
+					end
+				end
+			end
+		end	
+	end
+
+	function HUDTeammate:on_downed()
+		local hp_text = self._panel:child("hp_text")
+		if self._main_player and hp_text:text() ~= "0%" then
+			hp_text:set_text("0%")
+		end
 	end
 
 	function HUDTeammate:_init_stamina_meter()
+		--[[
 		local radial_health_panel = self._panel:child("player"):child("radial_health_panel")
 		local stamina_size = 0.4
 		if managers.player:upgrade_value("player", "armor_max_health_store_multiplier", 0) > 0
@@ -50,9 +250,24 @@
 			alpha = 0,
 		})
 		self._stamina_line:set_center(radial_health_panel:child("radial_health"):center())
+		]]
+		self._stamina_line = self._player_panel:bitmap({
+			name = "stamina_line",
+			blend_mode = "normal",
+			alpha = 0.8,
+			w = self._panel:w(),
+			h = 2,
+			color = Color.white,
+			x = 0,
+			y = 28,
+			vertical = "bottom",
+			align = "center",
+			layer = 1
+		})
 	end
 
 	function HUDTeammate:_init_revivecount()
+		--[[
 		self._detection_counter = self._player_panel:child("radial_health_panel"):text({
 			name = "detection_risk",
 			visible = managers.groupai:state():whisper_mode(),
@@ -82,6 +297,38 @@
 			font_size = 14,
 			font = tweak_data.hud_players.ammo_font
 		})
+		]]
+		local name = self._panel:child("name")
+		name:set_left(18)
+		self._detection_counter = self._panel:text({
+			name = "detection_risk",
+			visible = managers.groupai:state():whisper_mode(),
+			layer = 1,
+			Color = Color.white,
+			w = self._player_panel:child("radial_health_panel"):w() - 4,
+			x = 2,
+			y = name:y(),
+			h = self._player_panel:child("radial_health_panel"):h() - 4,
+			vertical = "top",
+			align = "left",
+			font_size = 14,
+			font = tweak_data.hud_players.ammo_font
+		})
+		self._revives_counter = self._panel:text({
+			name = "revives_counter",
+			visible = not managers.groupai:state():whisper_mode(),
+			text = "0",
+			layer = 1,
+			color = Color.white,
+			w = self._player_panel:child("radial_health_panel"):w() - 4,
+			x = 2,
+			y = name:y(),
+			h = self._player_panel:child("radial_health_panel"):h() - 4,
+			vertical = "top",
+			align = "left",
+			font_size = 14,
+			font = tweak_data.hud_players.ammo_font
+		})
 		self._revives_count = 0
 		if self._main_player then
 			self:set_detection_risk((managers.blackmarket:get_suspicion_offset_of_outfit_string(managers.blackmarket:unpack_outfit_from_string(managers.blackmarket:outfit_string()), tweak_data.player.SUSPICION_OFFSET_LERP or 0.75)))
@@ -107,7 +354,7 @@
 			texture_rect = { 0, 0, 12, 16 },
 			alpha = 1,
 			blend_mode = "add",
-			layer = 0,
+			layer = 1,
 			color = Color(1, 1, 0.65882355, 0)
 		})
 		self._kills_text = self._kills_panel:text({
@@ -123,6 +370,7 @@
 			font = tweak_data.hud_players.name_font
 		})
 		self._kills_text:set_right(self._kills_panel:w())
+		--[[
 		local _, _, text_w, text_h = self._kills_text:text_rect()
 		self._kills_text_bg = self._kills_panel:bitmap({
 			name = "kills_text_bg",
@@ -142,6 +390,7 @@
 			w = text_w + 4,
 			h = text_h
 		})
+		]]
 		self:reset_kill_count()
 		self:refresh_kill_count_visibility()
 	end
@@ -165,8 +414,9 @@
 			font_size = tweak_data.hud_players.name_size,
 			font = tweak_data.hud_players.name_font
 		})
-		local _, _, text_w, text_h = self._interact_info:text_rect()
 		self._interact_info:set_right(self._interact_info_panel:w() - 4)
+		--[[
+		local _, _, text_w, text_h = self._interact_info:text_rect()
 		self._interact_info_bg = self._interact_info_panel:bitmap({
 			name = "interact_info_bg",
 			texture = "guis/textures/pd2/hud_tabs",
@@ -185,6 +435,7 @@
 			w = text_w + 4,
 			h = text_h
 		})
+		]]
 	end
 
 	function HUDTeammate:_init_inspire_timer()
@@ -200,6 +451,7 @@
 			layer = 4
 		})
 		self._inspire_timer:set_right(self._player_panel:child("radial_health_panel"):right())
+		--[[
 		self._inspire_timer_bg = JackHUD:MakeOutlineText(self._player_panel, {
 			text = "0.0s",
 			color = Color.black:with_alpha(0.5),
@@ -210,6 +462,7 @@
 			font_size = 20,
 			layer = 3
 		}, self._inspire_timer)
+		]]
 	end
 
 	function HUDTeammate:_init_armor_timer()
@@ -222,8 +475,10 @@
 			vertical = "bottom",
 			font = tweak_data.hud_players.name_font,
 			font_size = 20,
-			layer = 4
+			layer = 4,
+			x = 4
 		})
+		--[[
 		self._armor_timer_bg = JackHUD:MakeOutlineText(self._player_panel, {
 			text = "0.0s",
 			color = Color.black:with_alpha(0.5),
@@ -234,6 +489,7 @@
 			font_size = 20,
 			layer = 3
 		}, self._armor_timer)
+		]]
 	end
 
 	function HUDTeammate:_init_hps_meter()
@@ -257,8 +513,11 @@
 			layer = 4
 		})
 		local _, _, text_w, text_h = self._hps_meter:text_rect()
-		self._hps_meter_bg = self._hps_meter_panel:bitmap({
+
+		--self._hps_meter_bg = self._hps_meter_panel:bitmap({
+		self._hps_meter_bg = self._hps_meter_panel:rect({
 			name = "hps_meter_bg",
+			--[[
 			texture = "guis/textures/pd2/hud_tabs",
 			texture_rect = {
 				84,
@@ -266,8 +525,11 @@
 				44,
 				32
 			},
-			layer = 2,
 			color = Color.white / 3,
+			]]
+			color = tm_color,
+			alpha = tm_alpha,
+			layer = 2,
 			x = 0,
 			y = 0,
 			align = "left",
@@ -305,9 +567,11 @@
 		if t and t > 0 and self._inspire_timer then
 			t = string.format("%.1f", t) .. "s"
 			self._inspire_timer:set_text(t)
+			--[[
 			for _, bg in ipairs(self._inspire_timer_bg) do
 				bg:set_text(t)
 			end
+			]]
 			self:set_inspire_timer_visibility(JackHUD:GetOption("show_inspire_timer"))
 		elseif self._inspire_timer and self._inspire_timer:visible() then
 			self:set_inspire_timer_visibility(false)
@@ -318,9 +582,11 @@
 		if t and t > 0 and self._armor_timer then
 			t = string.format("%.1f", t) .. "s"
 			self._armor_timer:set_text(t)
+			--[[
 			for _, bg in ipairs(self._armor_timer_bg) do
 				bg:set_text(t)
 			end
+			]]
 			self:set_armor_timer_visibility(JackHUD:GetOption("show_armor_timer"))
 		elseif self._armor_timer and self._armor_timer:visible() then
 			self:set_armor_timer_visibility(false)
@@ -375,8 +641,10 @@
 		end
 		self._interact_info:set_text(text)
 		local _, _, w, _ = self._interact_info:text_rect()
+		--[[
 		self._interact_info_bg:set_w(w + 8)
 		self._interact_info_bg:set_right(self._interact_info:right() + 4)
+		]]
 	end
 
 	function HUDTeammate:set_interact_visible(visible)
@@ -394,6 +662,7 @@
 
 	function HUDTeammate:set_max_stamina(value)
 		self._max_stamina = value
+		--[[
 		local w = self._stamina_bar:w()
 		local threshold = tweak_data.player.movement_state.stamina.MIN_STAMINA_THRESHOLD
 		local angle = 360 * (1 - threshold/self._max_stamina) - 90
@@ -402,10 +671,15 @@
 		self._stamina_line:set_x(x)
 		self._stamina_line:set_y(y)
 		self._stamina_line:set_rotation(angle)
+		]]
 	end
 
 	function HUDTeammate:set_current_stamina(value)
-		self._stamina_bar:set_color(Color(1, value/self._max_stamina, 0, 0))
+		--self._stamina_bar:set_color(Color(1, value/self._max_stamina, 0, 0))
+		Value = value / self._max_stamina
+		self._stamina_line:set_color(Color.white * (math.round(Value * 100) / 100) + Color.red * (1 - math.round(Value * 100) / 100))
+		self._stamina_line:set_w(Value * self._panel:w())
+		self._stamina_line:set_right(self._panel:w())
 	end
 
 	function HUDTeammate:increment_revives()
@@ -420,7 +694,7 @@
 			self._revives_count = 0
 			if not self._main_player then
 				self._revives_counter:set_text(tostring(self._revives_count))
-		  else
+			else
 				self._revives_counter:set_text(tostring(3 + managers.player:upgrade_value("player", "additional_lives", 0))
 						.. (managers.player:has_category_upgrade("player", "pistol_revive_from_bleed_out")
 						and ("/" .. managers.player:upgrade_value("player", "pistol_revive_from_bleed_out", 0)) or ""))
@@ -428,21 +702,36 @@
 		end
 	end
 
+	function HUDTeammate:set_armor(data, ... )
+		set_armor_original(self, data, ...)
+		if self._main_player then
+			local armor_line = self._panel:child("armor_line")
+			Value = data.current / data.total
+			armor = Value * self._panel:child("bg"):w()
+			armor_line:set_color(Color.white * (math.round(Value * 100) / 100) + Color.red * (1 - math.round(Value * 100) / 100))
+			armor_line:set_w(armor)
+		end
+	end
+
 	function HUDTeammate:set_armor_timer_visibility(visible)
 		if self._armor_timer then
 			self._armor_timer:set_visible(visible and not self._is_in_custody)
+			--[[
 			for _, bg in ipairs(self._armor_timer_bg) do
 				bg:set_visible(visible and not self._is_in_custody)
 			end
+			]]
 		end
 	end
 
 	function HUDTeammate:set_inspire_timer_visibility(visible)
 		if self._inspire_timer then
 			self._inspire_timer:set_visible(visible and not self._is_in_custody)
+			--[[
 			for _, bg in ipairs(self._inspire_timer_bg) do
 				bg:set_visible(visible and not self._is_in_custody)
 			end
+			]]
 		end
 	end
 
@@ -521,7 +810,61 @@
 			end
 			self:set_player_in_custody(data.revives - 1 < 0)
 		end
-		return set_health_original(self, data)
+		local result = set_health_original(self, data)
+		local hp_text = self._panel:child("hp_text")
+		local Value = data.current / data.total * 100
+		if math.floor(Value) > 0 then
+			hp_text:set_text(math.floor(Value) .. "%")
+			if hp_text:color() ~= Color.white then
+				hp_text:set_color(Color.white)
+			end
+			if (self._lastvalue and self._lastvalue < Value) and (Value - self._lastvalue) > 9  then
+				hp_text:animate(callback(self, self, "health_full"), self._lastvalue, Value)
+			end
+			if self._lastvalue and Value < self._lastvalue then
+				hp_text:animate(callback(self, self, "health_hurt"))
+			end
+		end
+		self._lastvalue = Value
+		return result
+	end
+
+	function HUDTeammate:health_full(hp_text, lastvalue, value)
+		local t = 0
+		while t < 1 do
+			t = t + coroutine.yield()
+			local n = 1 - math.sin((t / 2) * 180)
+			hp = math.clamp(lastvalue + (t * 100), 0, value)
+			hp_text:set_text(math.floor(hp) .. "%")
+		end
+		hp_text:set_text(math.floor(self._lastvalue) .. "%")
+	end
+
+	function HUDTeammate:health_hurt(hp_text)
+		local t = 0
+		while t < 0.8 do
+			t = t + coroutine.yield()
+			local n = math.sin( t * 200 ) 
+			hp_text:set_color(Color(math.lerp(255, Color.white.r, n), math.lerp(Color.white.g, 0, n), math.lerp(Color.white.b, 0, n)))
+		end
+		hp_text:set_color(Color.white)
+	end
+
+	function HUDTeammate:set_custom_radial(data)
+		set_custom_radial_original(self, data)
+		local hp_text = self._panel:child("hp_text")
+		local red = data.current / data.total
+		local Value = red * 100
+		if self._main_player then
+			if red > 0 then
+				hp_text:set_color(Color.red)
+				hp_text:set_text(math.floor(Value).."%")
+			else
+				if hp_text:color() ~= Color.white then
+					hp_text:set_color(Color.white)
+				end
+			end
+		end
 	end
 
 	function HUDTeammate:set_hud_mode(mode)
@@ -560,8 +903,10 @@
 		self._kills_text:set_right(self._kills_panel:w() - 4)
 		local _, _, w, _ = self._kills_text:text_rect()
 		self._kill_icon:set_right(self._kills_panel:w() - w - 4 - self._kill_icon:w() * 0.15)
+		--[[
 		self._kills_text_bg:set_right(self._kills_panel:w())
 		self._kills_text_bg:set_w(w + 8)
+		]]
 	end
 
 	function HUDTeammate:reset_kill_count()
@@ -569,6 +914,13 @@
 		self._kill_count_special = 0
 		self._headshot_kills = 0
 		self:_update_kill_count_text()
+	end
+
+	function HUDTeammate:set_callsign(id)
+		set_callsign_original(self, id)
+		local teammate_panel = self._panel
+		local line = teammate_panel:child("line")
+		line:set_color(tweak_data.chat_colors[id]:with_alpha(line:color().a))
 	end
 
 	function HUDTeammate:set_name(teammate_name, ...)
@@ -608,6 +960,7 @@
 		local name_panel = self._panel:child("name")
 		name_panel:set_text(teammate_name)
 		set_name_original(self, name_panel:text(), ...)
+		self:update_custom_hud()
 		self:_truncate_name()
 	end
 
@@ -653,8 +1006,7 @@
 		if self._ai then
 			self._kills_panel:set_bottom(self._panel:child("player"):bottom())
 		else
-			local name_label = self._panel:child("name")
-			self._kills_panel:set_bottom(name_label:bottom())
+			self._kills_panel:set_bottom(self._panel:child("name"):bottom())
 		end
 	end
 

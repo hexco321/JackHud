@@ -25,6 +25,11 @@ function HUDManager:init(...)
 	self._deferred_detections = {}
 end
 
+function HUDManager:on_downed()
+    self._hud_player_downed:on_downed()
+    self._teammate_panels[self.PLAYER_PANEL]:on_downed()    
+end
+
 function HUDManager:set_slot_outfit(peer_id, criminal_name, outfit, ...)
 	self:set_slot_detection(peer_id, outfit, true)
 	return set_slot_outfit_original(self, peer_id, criminal_name, outfit, ...)
