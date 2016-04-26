@@ -107,7 +107,7 @@
 			texture_rect = { 0, 0, 12, 16 },
 			alpha = 1,
 			blend_mode = "add",
-			layer = 0,
+			layer = 1,
 			color = Color(1, 1, 0.65882355, 0)
 		})
 		self._kills_text = self._kills_panel:text({
