@@ -30,6 +30,7 @@
 		end
 		self._stamina_bar = radial_health_panel:bitmap({
 			name = "radial_stamina",
+			visible = JackHUD:GetOption("show_stamina_meter"),
 			texture = "guis/textures/pd2/hud_radial_rim",
 			texture_rect = { 64, 0, -64, 64 },
 			render_template = "VertexColorTexturedRadial",
@@ -379,7 +380,7 @@
 		self._interact_info_bg:set_right(self._interact_info:right() + 4)
 	end
 
-	function HUDTeammate:set_interact_visible(visible)
+	function HUDTeammate:set_interact_visibility(visible)
 		if self._interact_info_panel then
 			self._interact_info_panel:set_visible(visible and not self._is_in_custody)
 		end
@@ -402,10 +403,17 @@
 		self._stamina_line:set_x(x)
 		self._stamina_line:set_y(y)
 		self._stamina_line:set_rotation(angle)
+		self:set_stamina_meter_visibility(true)
 	end
 
 	function HUDTeammate:set_current_stamina(value)
 		self._stamina_bar:set_color(Color(1, value/self._max_stamina, 0, 0))
+	end
+
+	function HUDTeammate:set_stamina_meter_visibility(visible)
+		if self._stamina_bar then
+			self._stamina_bar:set_visible(visible and JackHUD:GetOption("show_stamina_meter") and not self._is_in_custody)
+		end
 	end
 
 	function HUDTeammate:increment_revives()
@@ -458,19 +466,13 @@
 		end
 	end
 
-	function HUDTeammate:set_stamina_meter_visibility(visible)
-		if self._stamina_bar then
-			self._stamina_bar:set_visible(visible and not self._is_in_custody)
-		end
-	end
-
 	function HUDTeammate:set_player_in_custody(incustody)
 		self._is_in_custody = incustody
 		self:set_revive_visibility(not incustody)
 		self:set_detection_visibility(not incustody)
 		self:set_stamina_meter_visibility(not incustody)
 		if incustody then
-			self:set_interact_visible(false)
+			self:set_interact_visibility(false)
 			self:set_armor_timer_visibility(false)
 			self:set_inspire_timer_visibility(false)
 		end

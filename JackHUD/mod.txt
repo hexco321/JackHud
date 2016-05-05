@@ -6,7 +6,7 @@
 	"priority": -1,
 	"updates" : [
 		{
-			"revision" : 39,
+			"revision" : 40,
 			"identifier" : "jackhud",
 		},
 		{

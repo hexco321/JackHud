@@ -14,7 +14,6 @@ if not JackHUD.setup then
 	JackHUD._data_path = SavePath .. "JackHUD.txt"
 	JackHUD._poco_path = SavePath .. "hud3_config.json"
 	JackHUD._data = {}
-	JackHUD._disabled_defaults = {}
 	JackHUD._menus = {
 		"jackhud_options"
 		,"jackhud_menu_tweaks"
@@ -115,7 +114,6 @@ if not JackHUD.setup then
 		A simple load function that decodes the saved json _data table if it exists.
 	]]
 	function JackHUD:Load()
-		self:LoadDisabledDefaults()
 		self:LoadDefaults()
 		local file = io.open(self._data_path, "r")
 		if file then
@@ -130,17 +128,7 @@ if not JackHUD.setup then
 	end
 
 	function JackHUD:GetOption(id)
-		if self:IsMember() then
-			return self._data[id]
-		else
-			return self._disabled_defaults[id]
-		end
-	end
-
-	function JackHUD:LoadDisabledDefaults()
-		local default_file = io.open(self._path .."Menu/default_disabled.txt")
-		self._disabled_defaults = json.decode(default_file:read("*all"))
-		default_file:close()
+		return self._data[id]
 	end
 
 	function JackHUD:LoadDefaults()
@@ -259,40 +247,6 @@ if not JackHUD.setup then
 		os.execute("start https://cloud.bangl.de/index.php/s/P5iWCDJgq8zBHiA?path=%2FJackPacks")
 	end
 
-	function JackHUD:IsMember()
-		--return self.is_member or self.steam_offline or not self.jackhud_member_check_done
-		return true
-	end
-
-	function JackHUD:ShowSteamGroup()
-		Steam:overlay_activate("url", "http://steamcommunity.com/groups/jackhud")
-	end
-
-	function JackHUD:MemberCheck()
-		log("JackHUD member check: " .. "checking page " .. tostring(self.page_number) .. "...")
-		Steam:http_request("http://steamcommunity.com/gid/11078625/memberslistxml/?xml=1&p=" .. tostring(self.page_number), self.MembersListCallBack)
-	end
-
-	function JackHUD.MembersListCallBack(success, page)
-		if success then
-			if string.find(page, "<steamID64>" .. Steam:userid() .. "</steamID64>") then
-				JackHUD.is_member = true
-				log("JackHUD member check: " .. "Welcome, member!")
-			elseif string.find(page, "<nextPageLink>") then
-				JackHUD.page_number = JackHUD.page_number + 1
-				JackHUD:MemberCheck()
-			else
-				JackHUD.jackhud_member_check_done = true
-				log("JackHUD member check: " .. "Seems like you are not a member.")
-			end
-		else
-			JackHUD.steam_offline = true
-			log("JackHUD member check: " .. "Steam seems to be offline. Handling you as member.")
-		end
-	end
-
-	JackHUD.page_number = 1
-	JackHUD:MemberCheck()
 	JackHUD:Load()
 	JackHUD.setup = true
 	log("JackHUD loaded.")

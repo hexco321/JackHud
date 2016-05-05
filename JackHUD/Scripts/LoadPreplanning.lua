@@ -1,7 +1,3 @@
-if not JackHUD:IsMember() then
-	return
-end
-
 -- Preplanned - By ThatGuyFromBreakingBad
 -- LoadPreplanning.lua
 -- v1.34.3_0

@@ -516,6 +516,10 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.colorize_names = (item:value() =="on")
 		JackHUD:Save()
 	end
+	MenuCallbackHandler.callback_show_stamina_meter = function(self, item)
+		JackHUD._data.show_stamina_meter = (item:value() =="on")
+		JackHUD:Save()
+	end
 	MenuCallbackHandler.callback_show_armor_timer = function(self, item)
 		JackHUD._data.show_armor_timer = (item:value() =="on")
 		JackHUD:Save()

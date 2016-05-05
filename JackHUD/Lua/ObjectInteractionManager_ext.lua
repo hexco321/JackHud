@@ -61,7 +61,15 @@ ObjectInteractionManager.LOOT_TYPE_FROM_CARRY_ID = {
 	lost_artifact =							"artifact",
 	prototype =								"prototype",
 	present =								"present",
-	goat =									"goat"
+	goat =									"goat",
+	counterfeit_money =						"money",
+	mad_master_server_value_1 =				"server",
+	mad_master_server_value_2 =				"server",
+	mad_master_server_value_3 =				"server",
+	mad_master_server_value_4 =				"server",
+	weapon_glock =							"weapon",
+	weapon_scar =							"weapon",
+	drk_bomb_part = 						"bomb"
 }
 
 ObjectInteractionManager.LOOT_TYPE_LEVEL_COMPENSATION = {

@@ -2026,8 +2026,8 @@ do
 		pig =			{ text = "Pig" },
 		safe =			{ text = "Safe" },
 		prototype =		{ text = "Prototype" },
-		present =		{ text = "Present"},
-		goat =			{ text = "Goat"}
+		present =		{ text = "Present" },
+		goat =			{ text = "Goat" }
 		--container =   { text = "?" },
 	}
 	function HUDList.LootItem:init(parent, name, loot_data)

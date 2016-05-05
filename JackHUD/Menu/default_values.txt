@@ -50,6 +50,7 @@
 	"show_client_ranks" : true,
 	"show_own_rank" : false,
 	"colorize_names" : true,
+	"show_stamina_meter" : true,
 	"show_armor_timer" : true,
 	"show_inspire_timer" : true,
 	"anti_stealth_grenades" : false,

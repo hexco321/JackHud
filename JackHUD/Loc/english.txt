@@ -261,6 +261,8 @@
 	"colorize_names" : "Colorize names",
 	"colorize_names_desc" : "Colorize player names",
 
+	"show_stamina_meter" : "Show stamina meter",
+	"show_stamina_meter_desc" : "Show the stamina meter",
 	"show_armor_timer" : "Show armor timer",
 	"show_armor_timer_desc" : "Show the time until armor regenerates",
 	"show_inspire_timer" : "Show inspire timer",

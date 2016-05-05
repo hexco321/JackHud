@@ -157,6 +157,15 @@
 		},
 		{
 			"type": "toggle",
+			"id": "show_stamina_meter",
+			"title": "show_stamina_meter",
+			"description": "show_stamina_meter_desc",
+			"callback": "callback_show_stamina_meter",
+			"value": "show_stamina_meter",
+			"default_value": true
+		},
+		{
+			"type": "toggle",
 			"id": "show_armor_timer",
 			"title": "show_armor_timer",
 			"description": "show_armor_timer_desc",

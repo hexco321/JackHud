@@ -1,4 +1,8 @@
 
+1.18r40:
++ added option for hiding the stamina meter
++ added new loot types to fix bag counting in counterfeit, undercover and murky station
+
 1.18r39:
 + enhanced assault banner: endless wave fix
 + kill counter: font size & alignment fix

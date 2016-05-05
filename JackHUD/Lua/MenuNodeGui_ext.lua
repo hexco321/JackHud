@@ -7,19 +7,14 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 	if alive(self._version_string) and not self["_" .. mod_name .. "_version_added"] then
 		local version, revision = JackHUD:GetVersion()
 		local fullversion = mod_name .. " v" .. version .. "r" .. revision
-		if JackHUD:IsMember() then
-			revision = "r" .. revision
-		else
-			fullversion = mod_name .. " DISABLED"
-			revision = "DISABLED"
-		end
+		revision = "r" .. revision
 		local versionstring = self._version_string:text()
 		if versionstring == Application:version() then
 			self._version_string:set_text("PAYDAY2 v" .. versionstring .. " with " .. fullversion)
 		elseif self["_JackPackVersion_version_added"] then
 			local jackpack_version = JackHUD:GetJackPackVersion()
 			self._version_string:set_text(versionstring .. " (" .. mod_name .. " " .. revision .. ")")
-			if JackHUD:IsMember() and jackpack_version ~= version and not JackHUD._pack_warning then
+			if jackpack_version ~= version and not JackHUD._pack_warning then
 				JackHUD._pack_warning = true
 				QuickMenu:new("JackPack update", "Guys, the new JackPack... go get it!", {
 					[1] = {text = "Go to downloads page", callback = function()
@@ -32,15 +27,6 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 			self._version_string:set_text(versionstring .. " and " .. fullversion)
 		end
 		self["_" .. mod_name .. "_version_added"] = true
-	end
-	if not JackHUD:IsMember() and not JackHUD._disabled_warning then
-		JackHUD._disabled_warning = true
-		QuickMenu:new("Welcome", "You are not member of the JackHUD Steam group, so most of the JackHUD features got disabled. Please join the group, and then restart your game.", {
-			[1] = {text = "Go to group", callback = function()
-				JackHUD:ShowSteamGroup()
-			end},
-			[2] = {text = "I don't care", is_cancel_button = true}
-		}, true)
 	end
 	if JackHUD._poco_conf and not JackHUD._poco_warning then
 		JackHUD._fixed_poco_conf = deep_clone(JackHUD._poco_conflicting_defaults)
