@@ -3,59 +3,23 @@ local update_stats_screen_original = HUDStatsScreen._update_stats_screen_day
 local init_original = HUDStatsScreen.init
 local show_original = HUDStatsScreen.show
 
-local characters = {
-	female_1 = {
-		texture = "guis/textures/pd2/blackmarket/icons/characters/female_1",
-		color = Color(1, 0.54, 0.17, 0.89)
-	},
-	jowi = {
-		texture = "guis/textures/pd2/blackmarket/icons/characters/jowi",
-		color = Color(1, 0.43, 0.48, 0.55)
-	},
-	spanish = {
-		texture = "guis/textures/pd2/blackmarket/icons/characters/chains",
-		color = Color(1, 0.6, 0.8, 0.2)
-	},
-	american = {
-		texture = "guis/textures/pd2/blackmarket/icons/characters/hoxton",
-		color = Color(1, 1, 0.2, 0.7)
-	},
-	old_hoxton = {
-		texture = "guis/textures/pd2/blackmarket/icons/characters/old_hoxton",
-		color = Color(1, 1, 0.43, 0.78)
-	},
-	russian = {
-		texture = "guis/textures/pd2/blackmarket/icons/characters/dallas",
-		color = Color(1, 0, 0.6, 0.8)
-	},
-	german = {
-		texture = "guis/textures/pd2/blackmarket/icons/characters/wolf",
-		color = Color(1, 0.4, 0, 0)
-	},
-	bonnie = {
-		texture = "guis/dlcs/character_pack_bonnie/textures/pd2/blackmarket/icons/characters/bonnie",
-		color = Color(1, 0.91, 0.59, 0.48)
-	},
-	dragan = {
-		texture = "guis/dlcs/character_pack_dragan/textures/pd2/blackmarket/icons/characters/dragan",
-		color = Color(1, 1, 0.14, 0)
-	},
-	jacket = {
-		texture = "guis/dlcs/hlm2/textures/pd2/blackmarket/icons/characters/jacket",
-		color = Color(1, 0.9, 0.91, 0.98)
-	},
-	sokol = {
-		texture = "guis/dlcs/character_pack_sokol/textures/pd2/blackmarket/icons/characters/sokol",
-		color = Color.white,
-	},
-	dragon  = {
-		texture = "guis/dlcs/dragon/textures/pd2/blackmarket/icons/characters/dragon",
-		color = Color.white,
-	},
-	bodhi  = {
-		texture = "guis/dlcs/rip/textures/pd2/blackmarket/icons/characters/bodhi",
-		color = Color.white,
-	}
+local custom_character_colors = {
+	dallas = Color(1, 0, 0.6, 0.8),
+	wolf = Color(1, 0.4, 0, 0),
+	chains = Color(1, 0.6, 0.8, 0.2),
+	hoxton = Color(1, 1, 0.2, 0.7),
+	jowi = Color(1, 0.43, 0.48, 0.55),
+	old_hoxton = Color(1, 1, 0.43, 0.78),
+	female_1 = Color(1, 0.54, 0.17, 0.89),
+	dragan = Color(1, 1, 0.14, 0),
+	jacket = Color(1, 0.9, 0.91, 0.98),
+	bonnie = Color(1, 0.91, 0.59, 0.48),
+	--sokol = Color(1, 1, 1, 1),
+	--dragon = Color(1, 1, 1, 1),
+	--bodhi = Color(1, 1, 1, 1),
+	--jimmy = Color(1, 1, 1, 1),
+
+	-- defaults to Color.white, if not set
 }
 
 function HUDStatsScreen:init()
@@ -783,14 +747,22 @@ function HUDStatsScreen:init()
 	})
 	time_text:set_y(math.round(blank:bottom()))
 	time_title:set_top(time_text:top())
-	local mask_icon
-	local mask_color
-	if characters[managers.criminals:local_character_name()] == nil then
-		mask_icon = "guis/textures/pd2/blackmarket/icons/masks/grin"
-		mask_color = Color(1, 0.8, 0.5, 0.2)
-	else
-		mask_icon = characters[managers.criminals:local_character_name()].texture
-		mask_color = characters[managers.criminals:local_character_name()].color
+	local mask_icon = "guis/textures/pd2/blackmarket/icons/masks/grin"
+	local mask_color = Color(1, 0.8, 0.5, 0.2)
+	local old_character_name = managers.criminals:local_character_name()
+	local character_name = CriminalsManager.convert_old_to_new_character_workname(old_character_name)
+	local character_table = tweak_data.blackmarket.characters[old_character_name]
+	if not character_table then
+		character_table = tweak_data.blackmarket.characters.locked[character_name]
+	end
+	if character_table then
+		local guis_catalog = "guis/"
+		local bundle_folder = character_table.texture_bundle_folder
+		if bundle_folder then
+			guis_catalog = guis_catalog .. "dlcs/" .. tostring(bundle_folder) .. "/"
+		end
+		mask_icon = guis_catalog .. "textures/pd2/blackmarket/icons/characters/" .. character_name
+		mask_color = custom_character_colors[character_name] or Color.white
 	end
 	local logo = right_panel:bitmap({
 		name = "ghost_icon",

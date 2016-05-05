@@ -1,4 +1,8 @@
 
+1.18r41:
++ the tab screen now gets the mask info dynamically from tweak_data (this should fix jimmy and all future chars)
++ crash hotfix (thanks, Spieltrieb)
+
 1.18r40:
 + added option for hiding the stamina meter
 + added new loot types to fix bag counting in counterfeit, undercover and murky station
