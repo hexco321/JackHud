@@ -1,4 +1,7 @@
 
+1.18r42:
++ attemt to fix a crash related to the new perk deck (can't test it by myself for now)
+
 1.18r41:
 + the tab screen now gets the mask info dynamically from tweak_data (this should fix jimmy and all future chars)
 + crash hotfix (thanks, Spieltrieb)

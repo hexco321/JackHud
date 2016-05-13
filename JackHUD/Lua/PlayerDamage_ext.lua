@@ -43,7 +43,7 @@ end
 
 function PlayerDamage:_damage_screen(...)
 	_damage_screen_original(self, ...)
-	local delay = self._regenerate_timer + (self._supperssion_data.decay_start_t and (self._supperssion_data.decay_start_t - managers.player:player_timer():time()) or 0)
+	local delay = (self._regenerate_timer or 0) + (self._supperssion_data.decay_start_t and (self._supperssion_data.decay_start_t - managers.player:player_timer():time()) or 0)
 	managers.player:activate_timed_buff("armor_regen_debuff", delay)
 end
 
