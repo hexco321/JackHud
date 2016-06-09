@@ -7,8 +7,8 @@ local destroy_original = DoctorBagBase.destroy
 
 DoctorBagBase.SPAWNED_BAGS = {}
 
-function DoctorBagBase.spawn(pos, rot, amount_upgrade_lvl, peer_id, ...)
-	local unit = spawn_original(pos, rot, amount_upgrade_lvl, peer_id, ...)
+function DoctorBagBase.spawn(pos, rot, bits, peer_id, ...)
+	local unit = spawn_original(pos, rot, bits, peer_id, ...)
 	DoctorBagBase.SPAWNED_BAGS[unit:key()] = DoctorBagBase.SPAWNED_BAGS[unit:key()] or { unit = unit }
 	DoctorBagBase.SPAWNED_BAGS[unit:key()].owner = peer_id
 	UnitBase._do_listener_callback("on_bag_create", unit, "doc_bag")
@@ -24,10 +24,10 @@ function DoctorBagBase:init(unit, ...)
 	self._do_listener_callback("on_bag_max_amount_update", unit, self._max_amount)
 end
 
-function DoctorBagBase:sync_setup(amount_upgrade_lvl, peer_id, ...)
+function DoctorBagBase:sync_setup(bits, peer_id, ...)
 	DoctorBagBase.SPAWNED_BAGS[self._unit:key()].owner = peer_id
 	self._do_listener_callback("on_bag_owner_update", self._unit, peer_id)
-	return sync_setup_original(self, amount_upgrade_lvl, peer_id, ...)
+	return sync_setup_original(self, bits, peer_id, ...)
 end
 
 function DoctorBagBase:_set_visual_stage(...)

@@ -65,7 +65,7 @@ function CopDamage:damage_fire(attack_data, ...)
 	if not self:dead() then
 		fire_original(self, attack_data, ...)
 		if self:dead() and alive(attack_data.attacker_unit) then
-			self:_process_kill(attack_data.attacker_unit, attack_data.col_ray and attack_data.col_ray.body and self._unit:get_body_index(attack_data.col_ray.body:name())) 
+			self:_process_kill(attack_data.attacker_unit, attack_data.col_ray and attack_data.col_ray.body and self._unit:get_body_index(attack_data.col_ray.body:name()))
 		end
 	end
 	--local result = fire_original(self, attack_data, ...)
@@ -73,9 +73,9 @@ function CopDamage:damage_fire(attack_data, ...)
 	--return result
 end
 
-function CopDamage:sync_damage_bullet(attacker_unit, damage_percent, i_body, hit_offset_height, death, ...)
+function CopDamage:sync_damage_bullet(attacker_unit, damage_percent, i_body, hit_offset_height, variant, death, ...)
 	if death then self:_process_kill(attacker_unit, i_body) end
-	return sync_bullet_original(self, attacker_unit, damage_percent, i_body, hit_offset_height, death, ...)
+	return sync_bullet_original(self, attacker_unit, damage_percent, i_body, hit_offset_height, variant, death, ...)
 end
 
 function CopDamage:sync_damage_explosion(attacker_unit, damage_percent, i_attack_variant, death, ...)

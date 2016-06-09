@@ -1,4 +1,7 @@
 
+1.18r43:
++ quick-fixed function signatures for u101
+
 1.18r42:
 + attemt to fix a crash related to the new perk deck (can't test it by myself for now)
 

@@ -7,8 +7,8 @@ local destroy_original = SentryGunBase.destroy
 
 SentryGunBase.SPAWNED_SENTRIES = {}
 
-function SentryGunBase.spawn(owner, pos, rot, ammo_multiplier, armor_multiplier, damage_multiplier, peer_id, ...)
-	local unit = spawn_original(owner, pos, rot, ammo_multiplier, armor_multiplier, damage_multiplier, peer_id, ...)
+function SentryGunBase.spawn(owner, pos, rot, peer_id, verify_equipment, unit_idstring_index, ...)
+	local unit = spawn_original(owner, pos, rot, peer_id, verify_equipment, unit_idstring_index, ...)
 	if not SentryGunBase.SPAWNED_SENTRIES[unit:key()] then
 		SentryGunBase.SPAWNED_SENTRIES[unit:key()] = { unit = unit }
 		UnitBase._do_listener_callback("on_sentry_create", unit)

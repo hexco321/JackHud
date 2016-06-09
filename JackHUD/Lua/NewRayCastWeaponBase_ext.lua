@@ -2,8 +2,8 @@
 local on_equip_original = NewRaycastWeaponBase.on_equip
 local toggle_gadget_original = NewRaycastWeaponBase.toggle_gadget
 
-function NewRaycastWeaponBase:on_equip()
-	on_equip_original(self)
+function NewRaycastWeaponBase:on_equip(user_unit, ...)
+	on_equip_original(self, user_unit, ...)
 	self:set_gadget_on(JackHUD:GetOption("remember_gadget_state") and self._stored_gadget_on or 0, false)
 end
 

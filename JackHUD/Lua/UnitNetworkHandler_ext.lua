@@ -29,11 +29,11 @@ function UnitNetworkHandler:hostage_trade(unit, ...)
 	return hostage_trade_original(self, unit, ...)
 end
 
-function UnitNetworkHandler:unit_traded(unit, trader, ...)
+function UnitNetworkHandler:unit_traded(unit, position, rotation, ...)
 	if self._verify_gamestate(self._gamestate_filter.any_ingame) and self._verify_character(unit) then
 		managers.enemy:remove_minion_unit(unit)
 	end
-	return unit_traded_original(self, unit, trader, ...)
+	return unit_traded_original(self, unit, position, rotation, ...)
 end
 
 function UnitNetworkHandler:interaction_set_active(unit, u_id, active, tweak_data, flash, sender, ...)
@@ -71,7 +71,7 @@ end
 function UnitNetworkHandler:sync_teammate_progress(type_index, enabled, tweak_data_id, timer, success, sender, ...)
 	local sender_peer = self._verify_sender(sender)
 	if not self._verify_gamestate(self._gamestate_filter.any_ingame) or not sender_peer then
-		return 
+		return
 	end
 	if type_index and tweak_data_id and success and type_index == 1 and (tweak_data_id == "doctor_bag" or tweak_data_id == "firstaid_box") then
 		managers.hud:reset_teammate_revives(managers.hud:teammate_panel_from_peer_id(sender_peer:id()))
