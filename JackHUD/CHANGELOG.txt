@@ -1,6 +1,10 @@
 
+1.19r44:
+- version bump for jackpack notification
+
 1.18r43:
-+ quick-fixed function signatures for u101
++ quick-fixed function signatures for u100
+  (this fixes the gadget features and some of the kill counter problems)
 
 1.18r42:
 + attemt to fix a crash related to the new perk deck (can't test it by myself for now)
