@@ -1,4 +1,7 @@
 
+1.19r46:
+- Added shotgun support to gadget-state [by Spyboticsguy]
+
 1.19r45:
 - fixed ECM Jammer timer for U104 [by Spyboticsguy]
 
