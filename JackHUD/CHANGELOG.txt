@@ -1,4 +1,7 @@
 
+1.19r47:
+- Added custom laser functionality to shotguns [by Spyboticsguy]
+
 1.19r46:
 - Added shotgun support to gadget-state [by Spyboticsguy]
 
