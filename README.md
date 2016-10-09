@@ -26,7 +26,6 @@ However.. i am not down with some originally included features of GageHud, so in
 * Armor/Inspire timers
 * Laser options
 * HPS Meters
-* Remember gadget state
 * contract broker quick link
 * and more...
 
