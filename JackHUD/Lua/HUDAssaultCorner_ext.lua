@@ -2,8 +2,8 @@
 local init_original = HUDAssaultCorner.init
 local _start_assault_original = HUDAssaultCorner._start_assault
 
-function HUDAssaultCorner:init(...)
-	init_original(self, ...)
+function HUDAssaultCorner:init(hud, full_hud, tweak_hud, ...)
+	init_original(self, hud, full_hud, tweak_hud, ...)
 	if self._hud_panel:child("hostages_panel") then
 		self:_hide_hostages()
 	end
@@ -22,7 +22,7 @@ function HUDAssaultCorner:init(...)
 				name = "assault_timer_panel",
 				x = 4
 			})
-		})
+		}, tweak_hud)
 		self._assault_timer._timer_text:set_font_size(tweak_data.hud_corner.assault_size)
 		self._assault_timer._timer_text:set_font(Idstring(tweak_data.hud_corner.assault_font))
 		self._assault_timer._timer_text:set_align("left")
@@ -34,7 +34,7 @@ function HUDAssaultCorner:init(...)
 				name = "casing_timer_panel",
 				x = 4
 			})
-		})
+		}, tweak_hud)
 		self._casing_timer._timer_text:set_font_size(tweak_data.hud_corner.assault_size)
 		self._casing_timer._timer_text:set_font(Idstring(tweak_data.hud_corner.assault_font))
 		self._casing_timer._timer_text:set_align("left")

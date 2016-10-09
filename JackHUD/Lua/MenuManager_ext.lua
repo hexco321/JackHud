@@ -440,10 +440,6 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 		JackHUD._data.laser_light_turretm = item:value()
 		JackHUD:Save()
 	end
-	MenuCallbackHandler.callback_remember_gadget_state = function(self, item)
-		JackHUD._data.remember_gadget_state = (item:value() =="on")
-		JackHUD:Save()
-	end
 
 	-- Push to interact
 	MenuCallbackHandler.callback_push_to_interact = function(self, item)

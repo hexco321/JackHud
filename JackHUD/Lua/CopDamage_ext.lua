@@ -8,6 +8,7 @@ local sync_bullet_original = CopDamage.sync_damage_bullet
 local sync_explosion_original = CopDamage.sync_damage_explosion
 local sync_melee_original = CopDamage.sync_damage_melee
 local sync_fire_original = CopDamage.sync_damage_fire
+local sync_damage_dot_original = CopDamage.sync_damage_dot
 
 function CopDamage:_on_damage_received(damage_info, ...)
 	if self._unit:in_slot(16) then
@@ -78,9 +79,9 @@ function CopDamage:sync_damage_bullet(attacker_unit, damage_percent, i_body, hit
 	return sync_bullet_original(self, attacker_unit, damage_percent, i_body, hit_offset_height, variant, death, ...)
 end
 
-function CopDamage:sync_damage_explosion(attacker_unit, damage_percent, i_attack_variant, death, ...)
+function CopDamage:sync_damage_explosion(attacker_unit, damage_percent, i_attack_variant, death, direction, weapon_unit, ...)
 	if death then self:_process_kill(attacker_unit) end
-	return sync_explosion_original(self, attacker_unit, damage_percent, i_attack_variant, death, ...)
+	return sync_explosion_original(self, attacker_unit, damage_percent, i_attack_variant, death, direction, weapon_unit, ...)
 end
 
 function CopDamage:sync_damage_melee(attacker_unit, damage_percent, damage_effect_percent, i_body, hit_offset_height, variant, death, ...)
@@ -90,9 +91,16 @@ function CopDamage:sync_damage_melee(attacker_unit, damage_percent, damage_effec
 	return sync_melee_original(self, attacker_unit, damage_percent, damage_effect_percent, i_body, hit_offset_height, variant, death, ...)
 end
 
-function CopDamage:sync_damage_fire(attacker_unit, damage_percent, death, ...)
+function CopDamage:sync_damage_fire(attacker_unit, damage_percent, start_dot_dance_antimation, death, direction, weapon_type, weapon_id, healed, ...)
 	if death then
 		self:_process_kill(attacker_unit)
 	end
-	return sync_fire_original(self, attacker_unit, damage_percent, death, ...)
+	return sync_fire_original(self, attacker_unit, damage_percent, start_dot_dance_antimation, death, direction, weapon_type, weapon_id, healed, ...)
+end
+
+function CopDamage:sync_damage_dot(attacker_unit, damage_percent, death, variant, hurt_animation, weapon_id, ...)
+	if death then
+		self:_process_kill(attacker_unit)
+	end
+	return sync_damage_dot_original(self, attacker_unit, damage_percent, death, variant, hurt_animation, weapon_id, ...)
 end

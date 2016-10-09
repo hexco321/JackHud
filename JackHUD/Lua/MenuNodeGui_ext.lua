@@ -56,11 +56,6 @@ function MenuNodeMainGui:_setup_item_rows(node, ...)
 				table.insert(conflicts, "game.interactionClickStick")
 				conflict_found = true
 			end
-			if game.rememberGadgetState ~= false then
-				JackHUD._fixed_poco_conf.game.rememberGadgetState = false
-				table.insert(conflicts, "game.rememberGadgetState")
-				conflict_found = true
-			end
 			if game.truncateNames ~= nil then
 				JackHUD._fixed_poco_conf.game.truncateNames = nil
 				table.insert(conflicts, "game.truncateNames")

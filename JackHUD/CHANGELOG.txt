@@ -1,4 +1,10 @@
 
+1.20r48:
+- fixed crashing on heist start caused by hudassaultcorner changes
+- removed "remember gadget state" feature since it became obsolete
+- updated kill counters for dots
+- updated function signatures for U110
+
 1.19r47:
 - Added custom laser functionality to shotguns [by Spyboticsguy]
 
