@@ -101,7 +101,6 @@
 	"laser_color_a_turretm" : 0.15,
 	"laser_glow_turretm" : 0.2,
 	"laser_light_turretm" : 10,
-	"remember_gadget_state" : true,
 	"center_assault_banner" : true,
 	"enable_hps_meter" : true,
 	"hps_refresh_rate" : 1,

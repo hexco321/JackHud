@@ -218,9 +218,6 @@
 	"interaction_color_b" : "interaction text blue",
 	"interaction_color_b_desc" : "interaction text color",
 
-	"remember_gadget_state" : "Remember gadget state",
-	"remember_gadget_state_desc" : "Remember on/off state of lasers and flashlights",
-
 	"push_to_interact" : "Push to interact",
 	"push_to_interact_desc" : "No need to hold the interaction key [F] anymore",
 
