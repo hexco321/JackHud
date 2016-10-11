@@ -452,10 +452,6 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_jackhud", function( m
 	end
 
 	-- Other
-	MenuCallbackHandler.callback_enable_filtersettings = function(self, item)
-		JackHUD._data.enable_filtersettings = (item:value() =="on")
-		JackHUD:Save()
-	end
 	MenuCallbackHandler.callback_lobby_skins_mode = function(self, item)
 		JackHUD._data.lobby_skins_mode = item:value()
 		JackHUD:Save()

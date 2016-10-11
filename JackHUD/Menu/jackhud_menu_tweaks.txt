@@ -5,19 +5,6 @@
 	"description": "jackhud_menu_tweaks_desc",
 	"items": [
 		{
-		    "type": "toggle",
-			"id": "enable_filtersettings",
-			"title": "enable_filtersettings",
-			"description": "enable_filtersettings_desc",
-			"callback": "callback_enable_filtersettings",
-			"value": "enable_filtersettings",
-			"default_value": true
-		},
-		{
-			"type" : "divider",
-			"size" : 16
-		},
-		{
 			"type" : "multiple_choice",
 			"id" : "lobby_skins_mode",
 			"title" : "lobby_skins_mode",

@@ -1,4 +1,8 @@
 
+1.20r49:
+- removed "persistent crimenet filter settings" feature since it became obsolete
+- fixed some small things in the localization file
+
 1.20r48:
 - fixed crashing on heist start caused by hudassaultcorner changes
 - removed "remember gadget state" feature since it became obsolete
