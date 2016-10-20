@@ -1,13 +1,22 @@
 
 local _start_tape_loop_original = SecurityCamera._start_tape_loop
+local _deactivate_tape_loop_restart_original = SecurityCamera._deactivate_tape_loop_restart
 local _deactivate_tape_loop_original = SecurityCamera._deactivate_tape_loop
 
-function SecurityCamera:_start_tape_loop(tape_loop_t, ...)
-	ObjectInteractionManager._do_listener_callback("on_tape_loop_start", self._unit, tape_loop_t + 6)
-	return _start_tape_loop_original(self, tape_loop_t, ...)
+local on_unit_set_enabled_original = SecurityCamera.on_unit_set_enabled
+local generate_cooldown_original = SecurityCamera.generate_cooldown
+
+function SecurityCamera:_start_tape_loop(...)
+	_start_tape_loop_original(self, ...)
+	managers.gameinfo:event("tape_loop", "start", tostring(self._unit:key()), { unit = self._unit, expire_t = self._tape_loop_end_t + 6 })
+end
+
+function SecurityCamera:_deactivate_tape_loop_restart(...)
+	managers.gameinfo:event("tape_loop", "stop", tostring(self._unit:key()))
+	return _deactivate_tape_loop_restart_original(self, ...)
 end
 
 function SecurityCamera:_deactivate_tape_loop(...)
-	ObjectInteractionManager._do_listener_callback("on_tape_loop_stop", self._unit)
+	managers.gameinfo:event("tape_loop", "stop", tostring(self._unit:key()))
 	return _deactivate_tape_loop_original(self, ...)
 end

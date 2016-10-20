@@ -63,14 +63,24 @@ if not JackHUD.setup then
 		["lib/units/equipment/sentry_gun/sentrygundamage"] = "SentryGunDamage_ext.lua",
 		["lib/units/enemies/cop/copdamage"] = "CopDamage_ext.lua",
 		["lib/units/props/digitalgui"] = "DigitalGui_ext.lua",
-		["lib/units/props/missiondoor"] = "MissionDoor_ext.lua",
 		["lib/units/props/securitycamera"] = "SecurityCamera_ext.lua",
 		["lib/units/props/timergui"] = "TimerGui_ext.lua",
 		["lib/units/weapons/newraycastweaponbase"] = "NewRayCastWeaponBase_ext.lua",
+		["lib/units/weapons/raycastweaponbase"] = "RayCastWeaponBase_ext.lua",
 		["lib/units/weapons/sentrygunweapon"] = "SentryGunWeapon_ext.lua",
 		["lib/units/weapons/weaponflashlight"] = "WeaponFlashlight_ext.lua",
 		["lib/units/weapons/weaponlaser"] = "WeaponLaser_ext.lua",
-		["lib/units/unitbase"] = "UnitBase_ext.lua"
+		["lib/setups/setup"] = "Setup_ext.lua",
+		["lib/units/props/securitylockgui"] = "SecurityLockGui_ext.lua",
+		["lib/units/interactions/interactionext"] = "InteractionExt_ext.lua",
+		["lib/player_actions/skills/playeractionbloodthirstbase"] = "PlayerActionBloodThirsBase_ext.lua",
+		["lib/player_actions/skills/playeractionexperthandling"] = "PlayerActionExpertHandling_ext.lua",
+		["lib/player_actions/skills/playeractionshockandawe"] = "PlayerActionShockAndAwe_ext.lua",
+		["lib/player_actions/skills/playeractiondireneed"] = "PlayerActionDireNeed_ext.lua",
+		["lib/player_actions/skills/playeractionunseenstrike"] = "PlayerActionUnseenStrike_ext.lua",
+		["lib/player_actions/skills/playeractionammoefficiency"] = "PlayerActionAmmoEfficiency_ext.lua",
+		["lib/player_actions/skills/playeractiontriggerhappy"] = "PlayerActionTriggerHappy_ext.lua",
+		["lib/utils/temporarypropertymanager"] = "TemporaryPropertyManager_ext.lua"
 	}
 	JackHUD._poco_conflicting_defaults = {
 		buff = {
